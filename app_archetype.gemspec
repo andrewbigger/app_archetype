@@ -18,9 +18,10 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'highline', '~> 2.0'
-  spec.add_dependency 'logger', '~> 1.4'
   spec.add_dependency 'hashie'
+  spec.add_dependency 'highline', '~> 2.0'
+  spec.add_dependency 'json'
+  spec.add_dependency 'logger', '~> 1.4'
   spec.add_dependency 'ruby-handlebars'
 
   spec.add_development_dependency 'bump', '~> 0.6'

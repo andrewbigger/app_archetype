@@ -4,6 +4,7 @@ PATH
     app_archetype (0.0.1)
       hashie
       highline (~> 2.0)
+      json
       logger (~> 1.4)
       ruby-handlebars
 

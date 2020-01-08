@@ -9,23 +9,17 @@ module AppArchetype
       # Template render command
       #
       def self.render(
-        cli,
         template_path,
         destination_path,
         manifest_path,
         overwrite = false,
         vars = []
       )
-        variables = Hashie::Mash.new
-
-        vars.each do |var|
-          pair = var.split(':')
-          variables[pair.shift] = pair.shift
-        end
-
-        # TODO: load and merge manifest variables
         template = Template.new(template_path)
-        
+
+        variables = Variables.new_from_args(vars)
+        variables.merge(Variables.new_from_file(manifest_path)) if manifest_path
+
         plan = Plan.new(template, destination_path, variables)
         plan.devise
 

@@ -33,7 +33,7 @@ module AppArchetype
         source_path.path.gsub(@template.source_path, ''),
         @variables
       )
-      
+
       ::File.join(@destination.path, rel_path)
     end
 

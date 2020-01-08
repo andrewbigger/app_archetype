@@ -48,12 +48,9 @@ begin
   raise 'ERROR: no source template provided' unless @template
   raise 'ERROR: no output destination provided' unless @destination
 
-  @cli = HighLine.new
-
   cmd = ARGV.shift
   AppArchetype::CLI::Commands.public_send(
     cmd.to_sym,
-    @cli,
     @template,
     @destination,
     @manifest,
