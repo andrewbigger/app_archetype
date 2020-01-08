@@ -16,7 +16,7 @@ module AppArchetype
 
       @template.source_files.each do |file|
         @files << File.new(
-          file, 
+          file,
           render_dest_file_path(file)
         )
       end
@@ -30,14 +30,13 @@ module AppArchetype
 
     def render_dest_file_path(source_path)
       rel_path = render_path(
-        source_path.path.gsub(@template.source_path, ''),
-        @variables
+        source_path.path.gsub(@template.source_path, '')
       )
 
       ::File.join(@destination.path, rel_path)
     end
 
-    def render_path(path, variables)
+    def render_path(path)
       hbs = Handlebars::Handlebars.new
       hbs.compile(path).call(@variables)
     end

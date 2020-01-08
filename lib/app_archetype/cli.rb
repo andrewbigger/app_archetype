@@ -18,7 +18,7 @@ module AppArchetype
         template = Template.new(template_path)
 
         variables = Variables.new_from_args(vars)
-        variables.merge(Variables.new_from_file(manifest_path)) if manifest_path
+        variables = variables.merge(Variables.new_from_file(manifest_path)) if manifest_path
 
         plan = Plan.new(template, destination_path, variables)
         plan.devise
