@@ -1,4 +1,5 @@
 module AppArchetype
+  # File represents an output file
   class File
     attr_reader :source_file, :path
 

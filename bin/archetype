@@ -32,11 +32,11 @@ Commands:
 OptionParser.new do |opts|
   opts.banner = USAGE
   opts.on('--trace') { @trace = true }
-  
+
   opts.on('-t', '--template FILE')    { |t| @template = t }
   opts.on('-d', '--destination FILE') { |d| @destination = d }
   opts.on('-m', '--manifest FILE')    { |m| @manifest = m }
-  opts.on('-o', '--overwrite BOOL')   { |o| @overwrite = true }
+  opts.on('-o', '--overwrite BOOL')   { |_o| @overwrite = true }
 
   opts.on_tail('-h', '--help') do
     AppArchetype::CLI.print_message_and_exit(USAGE)
@@ -57,7 +57,6 @@ begin
     @overwrite,
     ARGV
   )
-
 rescue StandardError => e
   AppArchetype::CLI.print_message(e)
   AppArchetype::CLI.print_message(e.backtrace) if @trace

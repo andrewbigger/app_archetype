@@ -1,6 +1,7 @@
 require 'json'
 
 module AppArchetype
+  # Variables is a module for parsing variables for use in templates
   module Variables
     def self.new_from_args(args)
       variables = Hashie::Mash.new

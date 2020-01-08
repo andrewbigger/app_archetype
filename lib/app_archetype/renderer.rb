@@ -2,6 +2,7 @@ require 'fileutils'
 require 'erb'
 
 module AppArchetype
+  # Renderer renders a plan
   class Renderer
     def initialize(plan, variables, overwrite = false)
       @plan = plan
@@ -13,12 +14,11 @@ module AppArchetype
       write_dir(@plan.destination)
 
       @plan.files.each do |file|
-        case
-        when file.source_directory?
+        if file.source_directory?
           write_dir(file)
-        when file.source_template?
+        elsif file.source_template?
           render_file(file)
-        when file.source_file?
+        elsif file.source_file?
           copy_file(file)
         end
       end

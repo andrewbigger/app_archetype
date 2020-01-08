@@ -1,6 +1,7 @@
 require 'ruby-handlebars'
 
 module AppArchetype
+  # Plan builds an in memory representation of template output
   class Plan
     attr_reader :template, :destination, :files, :variables
 
