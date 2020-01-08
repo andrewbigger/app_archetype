@@ -1,0 +1,25 @@
+{
+  "uploads": {
+     "yardoc": {
+        "source": "doc",
+        "target": {
+           "bucket": "docs-biggerconcept-com",
+           "key": "bitbucket.org/biggerconcept/app_archetype/doc"
+        }
+     },
+     "coverage": {
+        "source": "target/reports/coverage",
+        "target": {
+           "bucket": "docs-biggerconcept-com",
+           "key": "bitbucket.org/biggerconcept/app_archetype/coverage"
+        }
+     },
+     "critique": {
+        "source": "target/reports/critique",
+        "target": {
+           "bucket": "docs-biggerconcept-com",
+           "key": "bitbucket.org/biggerconcept/app_archetype/critique"
+        }
+     }
+  }
+}
