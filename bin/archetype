@@ -1,0 +1,71 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift(__dir__ + '/../lib')
+
+require 'rubygems'
+require 'optparse'
+require 'highline'
+
+require 'app_archetype'
+require 'app_archetype/cli'
+
+require 'byebug'
+
+USAGE = "AppArchetype code project template renderer
+
+Usage:\tarchetype <command> <variables> <opts>
+Options:
+  \t--trace\t\t trace mode on
+  -t, --template\t source template
+  -d, --destination\t output destination
+  -m, --manifest\t [optional] variable manifest JSON
+  -o, --overwrite\t [optional] option to overwrite any existing files
+  -h, --help\t\t print usage
+
+Commands:
+  render\t\t renders project template
+".freeze
+
+@trace = false
+@overwrite = false
+
+OptionParser.new do |opts|
+  opts.banner = USAGE
+  opts.on('--trace') { @trace = true }
+  
+  opts.on('-t', '--template FILE')    { |t| @template = t }
+  opts.on('-d', '--destination FILE') { |d| @destination = d }
+  opts.on('-m', '--manifest FILE')    { |m| @manifest = m }
+  opts.on('-o', '--overwrite BOOL')   { |o| @overwrite = true }
+
+  opts.on_tail('-h', '--help') do
+    AppArchetype::CLI.print_message_and_exit(USAGE)
+  end
+end.parse!
+
+begin
+  raise 'ERROR: no command provided' unless ARGV[0]
+  raise 'ERROR: no source template provided' unless @template
+  raise 'ERROR: no output destination provided' unless @destination
+
+  @cli = HighLine.new
+
+  cmd = ARGV.shift
+  AppArchetype::CLI::Commands.public_send(
+    cmd.to_sym,
+    @cli,
+    @template,
+    @destination,
+    @manifest,
+    @overwrite,
+    ARGV
+  )
+
+rescue StandardError => e
+  AppArchetype::CLI.print_message(e)
+  AppArchetype::CLI.print_message(e.backtrace) if @trace
+  AppArchetype::CLI.print_message("\n")
+  AppArchetype::CLI.print_message_and_exit(USAGE)
+end
+
+exit(0)
