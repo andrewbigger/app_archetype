@@ -11,7 +11,7 @@ module AppArchetype
     end
 
     def render
-      write_dir(@plan.destination)
+      write_dir(@plan.destination_path)
 
       @plan.files.each do |file|
         if file.source_directory?
@@ -31,7 +31,7 @@ module AppArchetype
     def render_file(file)
       raise 'cannot overwrite file' if file.exist? && !@overwrite
 
-      input = ::File.read(file.source_file.path)
+      input = ::File.read(file.source_file_path)
       out = ERB.new(input).result(@variables.instance_eval { binding })
 
       ::File.open(file.path.gsub('.erb', ''), 'w+') { |f| f.write(out) }
@@ -40,7 +40,7 @@ module AppArchetype
     def copy_file(file)
       raise 'cannot overwrite file' if file.exist? && !@overwrite
 
-      FileUtils.cp(file.source_file.path, file.path)
+      FileUtils.cp(file.source_file_path, file.path)
     end
   end
 end
