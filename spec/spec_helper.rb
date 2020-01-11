@@ -15,6 +15,7 @@ SimpleCov.configure do
 end
 
 require 'app_archetype'
+require 'app_archetype/cli'
 
 RSpec.configure do |config|
   config.example_status_persistence_file_path = '.rspec_status'
