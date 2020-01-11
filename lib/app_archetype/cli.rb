@@ -1,3 +1,4 @@
+require 'logger'
 require 'hashie'
 
 module AppArchetype
@@ -16,10 +17,12 @@ module AppArchetype
         vars = []
       )
         template = Template.new(template_path)
+        template.load
 
         variables = Variables.new_from_args(vars)
         if manifest_path
-          variables = variables.merge(Variables.new_from_file(manifest_path))
+          manifest_vars = Variables.new_from_file(manifest_path)
+          variables = manifest_vars.merge(variables)
         end
 
         plan = Plan.new(template, destination_path, variables)
@@ -32,10 +35,17 @@ module AppArchetype
     # CLI Helpers
     class <<self
       ##
-      # Prints command line message to CLI
+      # Creates logger for printing messages
+      #
+      def logger
+        @logger ||= Logger.new(STDOUT)
+      end
+
+      ##
+      # Prints command line message to STDOUT
       #
       def print_message(message)
-        puts(message)
+        logger.info(message)
       end
 
       ##
