@@ -6,15 +6,13 @@ module AppArchetype
     def initialize(source_path)
       @source_path = source_path
       @source_files = []
-
-      load_template
     end
 
-    def load_template
+    def load
       raise 'template source does not exist' unless exist?
 
       Dir.glob(::File.join(@source_path, '**', '*')).each do |file|
-        @source_files << ::File.new(file)
+        @source_files << file
       end
     end
 
