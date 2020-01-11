@@ -3,11 +3,11 @@ require 'ruby-handlebars'
 module AppArchetype
   # Plan builds an in memory representation of template output
   class Plan
-    attr_reader :template, :destination, :files, :variables
+    attr_reader :template, :destination_path, :files, :variables
 
     def initialize(template, destination_path, variables)
       @template = template
-      @destination = ::File.new(destination_path)
+      @destination_path = destination_path
       @files = []
       @variables = variables
     end
@@ -25,16 +25,16 @@ module AppArchetype
 
     def destination_exist?
       ::File.exist?(
-        ::File.dirname(@destination.path)
+        ::File.dirname(@destination_path)
       )
     end
 
     def render_dest_file_path(source_path)
       rel_path = render_path(
-        source_path.path.gsub(@template.source_path, '')
+        source_path.gsub(@template.source_path, '')
       )
 
-      ::File.join(@destination.path, rel_path)
+      ::File.join(@destination_path, rel_path)
     end
 
     def render_path(path)
