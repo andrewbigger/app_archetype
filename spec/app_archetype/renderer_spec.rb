@@ -28,10 +28,14 @@ RSpec.describe AppArchetype::Renderer do
       AppArchetype::File.new('path/to/source/dir', 'path/to/destination/dir')
     end
 
+    let(:file_double) { double(File) }
+
     before do
       allow(subject).to receive(:write_dir)
       allow(subject).to receive(:render_file)
       allow(subject).to receive(:copy_file)
+
+      allow(File).to receive(:new).and_return(file_double)
 
       allow(file).to receive(:source_file?).and_return(true)
       allow(template).to receive(:source_template?).and_return(true)
@@ -42,7 +46,7 @@ RSpec.describe AppArchetype::Renderer do
     end
 
     it 'creates destination directory' do
-      expect(subject).to have_received(:write_dir).with(destination)
+      expect(subject).to have_received(:write_dir).with(file_double)
     end
 
     it 'creates directory' do

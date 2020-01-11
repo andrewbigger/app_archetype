@@ -14,7 +14,6 @@ RSpec.describe AppArchetype::CLI::Commands do
   let(:plan) { double(AppArchetype::Plan) }
   let(:renderer) { double(AppArchetype::Renderer) }
 
-
   before do
     allow(AppArchetype::Template).to receive(:new).and_return(template)
     allow(AppArchetype::Plan).to receive(:new).and_return(plan)
@@ -32,7 +31,13 @@ RSpec.describe AppArchetype::CLI::Commands do
     allow(plan).to receive(:devise)
     allow(renderer).to receive(:render)
 
-    described_class.render(template_path, dest_path, manifest_path, overwrite, vars)
+    described_class.render(
+      template_path,
+      dest_path,
+      manifest_path,
+      overwrite,
+      vars
+    )
   end
 
   it 'loads the template' do
@@ -41,7 +46,7 @@ RSpec.describe AppArchetype::CLI::Commands do
   end
 
   it 'overrides manifest variables with cli variables' do
-    merged_variables = {'biz' => 'baz', 'foo' => 'bar'}
+    merged_variables = { 'biz' => 'baz', 'foo' => 'bar' }
 
     expect(AppArchetype::Plan)
       .to have_received(:new)
@@ -58,25 +63,22 @@ RSpec.describe AppArchetype::CLI::Commands do
 end
 
 RSpec.describe AppArchetype::CLI do
+  let(:logger) { double(Logger) }
   let(:message) { 'All work and no play makes Jack a dull boy' }
 
   before do
-    allow(Kernel).to receive(:exit)
+    allow(described_class).to receive(:exit).and_return(double)
   end
 
   describe '.logger' do
     before do
-      allow(Logger).to receive(:new)
+      allow(Logger).to receive(:new).and_return(logger)
+      allow(logger).to receive(:formatter=)
       @logger = subject.logger
     end
 
     it 'creates a new logger to STDOUT' do
       expect(Logger).to have_received(:new).with(STDOUT)
-    end
-
-    it 'memoizes logger' do
-      subject.logger
-      expect(subject.logger).to eq @logger
     end
   end
 
@@ -107,7 +109,7 @@ RSpec.describe AppArchetype::CLI do
     end
 
     it 'exits with set status' do
-      expect(Kernel).to have_received(:exit).with(exit_code)
+      expect(described_class).to have_received(:exit).with(exit_code)
     end
   end
 end

@@ -11,7 +11,7 @@ module AppArchetype
     end
 
     def render
-      write_dir(@plan.destination_path)
+      write_dir(::File.new(@plan.destination_path))
 
       @plan.files.each do |file|
         if file.source_directory?
