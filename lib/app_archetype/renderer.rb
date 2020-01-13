@@ -13,7 +13,9 @@ module AppArchetype
     def render
       write_dir(::File.new(@plan.destination_path))
 
+      @last_file = ''
       @plan.files.each do |file|
+        @last_file = file
         if file.source_directory?
           write_dir(file)
         elsif file.source_template?
@@ -22,6 +24,9 @@ module AppArchetype
           copy_file(file)
         end
       end
+    rescue NoMethodError => e
+      raise "error rendering #{@last_file.path} "\
+            "cannot find variable `#{e.name}` in template"
     end
 
     def write_dir(file)
