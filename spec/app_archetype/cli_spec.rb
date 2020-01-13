@@ -10,11 +10,24 @@ RSpec.describe AppArchetype::CLI::Commands do
   let(:parsed_manifest_vars) { Hashie::Mash.new(foo: 'bar', biz: 'buz') }
   let(:parsed_cli_vars) { Hashie::Mash.new(biz: 'baz') }
 
+  let(:manifest_data) do
+    {
+      'version' => '0.0.1',
+      'variables' => parsed_manifest_vars
+    }
+  end
+  let(:manifest) do
+    AppArchetype::Manifest.new(manifest_data)
+  end
+
   let(:template) { double(AppArchetype::Template) }
   let(:plan) { double(AppArchetype::Plan) }
   let(:renderer) { double(AppArchetype::Renderer) }
 
   before do
+    allow(AppArchetype::Manifest).to receive(:new_from_file)
+      .and_return(manifest)
+
     allow(AppArchetype::Template).to receive(:new).and_return(template)
     allow(AppArchetype::Plan).to receive(:new).and_return(plan)
     allow(AppArchetype::Renderer).to receive(:new).and_return(renderer)
@@ -30,35 +43,54 @@ RSpec.describe AppArchetype::CLI::Commands do
     allow(template).to receive(:load)
     allow(plan).to receive(:devise)
     allow(renderer).to receive(:render)
-
-    described_class.render(
-      template_path,
-      dest_path,
-      manifest_path,
-      overwrite,
-      vars
-    )
   end
 
-  it 'loads the template' do
-    expect(AppArchetype::Template).to have_received(:new).with(template_path)
-    expect(template).to have_received(:load)
+  context 'when the manifest is valid' do
+    before do
+      described_class.render(
+        template_path,
+        dest_path,
+        manifest_path,
+        overwrite,
+        vars
+      )
+    end
+
+    it 'loads the template' do
+      expect(AppArchetype::Template).to have_received(:new).with(template_path)
+      expect(template).to have_received(:load)
+    end
+
+    it 'overrides manifest variables with cli variables' do
+      merged_variables = { 'biz' => 'baz', 'foo' => 'bar' }
+
+      expect(AppArchetype::Plan)
+        .to have_received(:new)
+        .with(template, dest_path, merged_variables)
+    end
+
+    it 'devises plan' do
+      expect(plan).to have_received(:devise)
+    end
+
+    it 'renders template' do
+      expect(renderer).to have_received(:render)
+    end
   end
 
-  it 'overrides manifest variables with cli variables' do
-    merged_variables = { 'biz' => 'baz', 'foo' => 'bar' }
-
-    expect(AppArchetype::Plan)
-      .to have_received(:new)
-      .with(template, dest_path, merged_variables)
-  end
-
-  it 'devises plan' do
-    expect(plan).to have_received(:devise)
-  end
-
-  it 'renders template' do
-    expect(renderer).to have_received(:render)
+  context 'when manifest is invalid' do
+    let(:manifest_data) { {} }
+    it 'raises invalid manifest error' do
+      expect do
+        described_class.render(
+          template_path,
+          dest_path,
+          manifest_path,
+          overwrite,
+          vars
+        )
+      end.to raise_error 'invalid manifest'
+    end
   end
 end
 

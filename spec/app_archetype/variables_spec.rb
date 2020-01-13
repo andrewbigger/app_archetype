@@ -9,8 +9,8 @@ RSpec.describe AppArchetype::Variables do
         @parsed = described_class.new_from_args(args)
       end
 
-      it 'returns hashie mash' do
-        expect(@parsed).to be_a Hashie::Mash
+      it 'returns variables' do
+        expect(@parsed).to be_a AppArchetype::Variables
       end
 
       it 'has expected variables' do

@@ -16,19 +16,25 @@ module AppArchetype
         overwrite = false,
         vars = []
       )
-        template = Template.new(template_path)
-        template.load
+        @variables = Variables.new_from_args(vars)
+        @template_path = template_path
 
-        variables = Variables.new_from_args(vars)
         if manifest_path
-          manifest_vars = Variables.new_from_file(manifest_path)
-          variables = manifest_vars.merge(variables)
+          @manifest = Manifest.new_from_file(manifest_path)
+          raise 'invalid manifest' unless @manifest.valid?
+
+          if @manifest.variables
+            @variables = @manifest.variables.merge(@variables)
+          end
         end
 
-        plan = Plan.new(template, destination_path, variables)
+        template = Template.new(@template_path)
+        template.load
+
+        plan = Plan.new(template, destination_path, @variables)
         plan.devise
 
-        Renderer.new(plan, variables, overwrite).render
+        Renderer.new(plan, @variables, overwrite).render
       end
     end
 
