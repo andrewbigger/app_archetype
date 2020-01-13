@@ -64,4 +64,14 @@ RSpec.describe AppArchetype::Variables do
       end
     end
   end
+
+  describe '#dot' do
+    before do
+      @vars = described_class.new({})
+    end
+
+    it 'returns empty string' do
+      expect(@vars.dot).to eq ''
+    end
+  end
 end

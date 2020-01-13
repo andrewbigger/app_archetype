@@ -27,5 +27,11 @@ module AppArchetype
         )
       end
     end
+
+    # dot provides a convenient way for a noop render at the
+    # beginning of dotfiles
+    def dot
+      ''
+    end
   end
 end
