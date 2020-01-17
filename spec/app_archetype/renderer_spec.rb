@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe AppArchetype::Renderer do
+  let(:logger) { double(Logger) }
   let(:template) { AppArchetype::Template.new('path/to/template') }
   let(:destination) { 'path/to/destination' }
   let(:variables) do
@@ -13,6 +14,11 @@ RSpec.describe AppArchetype::Renderer do
   end
   let(:overwrite) { false }
 
+  before do
+    allow(AppArchetype::CLI).to receive(:logger).and_return(logger)
+    allow(logger).to receive(:info)
+  end
+
   subject { described_class.new(plan, variables, overwrite) }
 
   describe '#render' do
@@ -20,8 +26,12 @@ RSpec.describe AppArchetype::Renderer do
       AppArchetype::File.new('path/to/source/file', 'path/to/destination/file')
     end
 
-    let(:template) do
+    let(:erb_template) do
       AppArchetype::File.new('path/to/tmplte.erb', 'path/to/destination/tmplte')
+    end
+
+    let(:hbs_template) do
+      AppArchetype::File.new('path/to/tmplte.hbs', 'path/to/destination/tmplte')
     end
 
     let(:directory) do
@@ -32,16 +42,22 @@ RSpec.describe AppArchetype::Renderer do
 
     before do
       allow(subject).to receive(:write_dir)
-      allow(subject).to receive(:render_file)
+      allow(subject).to receive(:render_erb_file)
+      allow(subject).to receive(:render_hbs_file)
       allow(subject).to receive(:copy_file)
 
       allow(File).to receive(:new).and_return(file_double)
 
       allow(file).to receive(:source_file?).and_return(true)
-      allow(template).to receive(:source_template?).and_return(true)
+      allow(erb_template).to receive(:source_erb?).and_return(true)
+      allow(hbs_template).to receive(:source_hbs?).and_return(true)
       allow(directory).to receive(:source_directory?).and_return(true)
 
-      plan.instance_variable_set(:@files, [file, template, directory])
+      plan.instance_variable_set(
+        :@files,
+        [file, erb_template, hbs_template, directory]
+      )
+
       subject.render
     end
 
@@ -53,8 +69,12 @@ RSpec.describe AppArchetype::Renderer do
       expect(subject).to have_received(:write_dir).with(directory)
     end
 
-    it 'renders template' do
-      expect(subject).to have_received(:render_file).with(template)
+    it 'renders erb template' do
+      expect(subject).to have_received(:render_erb_file).with(erb_template)
+    end
+
+    it 'renders hbs template' do
+      expect(subject).to have_received(:render_hbs_file).with(hbs_template)
     end
 
     it 'copies file' do
@@ -78,7 +98,7 @@ RSpec.describe AppArchetype::Renderer do
     end
   end
 
-  describe '#render_file' do
+  describe '#render_erb_file' do
     let(:source_path) { 'path/to/template/file' }
     let(:dest_path) { 'path/to/destination/file' }
     let(:file) { AppArchetype::File.new(source_path, dest_path) }
@@ -102,7 +122,7 @@ RSpec.describe AppArchetype::Renderer do
       allow(File).to receive(:open).and_yield(write_double)
       allow(write_double).to receive(:write)
 
-      subject.render_file(file)
+      subject.render_erb_file(file)
     end
 
     it 'reads source' do

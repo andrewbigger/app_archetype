@@ -17,12 +17,12 @@ RSpec.describe AppArchetype::File do
     end
   end
 
-  describe '#source_template?' do
+  describe '#source_erb?' do
     let(:ext) { '.erb' }
 
     before do
       allow(::File).to receive(:extname).and_return(ext)
-      @result = subject.source_template?
+      @result = subject.source_erb?
     end
 
     it 'delegates source file template check to File' do
@@ -34,6 +34,31 @@ RSpec.describe AppArchetype::File do
     end
 
     context 'when not erb' do
+      let(:ext) { 'doc' }
+
+      it 'returns false' do
+        expect(@result).to be false
+      end
+    end
+  end
+
+  describe '#source_hbs?' do
+    let(:ext) { '.hbs' }
+
+    before do
+      allow(::File).to receive(:extname).and_return(ext)
+      @result = subject.source_hbs?
+    end
+
+    it 'delegates source file template check to File' do
+      expect(::File).to have_received(:extname).with(source_file)
+    end
+
+    it 'returns true if file is hbs' do
+      expect(@result).to be true
+    end
+
+    context 'when not hbs' do
       let(:ext) { 'doc' }
 
       it 'returns false' do

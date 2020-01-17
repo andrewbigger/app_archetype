@@ -11,7 +11,7 @@ require 'app_archetype/cli'
 
 require 'byebug'
 
-USAGE = "AppArchetype code project template renderer
+USAGE = "App Archetype code project template renderer
 
 Usage:\tarchetype <command> <variables> <opts>
 Options:
@@ -70,7 +70,7 @@ begin
 rescue StandardError => e
   AppArchetype::CLI.print_message(e)
   AppArchetype::CLI.print_message(e.backtrace) if @trace
-  AppArchetype::CLI.print_message("\n\n")
+  AppArchetype::CLI.print_message("\n")
   AppArchetype::CLI.print_message_and_exit(USAGE)
 end
 

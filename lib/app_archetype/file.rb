@@ -12,8 +12,12 @@ module AppArchetype
       ::File.directory?(@source_file_path)
     end
 
-    def source_template?
+    def source_erb?
       ::File.extname(@source_file_path) == '.erb'
+    end
+
+    def source_hbs?
+      ::File.extname(@source_file_path) == '.hbs'
     end
 
     def source_file?

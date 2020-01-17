@@ -46,7 +46,7 @@ module AppArchetype
       def logger
         @logger ||= Logger.new(STDOUT)
         @logger.formatter = proc do |_sev, _time, _prog, msg|
-          msg
+          "#{msg}\n"
         end
 
         @logger
