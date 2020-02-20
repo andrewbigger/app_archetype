@@ -61,7 +61,7 @@ module AppArchetype
       hbs = Handlebars::Handlebars.new
       out = hbs.compile(input).call(@variables)
 
-      ::File.open(file.path.gsub('.erb', ''), 'w+') { |f| f.write(out) }
+      ::File.open(file.path.gsub('.hbs', ''), 'w+') { |f| f.write(out) }
     end
 
     def copy_file(file)

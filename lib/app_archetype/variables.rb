@@ -37,7 +37,7 @@ module AppArchetype
     ##
     # rand
     #
-    # generates a randoom string at specified length
+    # generates a random string at specified length
     #
     # @param length - size of string
     def rand(length = 256)
