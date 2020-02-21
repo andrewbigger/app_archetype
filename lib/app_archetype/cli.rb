@@ -28,16 +28,44 @@ module AppArchetype
       # Retrieves template dir from environment and raises error
       # when TEMPLATE_DIR environment variable is not set.
       #
-      # @return [String] path to template directory
+      # @return [String]
+      #
       def template_dir
-        @template_dir = ENV['TEMPLATE_DIR']
-        raise 'TEMPLATE_DIR environment not set' unless @template_dir
+        @template_dir = ENV['ARCHETYPE_TEMPLATE_DIR']
+
+        unless @template_dir
+          raise 'ARCHETYPE_TEMPLATE_DIR environment variable not set'
+        end
 
         unless File.exist?(@template_dir)
-          raise "TEMPLATE_DIR #{@template_dir} does not exist"
+          raise "ARCHETYPE_TEMPLATE_DIR #{@template_dir} does not exist"
         end
 
         @template_dir
+      end
+
+      ##
+      # Editor retrieves the chosen editor command to open text files
+      # and raises error when ARCHETYPE_EDITOR is not set.
+      #
+      # If we detect that the which command fails then we warn the user that
+      # something appears awry
+      #
+      # @return [String]
+      #
+      def editor
+        @editor = ENV['ARCHETYPE_EDITOR']
+        raise 'ARCHETYPE_EDITOR environment variable not set' unless @editor
+
+        `which #{@editor}`
+        if $?.exitstatus != 0
+          CLI.print_warning(
+            "WARN: Configured editor #{@editor} is not installed correctly "\
+            'please check your configuration'
+          )
+        end
+
+        @editor
       end
 
       ##

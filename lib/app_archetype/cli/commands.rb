@@ -1,3 +1,5 @@
+require 'os'
+
 module AppArchetype
   module CLI
     # CLI Actions
@@ -48,6 +50,22 @@ module AppArchetype
       #
       def self.list(_dest, _args = [], _overwrite = false)
         CLI::Presenters.list(CLI.manager.manifests)
+      end
+
+      ##
+      # Open manifest command
+      #
+      # Opens manifest json in default editor for adjustment
+      #
+      def self.open(_dest, args = [], _overwrite = false)
+        editor = CLI.editor
+
+        manifest_name = args.shift
+        manifest = CLI.manager.find(manifest_name)
+
+        pid = Process.spawn("#{editor} #{manifest.path}")
+
+        Process.waitpid(pid)
       end
 
       ##

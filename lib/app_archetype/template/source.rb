@@ -7,7 +7,7 @@ module AppArchetype
       ##
       # Creates a templatte source from path and initializes file array.
       #
-      # @param [String] path - path to template source
+      # @param [String] path
       #
       def initialize(path)
         @path = path

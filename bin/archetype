@@ -13,14 +13,18 @@ require 'byebug'
 
 USAGE = "App Archetype code project template renderer
 
-Usage:\tarchetype <command> <variables> <opts>
+Usage:\tarchetype <command>
 Options:
-  \t--trace\t\t trace mode on
-  -o, --overwrite\t [optional] option to overwrite any existing files
+  \s\s\s\s--trace\t\t trace mode on
+  -o, --overwrite\t overwrite existing files [optional]
   -h, --help\t\t print usage
 
 Commands:
-  render\t\t renders project template
+  open <name>\t\t opens template manifest
+  render <name>\t\t renders project template
+  list\t\t\t lists known templates in TEMPLATE_DIR
+
+  template_dir\t\t prints configured TEMPLATE_DIR
 ".freeze
 
 @trace = false
@@ -39,6 +43,8 @@ OptionParser.new do |opts|
 end.parse!
 
 begin
+  raise 'no command provided' if ARGV.empty?
+
   cmd = ARGV.shift
   AppArchetype::CLI::Commands.public_send(
     cmd.to_sym,

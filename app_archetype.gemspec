@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'highline', '~> 2.0'
   spec.add_dependency 'json'
   spec.add_dependency 'logger', '~> 1.4'
+  spec.add_dependency 'os'
   spec.add_dependency 'ruby-handlebars'
   spec.add_dependency 'tty-prompt'
   spec.add_dependency 'tty-table'

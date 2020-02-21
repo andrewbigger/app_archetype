@@ -35,7 +35,7 @@ RSpec.describe AppArchetype::CLI do
 
     before do
       allow(ENV).to receive(:[])
-        .with('TEMPLATE_DIR')
+        .with('ARCHETYPE_TEMPLATE_DIR')
         .and_return(env_template_dir)
 
       allow(File).to receive(:exist?).and_return(exist)
@@ -45,13 +45,13 @@ RSpec.describe AppArchetype::CLI do
       expect(described_class.template_dir).to eq env_template_dir
     end
 
-    context 'when TEMPLATE_DIR environment variable not set' do
+    context 'when ARCHETYPE_TEMPLATE_DIR environment variable not set' do
       let(:env_template_dir) { nil }
 
       it 'raises environment not set error' do
         expect { described_class.template_dir }.to raise_error(
           RuntimeError,
-          'TEMPLATE_DIR environment not set'
+          'ARCHETYPE_TEMPLATE_DIR environment variable not set'
         )
       end
     end
@@ -62,8 +62,55 @@ RSpec.describe AppArchetype::CLI do
       it 'raises environment not set error' do
         expect { described_class.template_dir }.to raise_error(
           RuntimeError,
-          "TEMPLATE_DIR #{env_template_dir} does not exist"
+          "ARCHETYPE_TEMPLATE_DIR #{env_template_dir} does not exist"
         )
+      end
+    end
+  end
+
+  describe '.editor' do
+    let(:env_editor) { 'ivm' }
+    let(:exit_status) { 0 }
+
+    before do
+      allow(ENV).to receive(:[])
+        .with('ARCHETYPE_EDITOR')
+        .and_return(env_editor)
+
+      allow(described_class).to receive(:`)
+      allow($?).to receive(:exitstatus).and_return(exit_status)
+    end
+
+    it 'returns editor' do
+      expect(described_class.editor).to eq env_editor
+    end
+
+    context 'when ARCHETYPE_EDITOR environment variable not set' do
+      let(:env_editor) { nil }
+
+      it 'raises environment not set error' do
+        expect { described_class.editor }.to raise_error(
+          RuntimeError,
+          'ARCHETYPE_EDITOR environment variable not set'
+        )
+      end
+    end
+
+    context 'when editor check does not pass' do
+      let(:exit_status) { 1 }
+
+      before do
+        allow(AppArchetype::CLI).to receive(:print_warning)
+        described_class.editor
+      end
+
+      it 'logs a warning' do
+        expect(AppArchetype::CLI)
+          .to have_received(:print_warning)
+          .with(
+            "WARN: Configured editor #{env_editor} is not installed correctly "\
+            'please check your configuration'
+          )
       end
     end
   end
