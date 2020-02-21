@@ -20,6 +20,8 @@ module AppArchetype
       def self.render(dest, args = [], overwrite = false)
         manifest_name = args.shift
 
+        raise 'template name not provided' unless manifest_name
+
         unless File.exist?(dest)
           begin
             FileUtils.mkdir_p(dest)
@@ -53,6 +55,34 @@ module AppArchetype
       end
 
       ##
+      # New template command
+      #
+      # Creates a blank template in the template directory with the given
+      # name
+      #
+      # @param [String] _dest
+      # @param [Array] args
+      # @param [Boolean] _overwrite
+      #
+      def self.new(_dest, args = [], _overwrite = false)
+        template_rel = args.shift
+        raise 'template rel not provided' unless template_rel
+
+        dest = File.join(CLI.template_dir, template_rel)
+        unless File.exist?(dest)
+          begin
+            FileUtils.mkdir_p(dest)
+          rescue StandardError
+            raise 'cannot create destination directory'
+          end
+        end
+
+        template_name = File.basename(template_rel)
+
+        AppArchetype::Generators.render_empty_template(template_name, dest)
+      end
+
+      ##
       # Open manifest command
       #
       # Opens manifest json in default editor for adjustment
@@ -61,6 +91,9 @@ module AppArchetype
         editor = CLI.editor
 
         manifest_name = args.shift
+
+        raise 'template name not provided' unless manifest_name
+
         manifest = CLI.manager.find(manifest_name)
 
         pid = Process.spawn("#{editor} #{manifest.path}")
@@ -80,7 +113,7 @@ module AppArchetype
       def self.find(_dest, args = [], _overwrite = false)
         search_term = args.shift
 
-        raise 'no search term provided' if search_term.nil?
+        raise 'no search term provided' unless search_term
 
         result = CLI.manager.find(search_term)
         CLI::Presenters.show(result)

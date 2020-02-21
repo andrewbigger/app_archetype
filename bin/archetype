@@ -9,8 +9,6 @@ require 'highline'
 require 'app_archetype'
 require 'app_archetype/cli'
 
-require 'byebug'
-
 USAGE = "App Archetype code project template renderer
 
 Usage:\tarchetype <command>
@@ -22,6 +20,8 @@ Options:
 Commands:
   open <name>\t\t opens template manifest
   render <name>\t\t renders project template
+  new <rel>\t\t creates a template in the TEMPLATE_DIR at the given rel path
+
   list\t\t\t lists known templates in TEMPLATE_DIR
 
   template_dir\t\t prints configured TEMPLATE_DIR

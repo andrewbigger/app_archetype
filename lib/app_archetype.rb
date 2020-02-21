@@ -2,6 +2,7 @@ require 'app_archetype/template'
 
 require 'app_archetype/manager'
 require 'app_archetype/renderer'
+require 'app_archetype/generators'
 
 require 'app_archetype/version'
 
