@@ -10,7 +10,7 @@ RSpec.describe AppArchetype::Renderer do
     )
   end
   let(:plan) do
-    AppArchetype::Plan.new(template, destination, variables)
+    AppArchetype::Plan.new(template, variables, destination_path: destination)
   end
   let(:overwrite) { false }
 
@@ -19,7 +19,7 @@ RSpec.describe AppArchetype::Renderer do
     allow(logger).to receive(:info)
   end
 
-  subject { described_class.new(plan, variables, overwrite) }
+  subject { described_class.new(plan, overwrite) }
 
   describe '#render' do
     let(:file) do
@@ -80,6 +80,42 @@ RSpec.describe AppArchetype::Renderer do
     it 'copies file' do
       expect(subject).to have_received(:copy_file).with(file)
     end
+
+    context 'when no method error is raised' do
+      before do
+        allow(subject).to receive(:render_erb_file).and_raise(NoMethodError.new)
+
+        plan.instance_variable_set(
+          :@files,
+          [erb_template]
+        )
+      end
+
+      it 'raises missing variable error' do
+        expect { subject.render }.to raise_error(
+          RuntimeError,
+          'error rendering path/to/destination/tmplte cannot find variable `` in template'
+        )
+      end
+    end
+
+    context 'when no template is invalid' do
+      before do
+        allow(subject).to receive(:render_erb_file).and_raise(SyntaxError.new)
+
+        plan.instance_variable_set(
+          :@files,
+          [erb_template]
+        )
+      end
+
+      it 'raises missing variable error' do
+        expect { subject.render }.to raise_error(
+          RuntimeError,
+          'error parsing path/to/destination/tmplte template is invalid'
+        )
+      end
+    end
   end
 
   describe '#write_dir' do
@@ -123,6 +159,51 @@ RSpec.describe AppArchetype::Renderer do
       allow(write_double).to receive(:write)
 
       subject.render_erb_file(file)
+    end
+
+    it 'reads source' do
+      expect(File).to have_received(:read).with(source_path)
+    end
+
+    it 'writes rendered template' do
+      expect(write_double).to have_received(:write).with(expected_output)
+    end
+
+    context 'when a variable is missing' do
+      let(:vars) { Hashie::Mash.new }
+      let(:var_value) { '' }
+
+      it 'renders template with blank' do
+        expect(write_double).to have_received(:write).with(expected_output)
+      end
+    end
+  end
+
+  describe '#render_hbs_file' do
+    let(:source_path) { 'path/to/template/file' }
+    let(:dest_path) { 'path/to/destination/file' }
+    let(:file) { AppArchetype::File.new(source_path, dest_path) }
+
+    let(:input) do
+      <<~INPUT
+        this is the content of the {{ foo }} file
+      INPUT
+    end
+
+    let(:expected_output) do
+      <<~OUTPUT
+        this is the content of the bar file
+      OUTPUT
+    end
+
+    let(:write_double) { double }
+
+    before do
+      allow(File).to receive(:read).and_return(input)
+      allow(File).to receive(:open).and_yield(write_double)
+      allow(write_double).to receive(:write)
+
+      subject.render_hbs_file(file)
     end
 
     it 'reads source' do

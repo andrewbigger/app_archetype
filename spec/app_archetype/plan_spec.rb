@@ -9,7 +9,7 @@ RSpec.describe AppArchetype::Plan do
     )
   end
 
-  subject { described_class.new(template, destination, variables) }
+  subject { described_class.new(template, variables, destination_path: destination) }
 
   describe '#devise' do
     let(:dest_exist) { true }
@@ -32,6 +32,28 @@ RSpec.describe AppArchetype::Plan do
           subject.devise
         end.to raise_error('destination path does not exist')
       end
+    end
+  end
+
+  describe '#execute' do
+    let(:renderer) { double(AppArchetype::Renderer) }
+
+    before do
+      allow(renderer).to receive(:render)
+      allow(AppArchetype::Renderer)
+        .to receive(:new)
+        .and_return(renderer)
+
+      subject.execute
+    end
+
+    it 'creates a renderer' do
+      expect(AppArchetype::Renderer)
+        .to have_received(:new).with(subject, false)
+    end
+
+    it 'renders plan' do
+      expect(renderer).to have_received(:render)
     end
   end
 

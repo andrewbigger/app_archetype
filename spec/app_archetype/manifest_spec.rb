@@ -53,11 +53,67 @@ RSpec.describe AppArchetype::Manifest do
     end
   end
 
-  describe '#valid?' do
-    let(:manifest_data) { { 'version' => '0.1.0', 'variables' => {} } }
+  describe '#name' do
+    let(:path) { 'path/to/manifest.json' }
+    let(:data) { { 'name' => 'test_manifest', 'version' => '0.1.0', 'variables' => {} } }
 
     before do
-      @manifest = described_class.new(manifest_data)
+      @manifest = described_class.new(path, data)
+    end
+
+    it 'returns name' do
+      expect(@manifest.name).to eq 'test_manifest'
+    end
+  end
+
+  describe '#version' do
+    let(:path) { 'path/to/manifest.json' }
+    let(:data) { { 'name' => 'test_manifest', 'version' => '0.1.0', 'variables' => {} } }
+
+    before do
+      @manifest = described_class.new(path, data)
+    end
+
+    it 'returns version' do
+      expect(@manifest.version).to eq '0.1.0'
+    end
+  end
+
+  describe '#template' do
+    let(:path) { 'path/to/manifest.json' }
+    let(:data) { { 'name' => 'test_manifest', 'version' => '0.1.0', 'variables' => {} } }
+
+    let(:exist) { true }
+    let(:template) { double(AppArchetype::Template)}
+
+    before do
+      allow(::File).to receive(:exist?).and_return(exist)
+
+      @manifest = described_class.new(path, data)
+    end
+
+    it 'loads template adjacent to manifest' do
+      expect(@manifest.template.source_path).to eq('path/to/template')
+    end
+
+    context 'when template files do not exist' do
+      let(:exist) { false }
+
+      it 'raises cannot find template error' do
+        expect { @manifest.template }.to raise_error(
+          RuntimeError,
+          'cannot find template for manifest test_manifest'
+        )
+      end
+    end
+  end
+
+  describe '#valid?' do
+    let(:path) { 'path/to/manifest.json' }
+    let(:data) { { 'name' => 'test_manifest', 'version' => '0.1.0', 'variables' => {} } }
+
+    before do
+      @manifest = described_class.new(path, data)
     end
 
     it 'returns true' do
@@ -65,15 +121,7 @@ RSpec.describe AppArchetype::Manifest do
     end
 
     context 'when missing version' do
-      let(:manifest_data) { { 'variables' => {} } }
-
-      it 'returns false' do
-        expect(@manifest.valid?).to be false
-      end
-    end
-
-    context 'when missing variables' do
-      let(:manifest_data) { { 'version' => '0.0.1' } }
+      let(:data) { { 'variables' => {} } }
 
       it 'returns false' do
         expect(@manifest.valid?).to be false
