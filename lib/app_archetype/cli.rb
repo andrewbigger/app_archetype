@@ -1,52 +1,46 @@
 require 'app_archetype/cli/commands'
 require 'app_archetype/cli/presenters'
+
 require 'logger'
 require 'hashie'
+require 'tty-table'
+require 'tty-prompt'
+require 'securerandom'
 
 module AppArchetype
   # Command line interface helpers and actions
   module CLI
-    # CLI Actions
-    module Commands
-      ##
-      # Template render command
-      #
-      def self.render(
-        template_path,
-        destination_path,
-        manifest_path,
-        overwrite = false,
-        vars = []
-      )
-        @variables = Variables.new_from_args(vars)
-        @template_path = template_path
-
-        if manifest_path
-          @manifest = Manifest.new_from_file(manifest_path)
-          raise 'invalid manifest' unless @manifest.valid?
-
-          if @manifest.variables
-            @variables = @manifest.variables.merge(@variables)
-          end
-        end
-
-        template = Template.new(@template_path)
-        template.load
-
-        plan = Plan.new(template, destination_path, @variables)
-        plan.devise
-
-        Renderer.new(plan, @variables, overwrite).render
-      end
-    end
-
     # CLI Helpers
     class <<self
       ##
+      # Template manager
+      #
+      def manager
+        @manager ||= AppArchetype::Manager.new(template_dir)
+        @manager.load_templates
+
+        @manager
+      end
+
+      ##
+      # Retrieves template dir from environment
+      #
+      def template_dir
+        @template_dir = ENV['TEMPLATE_DIR']
+        raise 'TEMPLATE_DIR environment not set' unless @template_dir
+
+        unless ::File.exist?(@template_dir)
+          raise "TEMPLATE_DIR #{@template_dir} does not exist"
+        end
+
+        @template_dir
+      end
+
+      ##
       # Creates logger for printing messages
       #
-      def logger
-        @logger ||= Logger.new(STDOUT)
+      def logger(out = STDOUT)
+        @logger ||= Logger.new(out)
         @logger.formatter = proc do |_sev, _time, _prog, msg|
           "#{msg}\n"
         end
@@ -59,6 +53,20 @@ module AppArchetype
       #
       def print_message(message)
         logger.info(message)
+      end
+
+      ##
+      # Prints warning to STDOUT
+      #
+      def print_warning(message)
+        logger.warn(message)
+      end
+
+      ##
+      # Prints error to STDERR
+      #
+      def print_error(message)
+        logger(STDERR).error(message)
       end
 
       ##
