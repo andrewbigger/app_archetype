@@ -1,3 +1,5 @@
+require 'app_archetype/cli/commands'
+require 'app_archetype/cli/presenters'
 require 'logger'
 require 'hashie'
 
