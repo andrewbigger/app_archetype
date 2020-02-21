@@ -5,7 +5,7 @@ RSpec.describe AppArchetype::CLI::Commands do
     let(:dest_exist) { true }
 
     let(:dest) { 'path/to/output' }
-    let(:manifest_name) { 'manifest name'}
+    let(:manifest_name) { 'manifest name' }
     let(:args) { [manifest_name] }
 
     let(:manager) { double(AppArchetype::Manager) }
@@ -136,7 +136,6 @@ RSpec.describe AppArchetype::CLI::Commands do
           .with(result)
       end
     end
-
 
     context 'when search term is not provided' do
       let(:search_term) { nil }

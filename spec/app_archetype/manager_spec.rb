@@ -77,15 +77,18 @@ RSpec.describe AppArchetype::Manager do
     let(:lang) { '.rb' }
 
     let(:manifest) do
-      AppArchetype::Manifest.new('path/to/manifest.json', { 'name' => 'manifest' })
+      AppArchetype::Manifest.new('path/to/manifest.json', 'name' => 'manifest')
     end
 
     let(:target_manifest) do
-      AppArchetype::Manifest.new('path/to/manifest.json', { 'name' => 'target' })
+      AppArchetype::Manifest.new('path/to/manifest.json', 'name' => 'target')
     end
 
     let(:almost_target_manifest) do
-      AppArchetype::Manifest.new('path/to/manifest.json', { 'name' => 'target and more' })
+      AppArchetype::Manifest.new(
+        'path/to/manifest.json',
+        'name' => 'target and more'
+      )
     end
 
     let(:templates) do

@@ -11,7 +11,9 @@ module AppArchetype
     end
 
     def load_templates
-      Dir.glob(::File.join(@template_dir, '**', 'manifest.json')).each do |manifest|
+      Dir.glob(
+        ::File.join(@template_dir, '**', 'manifest.json')
+      ).each do |manifest|
         begin
           @templates << AppArchetype::Manifest.new_from_file(manifest)
         rescue StandardError

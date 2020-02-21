@@ -34,7 +34,10 @@ RSpec.describe AppArchetype::CLI do
     let(:exist) { true }
 
     before do
-      allow(ENV).to receive(:[]).with('TEMPLATE_DIR').and_return(env_template_dir)
+      allow(ENV).to receive(:[])
+        .with('TEMPLATE_DIR')
+        .and_return(env_template_dir)
+
       allow(::File).to receive(:exist?).and_return(exist)
     end
 

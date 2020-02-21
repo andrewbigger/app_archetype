@@ -44,7 +44,7 @@ begin
     cmd.to_sym,
     @dest,
     ARGV,
-    @overwrite,
+    @overwrite
   )
 rescue StandardError => e
   AppArchetype::CLI.print_message(e)

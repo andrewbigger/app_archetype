@@ -9,7 +9,13 @@ RSpec.describe AppArchetype::Plan do
     )
   end
 
-  subject { described_class.new(template, variables, destination_path: destination) }
+  subject do
+    described_class.new(
+      template,
+      variables,
+      destination_path: destination
+    )
+  end
 
   describe '#devise' do
     let(:dest_exist) { true }

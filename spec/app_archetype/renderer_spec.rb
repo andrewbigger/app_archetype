@@ -94,7 +94,8 @@ RSpec.describe AppArchetype::Renderer do
       it 'raises missing variable error' do
         expect { subject.render }.to raise_error(
           RuntimeError,
-          'error rendering path/to/destination/tmplte cannot find variable `` in template'
+          'error rendering path/to/destination/tmplte cannot find variable `` '\
+          'in template'
         )
       end
     end

@@ -55,7 +55,14 @@ RSpec.describe AppArchetype::Manifest do
 
   describe '#name' do
     let(:path) { 'path/to/manifest.json' }
-    let(:data) { { 'name' => 'test_manifest', 'version' => '0.1.0', 'variables' => {} } }
+
+    let(:data) do
+      {
+        'name' => 'test_manifest',
+        'version' => '0.1.0',
+        'variables' => {}
+      }
+    end
 
     before do
       @manifest = described_class.new(path, data)
@@ -68,7 +75,14 @@ RSpec.describe AppArchetype::Manifest do
 
   describe '#version' do
     let(:path) { 'path/to/manifest.json' }
-    let(:data) { { 'name' => 'test_manifest', 'version' => '0.1.0', 'variables' => {} } }
+
+    let(:data) do
+      {
+        'name' => 'test_manifest',
+        'version' => '0.1.0',
+        'variables' => {}
+      }
+    end
 
     before do
       @manifest = described_class.new(path, data)
@@ -81,10 +95,17 @@ RSpec.describe AppArchetype::Manifest do
 
   describe '#template' do
     let(:path) { 'path/to/manifest.json' }
-    let(:data) { { 'name' => 'test_manifest', 'version' => '0.1.0', 'variables' => {} } }
+
+    let(:data) do
+      {
+        'name' => 'test_manifest',
+        'version' => '0.1.0',
+        'variables' => {}
+      }
+    end
 
     let(:exist) { true }
-    let(:template) { double(AppArchetype::Template)}
+    let(:template) { double(AppArchetype::Template) }
 
     before do
       allow(::File).to receive(:exist?).and_return(exist)
@@ -110,7 +131,14 @@ RSpec.describe AppArchetype::Manifest do
 
   describe '#valid?' do
     let(:path) { 'path/to/manifest.json' }
-    let(:data) { { 'name' => 'test_manifest', 'version' => '0.1.0', 'variables' => {} } }
+
+    let(:data) do
+      {
+        'name' => 'test_manifest',
+        'version' => '0.1.0',
+        'variables' => {}
+      }
+    end
 
     before do
       @manifest = described_class.new(path, data)

@@ -1,7 +1,7 @@
 module AppArchetype
   module CLI
-     # CLI Actions
-     module Commands
+    # CLI Actions
+    module Commands
       ##
       # Render template command
       #
