@@ -7,7 +7,7 @@ RSpec.describe AppArchetype::Manager do
     described_class.new(template_dir)
   end
 
-  describe '#load_templates' do
+  describe '#load' do
     let(:manifest_file) { 'path/to/dir/manifest.json' }
 
     let(:manifest) { double(AppArchetype::Template::Manifest) }
@@ -23,13 +23,13 @@ RSpec.describe AppArchetype::Manager do
       allow(AppArchetype::Template::Manifest).to receive(:new_from_file)
         .and_return(manifest)
 
-      subject.load_templates
+      subject.load
     end
 
     it 'loads manifests' do
-      expect(subject.templates.count).to be 2
+      expect(subject.manifests.count).to be 2
 
-      subject.templates.each do |manifest|
+      subject.manifests.each do |manifest|
         expect(manifest).to eq manifest
       end
     end
@@ -52,7 +52,7 @@ RSpec.describe AppArchetype::Manager do
     end
 
     before do
-      subject.instance_variable_set(:@templates, manifests)
+      subject.instance_variable_set(:@manifests, manifests)
       @result = subject.filter(query)
     end
 
@@ -97,7 +97,7 @@ RSpec.describe AppArchetype::Manager do
       )
     end
 
-    let(:templates) do
+    let(:manifests) do
       [
         manifest,
         manifest,
@@ -107,7 +107,7 @@ RSpec.describe AppArchetype::Manager do
     end
 
     before do
-      subject.instance_variable_set(:@templates, templates)
+      subject.instance_variable_set(:@manifests, manifests)
       @result = subject.find(search_term)
     end
 

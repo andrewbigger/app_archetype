@@ -16,7 +16,7 @@ RSpec.describe AppArchetype::CLI::Commands do
     let(:plan) { double(AppArchetype::Template::Plan) }
 
     before do
-      allow(::File).to receive(:exist?).and_return(exist)
+      allow(File).to receive(:exist?).and_return(exist)
       allow(FileUtils).to receive(:mkdir_p)
 
       allow(AppArchetype::CLI).to receive(:manager).and_return(manager)
@@ -80,27 +80,27 @@ RSpec.describe AppArchetype::CLI::Commands do
   end
 
   describe '.list' do
-    let(:template) { double }
-    let(:templates) { [template, template] }
+    let(:manifest) { double }
+    let(:manifests) { [manifest, manifest] }
     let(:manager) { double(AppArchetype::Manager) }
 
     before do
-      allow(manager).to receive(:templates)
-        .and_return(templates)
+      allow(manager).to receive(:manifests)
+        .and_return(manifests)
 
       allow(AppArchetype::CLI)
         .to receive(:manager)
         .and_return(manager)
 
-      allow(AppArchetype::CLI::Presenters).to receive(:list_templates)
+      allow(AppArchetype::CLI::Presenters).to receive(:list)
 
       described_class.list(nil)
     end
 
-    it 'lists templates' do
+    it 'lists manifests' do
       expect(AppArchetype::CLI::Presenters)
-        .to have_received(:list_templates)
-        .with(templates)
+        .to have_received(:list)
+        .with(manifests)
     end
   end
 

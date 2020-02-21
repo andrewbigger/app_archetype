@@ -2,18 +2,26 @@ module AppArchetype
   module CLI
     # CLI output presenters
     module Presenters
+      ##
+      # Output table header
+      #
       RESULT_HEADER = %w[NAME VERSION PATH].freeze
 
-      def self.show(template)
-        return CLI.print_message('not found') if template.nil?
+      ##
+      # Show renders a single manifest to STDOUT in table form
+      #
+      # @param [AppArchetype::Template::Manifest] manifest
+      #
+      def self.show(manifest)
+        return CLI.print_message('not found') if manifest.nil?
 
         result = TTY::Table.new(
           RESULT_HEADER,
           [
             [
-              template.name,
-              template.version,
-              template.path
+              manifest.name,
+              manifest.version,
+              manifest.path
             ]
           ]
         )
@@ -23,14 +31,19 @@ module AppArchetype
         )
       end
 
-      def self.list_templates(templates)
+      ##
+      # List renders a set of manifests to STDOUT in table form
+      #
+      # @param [Array] manifests
+      #
+      def self.list(manifests)
         results = TTY::Table.new(
           RESULT_HEADER,
-          templates.map do |template|
+          manifests.map do |manifest|
             [
-              template.name,
-              template.version,
-              template.path
+              manifest.name,
+              manifest.version,
+              manifest.path
             ]
           end
         )

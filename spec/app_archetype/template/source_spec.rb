@@ -38,10 +38,10 @@ RSpec.describe AppArchetype::Template::Source do
     let(:path) { 'path/to/source' }
     let(:exist) { true }
 
-    before { allow(::File).to receive(:exist?).and_return(exist) }
+    before { allow(File).to receive(:exist?).and_return(exist) }
 
     it 'checks if file exists' do
-      expect(::File).to receive(:exist?).with(path)
+      expect(File).to receive(:exist?).with(path)
       subject.exist?
     end
 

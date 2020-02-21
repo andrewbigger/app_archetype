@@ -11,8 +11,8 @@ RSpec.describe AppArchetype::Template::Manifest do
     end
 
     before do
-      allow(::File).to receive(:exist?).and_return(exist)
-      allow(::File).to receive(:read).and_return(content)
+      allow(File).to receive(:exist?).and_return(exist)
+      allow(File).to receive(:read).and_return(content)
       allow(JSON).to receive(:parse).and_return(JSON.parse(content))
     end
 
@@ -22,7 +22,7 @@ RSpec.describe AppArchetype::Template::Manifest do
       end
 
       it 'reads file' do
-        expect(::File).to have_received(:read).with(file_path)
+        expect(File).to have_received(:read).with(file_path)
       end
 
       it 'parses json' do
@@ -108,7 +108,7 @@ RSpec.describe AppArchetype::Template::Manifest do
     let(:template) { double(AppArchetype::Template::Source) }
 
     before do
-      allow(::File).to receive(:exist?).and_return(exist)
+      allow(File).to receive(:exist?).and_return(exist)
 
       @manifest = described_class.new(path, data)
     end

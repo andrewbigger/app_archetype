@@ -5,13 +5,33 @@ require 'ruby-handlebars'
 module AppArchetype
   # Renderer renders a plan
   class Renderer
+    ##
+    # Creates a renderer instance
+    #
+    # @param [AppArchetype::Template::Plan] plan
+    # @param [Boolean] overwrite
+    #
     def initialize(plan, overwrite = false)
       @plan = plan
       @overwrite = overwrite
     end
 
+    ##
+    # Renders plan to disk. The renderer is capable of:
+    # - creating directories
+    # - Rendering ERB templates with plan variables
+    # - Rendering Handlebars templates with plan variables
+    # - Copying static files
+    #
+    # When a template requests a varaible that does not exist within
+    # the plan - then the rendering process stops and a RuntimeError
+    # is raised
+    #
+    # Similarly when a template cannot be parsed a Runtime Error will
+    # be raised.
+    #
     def render
-      write_dir(::File.new(@plan.destination_path))
+      write_dir(File.new(@plan.destination_path))
 
       @last_file = ''
       @plan.files.each do |file|
@@ -33,35 +53,56 @@ module AppArchetype
       raise "error parsing #{@last_file.path} template is invalid"
     end
 
+    ##
+    # Creates a directory at the specified location
+    #
+    # @param [AppArchetype::Template::OutputFile] file
+    #
     def write_dir(file)
       CLI.print_message("CREATE dir -> #{file.path}")
 
       FileUtils.mkdir_p(file.path)
     end
 
+    ##
+    # Renders erb template to output location
+    #
+    # @param [AppArchetype::Template::OutputFile] file
+    #
     def render_erb_file(file)
       raise 'cannot overwrite file' if file.exist? && !@overwrite
 
       CLI.print_message("RENDER erb ->: #{file.path}")
-      input = ::File.read(file.source_file_path)
+      input = File.read(file.source_file_path)
       out = ERB.new(input).result(@plan.variables.instance_eval { binding })
 
-      ::File.open(file.path.gsub('.erb', ''), 'w+') { |f| f.write(out) }
+      File.open(file.path.gsub('.erb', ''), 'w+') { |f| f.write(out) }
     end
 
+    ##
+    # Renders handlebars template to output location
+    #
+    # @param [AppArchetype::Template::OutputFile] file
+    #
     def render_hbs_file(file)
       raise 'cannot overwrite file' if file.exist? && !@overwrite
 
       CLI.print_message("RENDER hbs ->: #{file.path}")
 
-      input = ::File.read(file.source_file_path)
+      input = File.read(file.source_file_path)
 
       hbs = Handlebars::Handlebars.new
       out = hbs.compile(input).call(@plan.variables)
 
-      ::File.open(file.path.gsub('.hbs', ''), 'w+') { |f| f.write(out) }
+      File.open(file.path.gsub('.hbs', ''), 'w+') { |f| f.write(out) }
     end
 
+    ##
+    # Copies source file to planned path only ovewriting if permitted by the
+    # renderer.
+    #
+    # @param [AppArchetype::Template::OutputFile] file
+    #
     def copy_file(file)
       raise 'cannot overwrite file' if file.exist? && !@overwrite
 

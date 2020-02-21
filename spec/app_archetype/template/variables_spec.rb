@@ -16,10 +16,6 @@ RSpec.describe AppArchetype::Template::Variables do
       @result = subject.rand(length)
     end
 
-    it 'generates string of specified length' do
-      expect(@result.length).to eq length
-    end
-
     it 'is random' do
       expect(subject.rand(12)).not_to eq @result
     end

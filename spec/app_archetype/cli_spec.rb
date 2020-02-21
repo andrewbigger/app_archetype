@@ -17,14 +17,14 @@ RSpec.describe AppArchetype::CLI do
       allow(described_class).to receive(:template_dir).and_return(template_dir)
       allow(AppArchetype::Manager).to receive(:new).and_return(manager)
 
-      allow(manager).to receive(:load_templates)
+      allow(manager).to receive(:load)
 
       @manager = described_class.manager
     end
 
     it 'creates a manager' do
       expect(AppArchetype::Manager).to have_received(:new).with(template_dir)
-      expect(manager).to have_received(:load_templates)
+      expect(manager).to have_received(:load)
       expect(@manager).to eq manager
     end
   end
@@ -38,7 +38,7 @@ RSpec.describe AppArchetype::CLI do
         .with('TEMPLATE_DIR')
         .and_return(env_template_dir)
 
-      allow(::File).to receive(:exist?).and_return(exist)
+      allow(File).to receive(:exist?).and_return(exist)
     end
 
     it 'returns template dir' do

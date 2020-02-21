@@ -36,7 +36,7 @@ RSpec.describe AppArchetype::CLI::Presenters do
     end
   end
 
-  describe '.list_templates' do
+  describe '.list' do
     let(:templates) { [template, template] }
     let(:template) { double(AppArchetype::Template::Source) }
     let(:result_table) { double }
@@ -52,7 +52,7 @@ RSpec.describe AppArchetype::CLI::Presenters do
       allow(template).to receive(:version).and_return('1.0.0')
       allow(template).to receive(:path).and_return('path/to/manifest.json')
 
-      described_class.list_templates(templates)
+      described_class.list(templates)
     end
 
     it 'prints table' do

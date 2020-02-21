@@ -68,8 +68,8 @@ RSpec.describe AppArchetype::Template::Plan do
     let(:exist) { true }
 
     before do
-      allow(::File).to receive(:exist?).and_return(exist)
-      allow(::File).to receive(:dirname).and_return(dirname)
+      allow(File).to receive(:exist?).and_return(exist)
+      allow(File).to receive(:dirname).and_return(dirname)
     end
 
     it 'returns true' do
@@ -108,12 +108,12 @@ RSpec.describe AppArchetype::Template::OutputFile do
 
   describe '#source_directory?' do
     before do
-      allow(::File).to receive(:directory?)
+      allow(File).to receive(:directory?)
       subject.source_directory?
     end
 
     it 'delegates source file directory check to File' do
-      expect(::File).to have_received(:directory?).with(source_file)
+      expect(File).to have_received(:directory?).with(source_file)
     end
   end
 
@@ -121,12 +121,12 @@ RSpec.describe AppArchetype::Template::OutputFile do
     let(:ext) { '.erb' }
 
     before do
-      allow(::File).to receive(:extname).and_return(ext)
+      allow(File).to receive(:extname).and_return(ext)
       @result = subject.source_erb?
     end
 
     it 'delegates source file template check to File' do
-      expect(::File).to have_received(:extname).with(source_file)
+      expect(File).to have_received(:extname).with(source_file)
     end
 
     it 'returns true if file is erb' do
@@ -146,12 +146,12 @@ RSpec.describe AppArchetype::Template::OutputFile do
     let(:ext) { '.hbs' }
 
     before do
-      allow(::File).to receive(:extname).and_return(ext)
+      allow(File).to receive(:extname).and_return(ext)
       @result = subject.source_hbs?
     end
 
     it 'delegates source file template check to File' do
-      expect(::File).to have_received(:extname).with(source_file)
+      expect(File).to have_received(:extname).with(source_file)
     end
 
     it 'returns true if file is hbs' do
@@ -169,23 +169,23 @@ RSpec.describe AppArchetype::Template::OutputFile do
 
   describe '#source_file?' do
     before do
-      allow(::File).to receive(:file?)
+      allow(File).to receive(:file?)
       subject.source_file?
     end
 
     it 'delegates source file check to File' do
-      expect(::File).to have_received(:file?).with(source_file)
+      expect(File).to have_received(:file?).with(source_file)
     end
   end
 
   describe '#exist?' do
     before do
-      allow(::File).to receive(:exist?)
+      allow(File).to receive(:exist?)
       subject.exist?
     end
 
     it 'delegates exist check to File' do
-      expect(::File).to have_received(:exist?).with(dest_file)
+      expect(File).to have_received(:exist?).with(dest_file)
     end
   end
 end
