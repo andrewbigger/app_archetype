@@ -23,6 +23,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'json'
   spec.add_dependency 'logger', '~> 1.4'
   spec.add_dependency 'ruby-handlebars'
+  spec.add_dependency 'tty-prompt'
+  spec.add_dependency 'tty-table'
 
   spec.add_development_dependency 'bump', '~> 0.6'
   spec.add_development_dependency 'byebug', '~> 11.0'
