@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe AppArchetype::Manifest do
+RSpec.describe AppArchetype::Template::Manifest do
   describe '.new_from_file' do
     let(:file_path) { 'path/to/manifest' }
     let(:exist) { true }
@@ -30,7 +30,7 @@ RSpec.describe AppArchetype::Manifest do
       end
 
       it 'returns manifest' do
-        expect(@parsed).to be_a AppArchetype::Manifest
+        expect(@parsed).to be_a AppArchetype::Template::Manifest
       end
 
       it 'has version' do
@@ -105,7 +105,7 @@ RSpec.describe AppArchetype::Manifest do
     end
 
     let(:exist) { true }
-    let(:template) { double(AppArchetype::Template) }
+    let(:template) { double(AppArchetype::Template::Source) }
 
     before do
       allow(::File).to receive(:exist?).and_return(exist)
@@ -114,7 +114,7 @@ RSpec.describe AppArchetype::Manifest do
     end
 
     it 'loads template adjacent to manifest' do
-      expect(@manifest.template.source_path).to eq('path/to/template')
+      expect(@manifest.template.path).to eq('path/to/template')
     end
 
     context 'when template files do not exist' do

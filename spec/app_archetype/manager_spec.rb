@@ -10,7 +10,7 @@ RSpec.describe AppArchetype::Manager do
   describe '#load_templates' do
     let(:manifest_file) { 'path/to/dir/manifest.json' }
 
-    let(:manifest) { double(AppArchetype::Manifest) }
+    let(:manifest) { double(AppArchetype::Template::Manifest) }
     let(:files) do
       [
         manifest_file,
@@ -20,7 +20,7 @@ RSpec.describe AppArchetype::Manager do
 
     before do
       allow(Dir).to receive(:glob).and_return(files)
-      allow(AppArchetype::Manifest).to receive(:new_from_file)
+      allow(AppArchetype::Template::Manifest).to receive(:new_from_file)
         .and_return(manifest)
 
       subject.load_templates
@@ -40,8 +40,8 @@ RSpec.describe AppArchetype::Manager do
       ->(manifest) { manifest == target_manifest }
     end
 
-    let(:manifest) { double(AppArchetype::Manifest) }
-    let(:target_manifest) { double(AppArchetype::Manifest) }
+    let(:manifest) { double(AppArchetype::Template::Manifest) }
+    let(:target_manifest) { double(AppArchetype::Template::Manifest) }
 
     let(:manifests) do
       [
@@ -77,15 +77,21 @@ RSpec.describe AppArchetype::Manager do
     let(:lang) { '.rb' }
 
     let(:manifest) do
-      AppArchetype::Manifest.new('path/to/manifest.json', 'name' => 'manifest')
+      AppArchetype::Template::Manifest.new(
+        'path/to/manifest.json',
+        'name' => 'manifest'
+      )
     end
 
     let(:target_manifest) do
-      AppArchetype::Manifest.new('path/to/manifest.json', 'name' => 'target')
+      AppArchetype::Template::Manifest.new(
+        'path/to/manifest.json',
+        'name' => 'target'
+      )
     end
 
     let(:almost_target_manifest) do
-      AppArchetype::Manifest.new(
+      AppArchetype::Template::Manifest.new(
         'path/to/manifest.json',
         'name' => 'target and more'
       )

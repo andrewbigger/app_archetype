@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe AppArchetype::Renderer do
   let(:logger) { double(Logger) }
-  let(:template) { AppArchetype::Template.new('path/to/template') }
+  let(:template) { AppArchetype::Template::Source.new('path/to/template') }
   let(:destination) { 'path/to/destination' }
   let(:variables) do
     Hashie::Mash.new(
@@ -10,7 +10,11 @@ RSpec.describe AppArchetype::Renderer do
     )
   end
   let(:plan) do
-    AppArchetype::Plan.new(template, variables, destination_path: destination)
+    AppArchetype::Template::Plan.new(
+      template,
+      variables,
+      destination_path: destination
+    )
   end
   let(:overwrite) { false }
 
@@ -23,19 +27,31 @@ RSpec.describe AppArchetype::Renderer do
 
   describe '#render' do
     let(:file) do
-      AppArchetype::File.new('path/to/source/file', 'path/to/destination/file')
+      AppArchetype::Template::OutputFile.new(
+        'path/to/source/file',
+        'path/to/destination/file'
+      )
     end
 
     let(:erb_template) do
-      AppArchetype::File.new('path/to/tmplte.erb', 'path/to/destination/tmplte')
+      AppArchetype::Template::OutputFile.new(
+        'path/to/template.erb',
+        'path/to/destination/template'
+      )
     end
 
     let(:hbs_template) do
-      AppArchetype::File.new('path/to/tmplte.hbs', 'path/to/destination/tmplte')
+      AppArchetype::Template::OutputFile.new(
+        'path/to/template.hbs',
+        'path/to/destination/template'
+      )
     end
 
     let(:directory) do
-      AppArchetype::File.new('path/to/source/dir', 'path/to/destination/dir')
+      AppArchetype::Template::OutputFile.new(
+        'path/to/source/dir',
+        'path/to/destination/dir'
+      )
     end
 
     let(:file_double) { double(File) }
@@ -94,8 +110,8 @@ RSpec.describe AppArchetype::Renderer do
       it 'raises missing variable error' do
         expect { subject.render }.to raise_error(
           RuntimeError,
-          'error rendering path/to/destination/tmplte cannot find variable `` '\
-          'in template'
+          'error rendering path/to/destination/template cannot '\
+          'find variable `` in template'
         )
       end
     end
@@ -113,7 +129,7 @@ RSpec.describe AppArchetype::Renderer do
       it 'raises missing variable error' do
         expect { subject.render }.to raise_error(
           RuntimeError,
-          'error parsing path/to/destination/tmplte template is invalid'
+          'error parsing path/to/destination/template template is invalid'
         )
       end
     end
@@ -122,7 +138,7 @@ RSpec.describe AppArchetype::Renderer do
   describe '#write_dir' do
     let(:source_path) { 'path/to/template/dir' }
     let(:dest_path) { 'path/to/destination/dir' }
-    let(:dir) { AppArchetype::File.new(source_path, dest_path) }
+    let(:dir) { AppArchetype::Template::OutputFile.new(source_path, dest_path) }
     let(:exists) { false }
 
     before do
@@ -138,7 +154,10 @@ RSpec.describe AppArchetype::Renderer do
   describe '#render_erb_file' do
     let(:source_path) { 'path/to/template/file' }
     let(:dest_path) { 'path/to/destination/file' }
-    let(:file) { AppArchetype::File.new(source_path, dest_path) }
+
+    let(:file) do
+      AppArchetype::Template::OutputFile.new(source_path, dest_path)
+    end
 
     let(:input) do
       <<~INPUT
@@ -183,7 +202,10 @@ RSpec.describe AppArchetype::Renderer do
   describe '#render_hbs_file' do
     let(:source_path) { 'path/to/template/file' }
     let(:dest_path) { 'path/to/destination/file' }
-    let(:file) { AppArchetype::File.new(source_path, dest_path) }
+
+    let(:file) do
+      AppArchetype::Template::OutputFile.new(source_path, dest_path)
+    end
 
     let(:input) do
       <<~INPUT
@@ -228,7 +250,11 @@ RSpec.describe AppArchetype::Renderer do
   describe '#copy_file' do
     let(:source_path) { 'path/to/template/file' }
     let(:dest_path) { 'path/to/destination/file' }
-    let(:file) { AppArchetype::File.new(source_path, dest_path) }
+
+    let(:file) do
+      AppArchetype::Template::OutputFile.new(source_path, dest_path)
+    end
+
     let(:exists) { false }
 
     before do

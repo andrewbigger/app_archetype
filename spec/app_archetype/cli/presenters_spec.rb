@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe AppArchetype::CLI::Presenters do
   describe '.show' do
-    let(:template) { double(AppArchetype::Template) }
+    let(:template) { double(AppArchetype::Template::Source) }
     let(:result_table) { double }
     let(:result_table_ascii) { 'ascii-table' }
 
@@ -38,7 +38,7 @@ RSpec.describe AppArchetype::CLI::Presenters do
 
   describe '.list_templates' do
     let(:templates) { [template, template] }
-    let(:template) { double(AppArchetype::Template) }
+    let(:template) { double(AppArchetype::Template::Source) }
     let(:result_table) { double }
     let(:result_table_ascii) { 'ascii-table' }
 

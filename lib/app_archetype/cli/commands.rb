@@ -21,7 +21,7 @@ module AppArchetype
 
         template.load
 
-        plan = Plan.new(
+        plan = AppArchetype::Template::Plan.new(
           template,
           manifest.variables,
           destination_path: dest,

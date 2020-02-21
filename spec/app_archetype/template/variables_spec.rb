@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe AppArchetype::Variables do
+RSpec.describe AppArchetype::Template::Variables do
   subject { described_class.new({}) }
 
   describe '#dot' do

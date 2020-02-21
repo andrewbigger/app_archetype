@@ -15,7 +15,7 @@ module AppArchetype
         ::File.join(@template_dir, '**', 'manifest.json')
       ).each do |manifest|
         begin
-          @templates << AppArchetype::Manifest.new_from_file(manifest)
+          @templates << AppArchetype::Template::Manifest.new_from_file(manifest)
         rescue StandardError
           puts "WARN: #{manifest} is invalid, skipping"
           next

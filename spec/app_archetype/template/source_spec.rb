@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-RSpec.describe AppArchetype::Template do
-  let(:source_path) { 'path/to/source' }
-  subject { described_class.new(source_path) }
+RSpec.describe AppArchetype::Template::Source do
+  let(:path) { 'path/to/source' }
+  subject { described_class.new(path) }
 
   describe '#load' do
     let(:glob_files) { %w[file1 file2] }
@@ -19,7 +19,7 @@ RSpec.describe AppArchetype::Template do
       end
 
       it 'loads expected file paths into source_files' do
-        expect(subject.source_files).to eq glob_files
+        expect(subject.files).to eq glob_files
       end
     end
 
@@ -35,13 +35,13 @@ RSpec.describe AppArchetype::Template do
   end
 
   describe '#exist?' do
-    let(:source_path) { 'path/to/source' }
+    let(:path) { 'path/to/source' }
     let(:exist) { true }
 
     before { allow(::File).to receive(:exist?).and_return(exist) }
 
     it 'checks if file exists' do
-      expect(::File).to receive(:exist?).with(source_path)
+      expect(::File).to receive(:exist?).with(path)
       subject.exist?
     end
 

@@ -10,10 +10,10 @@ RSpec.describe AppArchetype::CLI::Commands do
 
     let(:manager) { double(AppArchetype::Manager) }
 
-    let(:manifest) { double(AppArchetype::Manifest) }
-    let(:variables) { double(AppArchetype::Variables) }
-    let(:template) { double(AppArchetype::Template) }
-    let(:plan) { double(AppArchetype::Plan) }
+    let(:manifest) { double(AppArchetype::Template::Manifest) }
+    let(:variables) { double(AppArchetype::Template::Variables) }
+    let(:template) { double(AppArchetype::Template::Source) }
+    let(:plan) { double(AppArchetype::Template::Plan) }
 
     before do
       allow(::File).to receive(:exist?).and_return(exist)
@@ -27,7 +27,7 @@ RSpec.describe AppArchetype::CLI::Commands do
       allow(manifest).to receive(:variables).and_return(variables)
       allow(template).to receive(:load)
 
-      allow(AppArchetype::Plan).to receive(:new).and_return(plan)
+      allow(AppArchetype::Template::Plan).to receive(:new).and_return(plan)
 
       allow(plan).to receive(:devise)
       allow(plan).to receive(:execute)
@@ -65,7 +65,7 @@ RSpec.describe AppArchetype::CLI::Commands do
     end
 
     it 'creates plan' do
-      expect(AppArchetype::Plan)
+      expect(AppArchetype::Template::Plan)
         .to have_received(:new)
         .with(template, variables, destination_path: dest, overwrite: false)
     end
