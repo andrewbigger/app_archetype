@@ -1,5 +1,6 @@
 require 'app_archetype/file'
 require 'app_archetype/plan'
+require 'app_archetype/manager'
 require 'app_archetype/renderer'
 require 'app_archetype/manifest'
 require 'app_archetype/template'

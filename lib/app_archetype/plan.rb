@@ -5,11 +5,12 @@ module AppArchetype
   class Plan
     attr_reader :template, :destination_path, :files, :variables
 
-    def initialize(template, destination_path, variables)
+    def initialize(template, variables, destination_path: nil, overwrite: false)
       @template = template
       @destination_path = destination_path
       @files = []
       @variables = variables
+      @overwrite = overwrite
     end
 
     def devise
@@ -23,7 +24,18 @@ module AppArchetype
       end
     end
 
+    def execute
+      renderer = Renderer.new(
+        self,
+        @overwrite
+      )
+
+      renderer.render
+    end
+
     def destination_exist?
+      return false unless @destination_path
+
       ::File.exist?(
         ::File.dirname(@destination_path)
       )

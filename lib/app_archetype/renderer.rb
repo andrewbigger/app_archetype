@@ -5,10 +5,9 @@ require 'ruby-handlebars'
 module AppArchetype
   # Renderer renders a plan
   class Renderer
-    def initialize(plan, variables, overwrite = false)
+    def initialize(plan, overwrite = false)
       @plan = plan
       @overwrite = overwrite
-      @variables = variables
     end
 
     def render
@@ -44,9 +43,8 @@ module AppArchetype
       raise 'cannot overwrite file' if file.exist? && !@overwrite
 
       CLI.print_message("RENDER erb ->: #{file.path}")
-
       input = ::File.read(file.source_file_path)
-      out = ERB.new(input).result(@variables.instance_eval { binding })
+      out = ERB.new(input).result(@plan.variables.instance_eval { binding })
 
       ::File.open(file.path.gsub('.erb', ''), 'w+') { |f| f.write(out) }
     end
@@ -59,7 +57,7 @@ module AppArchetype
       input = ::File.read(file.source_file_path)
 
       hbs = Handlebars::Handlebars.new
-      out = hbs.compile(input).call(@variables)
+      out = hbs.compile(input).call(@plan.variables)
 
       ::File.open(file.path.gsub('.hbs', ''), 'w+') { |f| f.write(out) }
     end
