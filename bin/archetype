@@ -20,11 +20,11 @@ Options:
 Commands:
   open <name>\t\t opens template manifest
   render <name>\t\t renders project template
-  new <rel>\t\t creates a template in the TEMPLATE_DIR at the given rel path
+  new <rel>\t\t creates a template in ARCHETYPE_TEMPLATE_DIR at given rel path
 
-  list\t\t\t lists known templates in TEMPLATE_DIR
+  list\t\t\t lists known templates in ARCHETYPE_TEMPLATE_DIR
 
-  template_dir\t\t prints configured TEMPLATE_DIR
+  path\t\t prints configured ARCHETYPE_TEMPLATE_DIR
 ".freeze
 
 @trace = false

@@ -269,7 +269,7 @@ RSpec.describe AppArchetype::CLI::Commands do
     end
   end
 
-  describe '.template_dir' do
+  describe '.path' do
     let(:template_dir) { 'path/to/templates' }
 
     before do
@@ -280,7 +280,7 @@ RSpec.describe AppArchetype::CLI::Commands do
       allow(AppArchetype::CLI)
         .to receive(:print_message)
 
-      described_class.template_dir(nil)
+      described_class.path(nil)
     end
 
     it 'prints template dir' do

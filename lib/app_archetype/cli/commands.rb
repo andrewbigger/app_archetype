@@ -113,9 +113,9 @@ module AppArchetype
         # Prints out the currently set template directory - will be blank if
         # TEMPLATE_DIR is not set.
         #
-        def template_dir(_dest, _args = [], _overwrite = false)
-          template_dir = CLI.template_dir
-          CLI.print_message(template_dir)
+        def path(_dest, _args = [], _overwrite = false)
+          path = CLI.template_dir
+          CLI.print_message(path)
         end
 
         private
