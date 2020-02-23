@@ -41,7 +41,7 @@ echo 'export ARCHETYPE_EDITOR="vi"' >> $HOME/.bashrc # sets vim as default edito
 
 Templates are a collection of files in the template folder with a manifest. The structure is thus:
 
-```
+```text
  - $ARCHETYPE_TEMPLATE_DIR
  | - my_template
  | - | - template/
@@ -85,6 +85,12 @@ A manifest has a name, version and set of variables. A sample manifest looks lik
 - `name` should be a unique name that identifies a manifest for you
 - `version` corresponds to the version of app_archetype that generated the manifest
 - `variables` is a schemaless object that you may use to provide variables at render time
+
+##### Jsonnet support
+
+If plain ol' JSON isn't quite enough for you - manifests can also be expressed in jsonnet language. This permits you to use functions and objects to generate your template manifest. All manifest.json/manifest.jsonnet files will be parsed as you might expect.
+
+See [https://jsonnet.org/](https://jsonnet.org/) for more jsonnet documentation
 
 #### Template Files
 

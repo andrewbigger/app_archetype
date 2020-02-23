@@ -1,3 +1,4 @@
+require 'jsonnet'
 require 'hashie'
 
 module AppArchetype
@@ -12,7 +13,7 @@ module AppArchetype
         # @param [String] file_path
         #
         def new_from_file(file_path)
-          manifest = JSON.parse(
+          manifest = Jsonnet.evaluate(
             File.read(file_path)
           )
 
@@ -91,7 +92,8 @@ module AppArchetype
       end
 
       ##
-      # Loads the template that is adjacent to the manifest.json.
+      # Loads the template that is adjacent to the manifest.json or
+      # manifest.jsonnet file.
       #
       # If the template cannot be found, a RuntimeError explaining that
       # the template cannot

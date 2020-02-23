@@ -28,7 +28,7 @@ RSpec.describe AppArchetype::Template::Manifest do
     before do
       allow(File).to receive(:exist?).and_return(exist)
       allow(File).to receive(:read).and_return(content)
-      allow(JSON).to receive(:parse).and_return(JSON.parse(content))
+      allow(Jsonnet).to receive(:evaluate).and_call_original
     end
 
     context 'when file exists' do
@@ -41,7 +41,7 @@ RSpec.describe AppArchetype::Template::Manifest do
       end
 
       it 'parses json' do
-        expect(JSON).to have_received(:parse).with(content)
+        expect(Jsonnet).to have_received(:evaluate).with(content)
       end
 
       it 'returns manifest' do

@@ -25,7 +25,7 @@ module AppArchetype
     #
     def load
       Dir.glob(
-        File.join(@template_dir, '**', 'manifest.json')
+        File.join(@template_dir, '**', 'manifest.json*')
       ).each do |manifest|
         begin
           @manifests << AppArchetype::Template::Manifest.new_from_file(manifest)
