@@ -1,4 +1,4 @@
-image: ruby:2.4.0
+image: ruby:2.6.4
 
 pipelines:
   branches:
@@ -8,6 +8,7 @@ pipelines:
           caches:
             - bundler
           script:
+            - gem install bundler
             - bundle install --path .bundle
             - bundle exec rake
           deployment: production
