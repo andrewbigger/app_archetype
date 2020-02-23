@@ -11,6 +11,8 @@ RSpec.describe AppArchetype::CLI::Commands do
     let(:manager) { double(AppArchetype::Manager) }
 
     let(:manifest) { double(AppArchetype::Template::Manifest) }
+    let(:manifest_valid) { true }
+
     let(:variables) { double(AppArchetype::Template::Variables) }
     let(:template) { double(AppArchetype::Template::Source) }
     let(:plan) { double(AppArchetype::Template::Plan) }
@@ -25,6 +27,8 @@ RSpec.describe AppArchetype::CLI::Commands do
 
       allow(manifest).to receive(:template).and_return(template)
       allow(manifest).to receive(:variables).and_return(variables)
+      allow(manifest).to receive(:valid?).and_return(manifest_valid)
+
       allow(template).to receive(:load)
 
       allow(AppArchetype::Template::Plan).to receive(:new).and_return(plan)

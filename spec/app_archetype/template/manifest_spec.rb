@@ -4,10 +4,25 @@ RSpec.describe AppArchetype::Template::Manifest do
   describe '.new_from_file' do
     let(:file_path) { 'path/to/manifest' }
     let(:exist) { true }
+    let(:manifest_name) { 'manifest name' }
+
+    let(:app_archetype_meta) do
+      {
+        'app_archetype' => {
+          'version' => AppArchetype::VERSION
+        }
+      }
+    end
+
     let(:version) { '0.0.1' }
     let(:vars) { {} }
     let(:content) do
-      "{ \"version\": \"#{version}\", \"variables\": #{vars.to_json} }"
+      {
+        'name' => manifest_name,
+        'version' => version,
+        'metadata' => app_archetype_meta,
+        'variables' => vars
+      }.to_json
     end
 
     before do
@@ -43,12 +58,29 @@ RSpec.describe AppArchetype::Template::Manifest do
     end
 
     context 'when manifest is from a later version of app archetype' do
-      let(:version) { '999.999.999' }
+      let(:app_archetype_meta) do
+        {
+          'app_archetype' => {
+            'version' => '999.999.999'
+          }
+        }
+      end
 
       it 'raises incompatibility error' do
         expect do
           described_class.new_from_file(file_path)
-        end.to raise_error 'provided manifest is incompatible with this version'
+        end.to raise_error 'provided manifest is invalid or incompatible with '\
+        'this version of app archetype'
+      end
+    end
+
+    context 'when app_archetype metadata is missing' do
+      let(:app_archetype_meta) { {} }
+      it 'raises incompatibility error' do
+        expect do
+          described_class.new_from_file(file_path)
+        end.to raise_error 'provided manifest is invalid or incompatible with '\
+        'this version of app archetype'
       end
     end
   end
@@ -93,6 +125,28 @@ RSpec.describe AppArchetype::Template::Manifest do
     end
   end
 
+  describe '#metadata' do
+    let(:path) { 'path/to/manifest.json' }
+    let(:meta) { { 'foo' => 'bar' } }
+
+    let(:data) do
+      {
+        'name' => 'test_manifest',
+        'version' => '0.1.0',
+        'metadata' => meta,
+        'variables' => {}
+      }
+    end
+
+    before do
+      @manifest = described_class.new(path, data)
+    end
+
+    it 'returns metadata' do
+      expect(@manifest.metadata).to eq meta
+    end
+  end
+
   describe '#template' do
     let(:path) { 'path/to/manifest.json' }
 
@@ -125,34 +179,6 @@ RSpec.describe AppArchetype::Template::Manifest do
           RuntimeError,
           'cannot find template for manifest test_manifest'
         )
-      end
-    end
-  end
-
-  describe '#valid?' do
-    let(:path) { 'path/to/manifest.json' }
-
-    let(:data) do
-      {
-        'name' => 'test_manifest',
-        'version' => '0.1.0',
-        'variables' => {}
-      }
-    end
-
-    before do
-      @manifest = described_class.new(path, data)
-    end
-
-    it 'returns true' do
-      expect(@manifest.valid?).to be true
-    end
-
-    context 'when missing version' do
-      let(:data) { { 'variables' => {} } }
-
-      it 'returns false' do
-        expect(@manifest.valid?).to be false
       end
     end
   end

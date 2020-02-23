@@ -17,7 +17,8 @@ module AppArchetype
           )
 
           if incompatible?(manifest)
-            raise 'provided manifest is incompatible with this version'
+            raise 'provided manifest is invalid or incompatible with '\
+            'this version of app archetype'
           end
 
           new(
@@ -38,7 +39,10 @@ module AppArchetype
         # @return [Boolean]
         #
         def incompatible?(manifest)
-          manifest['version'] > AppArchetype::VERSION
+          manifest_version = manifest['metadata']['app_archetype']['version']
+          manifest_version > AppArchetype::VERSION
+        rescue NoMethodError
+          true
         end
       end
 
@@ -78,6 +82,15 @@ module AppArchetype
       end
 
       ##
+      # Manifest metadata getter
+      #
+      # @return[String]
+      #
+      def metadata
+        @data.metadata
+      end
+
+      ##
       # Loads the template that is adjacent to the manifest.json.
       #
       # If the template cannot be found, a RuntimeError explaining that
@@ -96,18 +109,6 @@ module AppArchetype
 
         @template ||= AppArchetype::Template::Source.new(template_path)
         @template
-      end
-
-      ##
-      # Valid checks that the manifest is of the expected shape and includes
-      # the expected items
-      #
-      # @return [Boolean]
-      #
-      def valid?
-        return false if version.nil?
-
-        true
       end
     end
   end
