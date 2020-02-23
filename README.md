@@ -76,6 +76,11 @@ A manifest has a name, version and set of variables. A sample manifest looks lik
 {
   "name": "my_template",
   "version": "0.1.1",
+  "metadata": {
+    "app_archetype": {
+      "version": "0.1.2"
+    }
+  },
   "variables": {
     "foo": "bar",
   }
