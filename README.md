@@ -88,7 +88,8 @@ A manifest has a name, version and set of variables. A sample manifest looks lik
 ```
 
 - `name` should be a unique name that identifies a manifest for you
-- `version` corresponds to the version of app_archetype that generated the manifest
+- `version` should be the version of the template
+- `metadata.app_archetype` is information about the manifest for the app archetype gem. `metadata.app_archetype.version` is required, and must be less than the version of the currently installed gem.
 - `variables` is a schemaless object that you may use to provide variables at render time
 
 ##### Jsonnet support
@@ -110,7 +111,9 @@ You can include handlebars in file names, and like template files, the variables
 Adjust the template manifest to include the variables you want, and then run:
 
 ```bash
-archetype render my_template --destination 'path/to/destination'
+mkdir where_id_like_to_render
+cd where_id_like_to_render
+archetype render my_template
 ```
 
 And the template will be rendered with the instructions in the manifest to the destinaton location as simple as that.
