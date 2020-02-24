@@ -18,13 +18,13 @@ Options:
   -h, --help\t\t print usage
 
 Commands:
+  new <rel>\t\t creates a template in ARCHETYPE_TEMPLATE_DIR at given rel path
   open <name>\t\t opens template manifest
   render <name>\t\t renders project template
-  new <rel>\t\t creates a template in ARCHETYPE_TEMPLATE_DIR at given rel path
-
   list\t\t\t lists known templates in ARCHETYPE_TEMPLATE_DIR
 
-  path\t\t prints configured ARCHETYPE_TEMPLATE_DIR
+  path\t\t\t prints configured ARCHETYPE_TEMPLATE_DIR
+  version\t\t prints gem version
 ".freeze
 
 @trace = false

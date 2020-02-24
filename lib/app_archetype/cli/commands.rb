@@ -98,6 +98,7 @@ module AppArchetype
         # @param [String] _dest - not used
         # @param [Array] args - command line args - first value is search term
         # @param [Boolean] _overwrite - not used
+        #
         def find(_dest, args = [], _overwrite = false)
           search_term = args.shift
 
@@ -113,9 +114,26 @@ module AppArchetype
         # Prints out the currently set template directory - will be blank if
         # TEMPLATE_DIR is not set.
         #
+        # @param [String] _dest - not used
+        # @param [Array] args - command line args - first value is search term
+        # @param [Boolean] _overwrite - not used
+        #
         def path(_dest, _args = [], _overwrite = false)
           path = CLI.template_dir
           CLI.print_message(path)
+        end
+
+        ##
+        # Print version command
+        #
+        # Prints the gem version
+        #
+        # @param [String] _dest - not used
+        # @param [Array] args - command line args - first value is search term
+        # @param [Boolean] _overwrite - not used
+        #
+        def version(_dest, _args = [], _overwrite = false)
+          CLI.print_message(AppArchetype::VERSION)
         end
 
         private

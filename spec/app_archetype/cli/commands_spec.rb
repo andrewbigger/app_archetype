@@ -289,4 +289,19 @@ RSpec.describe AppArchetype::CLI::Commands do
         .with(template_dir)
     end
   end
+
+  describe '.version' do
+    before do
+      allow(AppArchetype::CLI)
+        .to receive(:print_message)
+
+      described_class.version(nil)
+    end
+
+    it 'prints gem vesrion' do
+      expect(AppArchetype::CLI)
+        .to have_received(:print_message)
+        .with(AppArchetype::VERSION)
+    end
+  end
 end
