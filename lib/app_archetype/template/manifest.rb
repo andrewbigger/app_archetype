@@ -1,5 +1,5 @@
+require 'ostruct'
 require 'jsonnet'
-require 'hashie'
 
 module AppArchetype
   module Template
@@ -60,7 +60,7 @@ module AppArchetype
       #
       def initialize(path, data)
         @path = path
-        @data = Hashie::Mash.new(data)
+        @data = OpenStruct.new(data)
         @variables = AppArchetype::Template::Variables.new(@data.variables)
       end
 
@@ -85,10 +85,27 @@ module AppArchetype
       ##
       # Manifest metadata getter
       #
-      # @return[String]
+      # @return [String]
       #
       def metadata
         @data.metadata
+      end
+
+      ##
+      # Parent path of the manifest (working directory)
+      #
+      # @return [String]
+      def parent_path
+        File.dirname(@path)
+      end
+
+      ##
+      # Template files path
+      #
+      # @return [String]
+      #
+      def template_path
+        File.join(parent_path, 'template')
       end
 
       ##
@@ -103,8 +120,6 @@ module AppArchetype
       #
       # @return [AppArchetype::Template::Source]
       def template
-        template_path = File.join(File.dirname(@path), 'template')
-
         unless File.exist?(template_path)
           raise "cannot find template for manifest #{name}"
         end

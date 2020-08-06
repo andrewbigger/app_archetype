@@ -60,25 +60,54 @@ module AppArchetype
     end
 
     ##
-    # Finds a manifest by name and returns it to caller.
-    #
-    # When there are more than one results, this will select and return the
-    # first result. When nothing matches the search term this will return nil.
+    # Searches for manifests matching given name and returns it to caller.
     #
     # @example:
     #   manager = AppArchetype::Manager.new('/path/to/templates')
     #   fudge_manifest = manager.find('fudge')
     #
-    # @param [String] search_term
+    # @param [String] name
     #
-    # @return [AppArchetype::Manifest]
+    # @return [Array]
     #
-    def find(search_term)
+    def search_by_name(name)
       name_query = lambda do |template|
-        template.name.include?(search_term)
+        template.name.include?(name)
       end
 
-      filter(name_query).first
+      filter(name_query)
+    end
+
+    ##
+    # Finds a specific manifest by name and returns it to the caller.
+    #
+    # It is possible that a more than one manifest is found when searching
+    # by name. If this happens while ignore_dupe is set to false, then a
+    # Runtime error is raised. If ignore_dupe is set to false then the first
+    # matching manifest is returned.
+    #
+    # @example:
+    #   manager = AppArchetype::Manager.new('/path/to/templates')
+    #   fudge_manifest = manager.find('fudge')
+    #
+    # @param [String] name
+    # @param [Boolean] ignore_dupe
+    #
+    # @return [AppArchetype::Template::Manifest]
+    #
+    def find_by_name(name, ignore_dupe: false)
+      name_query = lambda do |template|
+        template.name == name
+      end
+
+      results = filter(name_query)
+
+      if results.count > 1 && ignore_dupe == false
+        raise 'more than one manifest matching the'\
+        ' given name were found'
+      end
+
+      results.first
     end
   end
 end

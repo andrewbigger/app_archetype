@@ -18,13 +18,15 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'hashie'
   spec.add_dependency 'highline', '~> 2.0'
   spec.add_dependency 'json'
   spec.add_dependency 'jsonnet'
   spec.add_dependency 'logger', '~> 1.4'
   spec.add_dependency 'os'
+  spec.add_dependency 'ostruct'
   spec.add_dependency 'ruby-handlebars'
+  spec.add_dependency 'thor'
+  spec.add_dependency 'tty'
   spec.add_dependency 'tty-prompt'
   spec.add_dependency 'tty-table'
 

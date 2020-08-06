@@ -2,5 +2,5 @@ module AppArchetype
   ##
   # AppArchetype version
   #
-  VERSION = '0.1.5'.freeze
+  VERSION = '1.0.1'.freeze
 end

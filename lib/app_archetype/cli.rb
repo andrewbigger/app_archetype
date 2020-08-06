@@ -1,29 +1,16 @@
-require 'app_archetype/cli/commands'
-require 'app_archetype/cli/presenters'
-
 require 'logger'
-require 'hashie'
-require 'tty-table'
+require 'thor'
 require 'tty-prompt'
-require 'securerandom'
+
+require 'app_archetype'
+require 'app_archetype/cli/presenters'
 
 module AppArchetype
   # Command line interface helpers and actions
-  module CLI
-    # CLI Helpers
+  class CLI < Thor
+    package_name 'Archetype'
+
     class <<self
-      ##
-      # Template manager creates and loads a template manager
-      #
-      # @return [AppArchetype::Manager]
-      #
-      def manager
-        @manager ||= AppArchetype::Manager.new(template_dir)
-        @manager.load
-
-        @manager
-      end
-
       ##
       # Retrieves template dir from environment and raises error
       # when TEMPLATE_DIR environment variable is not set.
@@ -69,69 +56,113 @@ module AppArchetype
       end
 
       ##
-      # Creates logger for printing messages
+      # Template manager creates and loads a template manager
       #
-      # Sets the formatter to output only the provided message to the
-      # specified IO
+      # @return [AppArchetype::Manager]
       #
-      # @param [IO] out - default: STDOUT
-      #
-      # @return [Logger]
-      #
-      def logger(out = STDOUT)
-        @logger ||= Logger.new(out)
-        @logger.formatter = proc do |_sev, _time, _prog, msg|
-          "#{msg}\n"
-        end
+      def manager
+        @manager ||= AppArchetype::Manager.new(template_dir)
+        @manager.load
 
-        @logger
+        @manager
       end
+    end
 
-      ##
-      # Prints command line message to STDOUT
-      #
-      # For use when printing info messages for a user to STDOUT
-      #
-      # @param [String] message - message to be printed
-      #
-      def print_message(message)
-        logger.info(message)
-      end
+    include AppArchetype::Logger
 
-      ##
-      # Prints warning to STDOUT
-      #
-      # For use when printing warn messages to STDOUT
-      #
-      # @param [String] message - message to be printed
-      #
-      def print_warning(message)
-        logger.warn(message)
-      end
+    def self.exit_on_failure?
+      true
+    end
 
-      ##
-      # Prints error to STDERR
-      #
-      # For indicating fatal message to user
-      #
-      # @param [String] message - message to be printed
-      #
-      def print_error(message)
-        logger(STDERR).error(message)
-      end
+    desc 'version', 'Prints archetype gem version'
+    def version
+      print_message(AppArchetype::VERSION)
+    end
+    map %w[--version -v] => :version
 
-      ##
-      # Prints a message and then exits with given status code
-      #
-      # This will terminate the program with the given status code
-      #
-      # @param [String] message - message to be printed
-      # @param [Integer] exit_code - exit status (default: 1)
-      #
-      def print_message_and_exit(message, exit_code = 1)
-        print_message(message)
-        exit(exit_code)
-      end
+    desc 'list', 'Lists known templates in ARCHETYPE_TEMPLATE_DIR'
+    def list
+      print_table(
+        Presenters.manifest_list(
+          CLI.manager.manifests
+        )
+      )
+    end
+
+    desc 'path', 'Prints configured ARCHETYPE_TEMPLATE_DIR'
+    def path
+      print_message(
+        CLI.template_dir
+      )
+    end
+
+    desc 'open', 'Opens template manifest'
+    def open(name)
+      editor = CLI.editor
+      manifest = CLI.manager.find(name)
+
+      pid = Process.spawn("#{editor} #{manifest.path}")
+      Process.waitpid(pid)
+    end
+
+    desc 'new', 'Creates a template in ARCHETYPE_TEMPLATE_DIR'
+    def new(rel)
+      raise 'template rel not provided' unless rel
+
+      dest = File.join(CLI.template_dir, rel)
+      FileUtils.mkdir_p(dest)
+
+      name = File.basename(rel)
+      AppArchetype::Generators.render_empty_template(name, dest)
+
+      print_message("Template #{name} created at #{dest}")
+    end
+
+    desc 'delete', 'Deletes a template in ARCHETYPE_TEMPLATE_DIR'
+    def delete(name)
+      manifest = CLI.manager.find(name)
+      raise 'canot find template' unless manifest
+
+      prompt = TTY::Prompt.new
+      proceed = prompt.yes?(
+        "Are you sure you want to delete #{manifest.name}?"
+      )
+
+      return unless proceed
+
+      FileUtils.rm_rf(manifest.parent_path)
+      print_message("#{manifest.name} removed")
+    end
+
+    desc 'find', 'Finds a template in collection by name'
+    def find(search_term)
+      results = CLI.manager.find_by_name(search_term)
+      print_table(
+        Presenters.manifest_list(results)
+      )
+    end
+
+    desc 'render', 'Renders project template'
+    method_option(
+      :overwrite,
+      type: :boolean,
+      default: false,
+      desc: 'Option to overwrite any existing files'
+    )
+    def render(manifest_name)
+      manifest = CLI.manager.find_by_name(manifest_name)
+
+      template = manifest.template
+      template.load
+
+      plan = AppArchetype::Template::Plan.new(
+        template,
+        manifest.variables,
+        destination_path: FileUtils.pwd,
+        overwrite: options.overwrite
+      )
+      plan.devise
+      plan.execute
     end
   end
 end

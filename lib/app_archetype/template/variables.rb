@@ -1,10 +1,10 @@
-require 'hashie'
+require 'ostruct'
 require 'json'
 
 module AppArchetype
   module Template
     # Variables is a module for parsing variables for use in templates
-    class Variables < Hashie::Mash
+    class Variables < OpenStruct
       # dot provides a convenient way for a noop render at the
       # beginning of dotfiles
       def dot

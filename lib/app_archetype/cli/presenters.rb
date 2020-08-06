@@ -1,56 +1,50 @@
+require 'tty'
+
 module AppArchetype
-  module CLI
+  class CLI < Thor
     # CLI output presenters
     module Presenters
-      ##
-      # Output table header
-      #
-      RESULT_HEADER = %w[NAME VERSION PATH].freeze
+      class <<self
+        ##
+        # Output table header
+        #
+        RESULT_HEADER = %w[NAME VERSION].freeze
 
-      ##
-      # Show renders a single manifest to STDOUT in table form
-      #
-      # @param [AppArchetype::Template::Manifest] manifest
-      #
-      def self.show(manifest)
-        return CLI.print_message('not found') if manifest.nil?
+        ##
+        # Builds a table of manifest information
+        #
+        # @param [AppArchetype::Template::Manifest] manifest
+        #
+        def manifest(manifest)
+          return 'not found' if manifest.nil?
 
-        result = TTY::Table.new(
-          RESULT_HEADER,
-          [
+          TTY::Table.new(
+            RESULT_HEADER,
             [
-              manifest.name,
-              manifest.version,
-              manifest.path
+              [
+                manifest.name,
+                manifest.version
+              ]
             ]
-          ]
-        )
+          )
+        end
 
-        CLI.print_message(
-          result.render(:ascii)
-        )
-      end
-
-      ##
-      # List renders a set of manifests to STDOUT in table form
-      #
-      # @param [Array] manifests
-      #
-      def self.list(manifests)
-        results = TTY::Table.new(
-          RESULT_HEADER,
-          manifests.map do |manifest|
-            [
-              manifest.name,
-              manifest.version,
-              manifest.path
-            ]
-          end
-        )
-
-        CLI.print_message(
-          results.render(:ascii)
-        )
+        ##
+        # Builds a table of manifest information
+        #
+        # @param [Array] manifests
+        #
+        def manifest_list(manifests)
+          TTY::Table.new(
+            RESULT_HEADER,
+            manifests.map do |manifest|
+              [
+                manifest.name,
+                manifest.version
+              ]
+            end
+          )
+        end
       end
     end
   end

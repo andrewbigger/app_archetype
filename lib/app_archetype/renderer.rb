@@ -5,6 +5,8 @@ require 'ruby-handlebars'
 module AppArchetype
   # Renderer renders a plan
   class Renderer
+    include AppArchetype::Logger
+
     ##
     # Creates a renderer instance
     #
@@ -59,7 +61,7 @@ module AppArchetype
     # @param [AppArchetype::Template::OutputFile] file
     #
     def write_dir(file)
-      CLI.print_message("CREATE dir -> #{file.path}")
+      print_message("CREATE dir -> #{file.path}")
 
       FileUtils.mkdir_p(file.path)
     end
@@ -72,7 +74,7 @@ module AppArchetype
     def render_erb_file(file)
       raise 'cannot overwrite file' if file.exist? && !@overwrite
 
-      CLI.print_message("RENDER erb ->: #{file.path}")
+      print_message("RENDER erb ->: #{file.path}")
       input = File.read(file.source_file_path)
       out = ERB.new(input).result(@plan.variables.instance_eval { binding })
 
@@ -87,7 +89,7 @@ module AppArchetype
     def render_hbs_file(file)
       raise 'cannot overwrite file' if file.exist? && !@overwrite
 
-      CLI.print_message("RENDER hbs ->: #{file.path}")
+      print_message("RENDER hbs ->: #{file.path}")
 
       input = File.read(file.source_file_path)
 
@@ -106,7 +108,7 @@ module AppArchetype
     def copy_file(file)
       raise 'cannot overwrite file' if file.exist? && !@overwrite
 
-      CLI.print_message("COPY file ->: #{file.path}")
+      print_message("COPY file ->: #{file.path}")
 
       FileUtils.cp(file.source_file_path, file.path)
     end

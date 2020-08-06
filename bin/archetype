@@ -1,62 +1,19 @@
 #!/usr/bin/env ruby
 
-$LOAD_PATH.unshift(__dir__ + '/../lib')
+lib_path = File.expand_path('../lib', __dir__)
+$LOAD_PATH.unshift(lib_path) unless $LOAD_PATH.include?(lib_path)
 
-require 'rubygems'
-require 'optparse'
-require 'highline'
-
-require 'app_archetype'
+require 'pry'
 require 'app_archetype/cli'
 
-USAGE = "App Archetype code project template renderer
-
-Usage:\tarchetype <command>
-Options:
-  \s\s\s\s--trace\t\t trace mode on
-  -o, --overwrite\t overwrite existing files [optional]
-  -h, --help\t\t print usage
-
-Commands:
-  new <rel>\t\t creates a template in ARCHETYPE_TEMPLATE_DIR at given rel path
-  open <name>\t\t opens template manifest
-  render <name>\t\t renders project template
-  list\t\t\t lists known templates in ARCHETYPE_TEMPLATE_DIR
-
-  path\t\t\t prints configured ARCHETYPE_TEMPLATE_DIR
-  version\t\t prints gem version
-".freeze
-
-@trace = false
-@overwrite = false
-@dest = Dir.pwd
-
-OptionParser.new do |opts|
-  opts.banner = USAGE
-  opts.on('--trace') { @trace = true }
-  opts.on('-o', '--overwrite BOOL')   { @overwrite = true }
-  opts.on('-d', '--destination PATH') { |d| @dest = d }
-
-  opts.on_tail('-h', '--help') do
-    AppArchetype::CLI.print_message_and_exit(USAGE)
-  end
-end.parse!
-
-begin
-  raise 'no command provided' if ARGV.empty?
-
-  cmd = ARGV.shift
-  AppArchetype::CLI::Commands.public_send(
-    cmd.to_sym,
-    @dest,
-    ARGV,
-    @overwrite
-  )
-rescue StandardError => e
-  AppArchetype::CLI.print_message(e)
-  AppArchetype::CLI.print_message(e.backtrace) if @trace
-  AppArchetype::CLI.print_message("\n")
-  AppArchetype::CLI.print_message_and_exit(USAGE)
+Signal.trap('INT') do
+  warn("\n#{caller.join("\n")}: interrupted")
+  exit(1)
 end
 
-exit(0)
+begin
+  AppArchetype::CLI.start
+rescue StandardError => e
+  puts "ERROR: #{e.message}"
+  exit 1
+end

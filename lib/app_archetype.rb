@@ -1,3 +1,4 @@
+require 'app_archetype/logger'
 require 'app_archetype/template'
 
 require 'app_archetype/manager'
