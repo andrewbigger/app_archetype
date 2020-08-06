@@ -2,13 +2,24 @@ module AppArchetype
   # Generators create empty projects for the app_archetype gem
   module Generators
     # Default variables provided to new projects
-    DEFAULT_VARS = {}.freeze
+    DEFAULT_VARS = {
+      'example_string' => {
+        'type' => 'string',
+        'description' => 'This is an example string variable',
+        'default' => 'default value'
+      },
+      'example_random_string' => {
+        'type' => 'string',
+        'description' => 'Example call to helper to generate 25 char string',
+        'value' => '#random_string,25'
+      }
+    }.freeze
 
     # Function that creates a named, empty manifest for new templates
     TEMPLATE_MANIFEST = lambda do |name|
       {
         'name' => name,
-        'version' => '0.0.1',
+        'version' => '1.0.0',
         'metadata' => {
           'app_archetype' => {
             'version' => AppArchetype::VERSION

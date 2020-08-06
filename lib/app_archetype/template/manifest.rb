@@ -1,3 +1,4 @@
+require 'json-schema'
 require 'ostruct'
 require 'jsonnet'
 
@@ -5,6 +6,42 @@ module AppArchetype
   module Template
     # Manifest is a description of an archetype
     class Manifest
+      ##
+      # Minimum supported archetype version
+      #
+      MIN_ARCHETYPE_VERSION = '1.0.0'.freeze
+
+      ##
+      # Manifest JSON schema
+      #
+      SCHEMA = {
+        type: 'object',
+        required: %w[name version metadata variables],
+
+        properties: {
+          name: {
+            type: 'string'
+          },
+          version: {
+            type: 'string'
+          },
+          metadata: {
+            type: 'object',
+            required: %w[app_archetype],
+
+            properties: {
+              app_archetype: {
+                type: 'object',
+                required: %w[version]
+              }
+            }
+          },
+          variables: {
+            type: 'object'
+          }
+        }
+      }.freeze
+
       class <<self
         ##
         # Creates a [AppArchetype::Template] from a manifest json so long as the
@@ -41,7 +78,7 @@ module AppArchetype
         #
         def incompatible?(manifest)
           manifest_version = manifest['metadata']['app_archetype']['version']
-          manifest_version > AppArchetype::VERSION
+          manifest_version < MIN_ARCHETYPE_VERSION
         rescue NoMethodError
           true
         end
@@ -126,6 +163,28 @@ module AppArchetype
 
         @template ||= AppArchetype::Template::Source.new(template_path)
         @template
+      end
+
+      ##
+      # Runs a schema validation on the given manifest to determine whether
+      # the schema is valid. Returns an array of validation messages.
+      #
+      # @return [Array]
+      def validate
+        JSON::Validator.fully_validate(
+          SCHEMA,
+          @data.to_h.to_json,
+          strict: true
+        )
+      end
+
+      ##
+      # Returns true if manifest is valid
+      #
+      # @return [Boolean]
+      #
+      def valid?
+        validate.empty?
       end
     end
   end

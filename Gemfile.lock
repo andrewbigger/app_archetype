@@ -4,6 +4,7 @@ PATH
     app_archetype (1.0.1)
       highline (~> 2.0)
       json
+      json-schema
       jsonnet
       logger (~> 1.4)
       os
@@ -51,6 +52,8 @@ GEM
     ice_nine (0.11.2)
     jaro_winkler (1.5.4)
     json (2.2.0)
+    json-schema (2.8.1)
+      addressable (>= 2.4)
     jsonnet (0.3.0)
       mini_portile2 (>= 2.2.0)
     launchy (2.4.3)

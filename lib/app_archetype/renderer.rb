@@ -94,7 +94,7 @@ module AppArchetype
       input = File.read(file.source_file_path)
 
       hbs = Handlebars::Handlebars.new
-      out = hbs.compile(input).call(@plan.variables)
+      out = hbs.compile(input).call(@plan.variables.to_h)
 
       File.open(file.path.gsub('.hbs', ''), 'w+') { |f| f.write(out) }
     end

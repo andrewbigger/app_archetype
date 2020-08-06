@@ -3,23 +3,78 @@ require 'json'
 
 module AppArchetype
   module Template
-    # Variables is a module for parsing variables for use in templates
-    class Variables < OpenStruct
-      # dot provides a convenient way for a noop render at the
-      # beginning of dotfiles
-      def dot
-        ''
+    # Variables is a collection of variables
+    class Variables
+      def initialize(vars)
+        @data = []
+
+        vars.each do |name, spec|
+          @data << AppArchetype::Template::Variable.new(name, spec)
+        end
       end
 
       ##
-      # rand
+      # Returns all variables managed by the variable manager.
       #
-      # generates a random string at specified length
+      # @return [Array]
       #
-      # @param [Integer] length
-      def rand(length = 256)
-        key_set = ('a'..'z').to_a + ('A'..'Z').to_a + (0..9).to_a
-        (0...length).map { key_set[Random.rand(0..key_set.length)] }.join
+      def all
+        @data
+      end
+
+      ##
+      # Retrieves a variable by name from the variable manager.
+      #
+      # @param [String] name
+      #
+      # @return [AppArchetype::Template::Variable]
+      #
+      def get(name)
+        @data.detect { |var| var.name == name }
+      end
+
+      ##
+      # Creates a hash representation of variables.
+      #
+      # The variable name is the key, and the currrent value
+      # is the value.
+      #
+      # @return [Hash]
+      #
+      def to_h
+        var_hash = {}
+
+        @data.each do |var|
+          var_hash[var.name] = var.value
+        end
+
+        var_hash
+      end
+
+      ##
+      # Method missing callback
+      #
+      def respond_to_missing?
+        true
+      end
+
+      ##
+      # Method missing retrieves variable from manager and
+      # returns the value to the caller if it is found.
+      # 
+      # When a call is made to an undefined variable, a 
+      # MethodMissing error will be raised.
+      #
+      # @params [Symbol] method
+      # @params [Array] args
+      #
+      # @return [Object]
+      #
+      def method_missing(method, *args)
+        var = get(method.to_s)
+        return var.value if var
+
+        super
       end
     end
   end

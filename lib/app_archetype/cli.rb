@@ -4,6 +4,7 @@ require 'tty-prompt'
 
 require 'app_archetype'
 require 'app_archetype/cli/presenters'
+require 'app_archetype/cli/prompts'
 
 module AppArchetype
   # Command line interface helpers and actions
@@ -99,7 +100,7 @@ module AppArchetype
     desc 'open', 'Opens template manifest'
     def open(name)
       editor = CLI.editor
-      manifest = CLI.manager.find(name)
+      manifest = CLI.manager.find_by_name(name)
 
       pid = Process.spawn("#{editor} #{manifest.path}")
       Process.waitpid(pid)
@@ -115,30 +116,60 @@ module AppArchetype
       name = File.basename(rel)
       AppArchetype::Generators.render_empty_template(name, dest)
 
-      print_message("Template #{name} created at #{dest}")
+      print_message("Template `#{name}` created at #{dest}")
     end
 
     desc 'delete', 'Deletes a template in ARCHETYPE_TEMPLATE_DIR'
     def delete(name)
-      manifest = CLI.manager.find(name)
-      raise 'canot find template' unless manifest
+      manifest = CLI.manager.find_by_name(name)
+      raise 'Cannot find template' unless manifest
 
-      prompt = TTY::Prompt.new
-      proceed = prompt.yes?(
-        "Are you sure you want to delete #{manifest.name}?"
-      )
+      proceed = Prompts.delete_template(manifest)
 
       return unless proceed
 
       FileUtils.rm_rf(manifest.parent_path)
-      print_message("#{manifest.name} removed")
+      print_message("Template `#{manifest.name}` has been removed")
+    end
+
+    desc 'validate', 'Runs a schema validation on given template'
+    def validate(name)
+      manifest = CLI.manager.find_by_name(name)
+      raise 'Cannot find template' unless manifest
+
+      result = manifest.validate
+
+      print_message("VALIDATION RESULTS FOR `#{name}`")
+      if result.any?
+        print_table(
+          Presenters.validation_result(result)
+        )
+
+        raise "Manifest `#{name}` is not valid"
+      end
+
+      print_message("Manifest `#{name}` is valid") if result.empty?
+    end
+
+    desc 'variables', 'Prints template variables'
+    def variables(search_term)
+      result = CLI.manager.find_by_name(search_term)
+      return print_message("Manifest `#{search_term}` not found") unless result
+
+      print_message("VARIABLES FOR `#{search_term}`")
+      print_table(
+        Presenters.variable_list(result.variables.all)
+      )
     end
 
     desc 'find', 'Finds a template in collection by name'
     def find(search_term)
-      results = CLI.manager.find_by_name(search_term)
+      result = CLI.manager.find_by_name(search_term)
+      return print_message("Manifest `#{search_term}` not found") unless result
+
+      print_message("SEARCH RESULTS FOR `#{search_term}`")
       print_table(
-        Presenters.manifest_list(results)
+        Presenters.manifest_list([result])
       )
     end
 
@@ -152,8 +183,15 @@ module AppArchetype
     def render(manifest_name)
       manifest = CLI.manager.find_by_name(manifest_name)
 
+      raise "Unable to find manifest `#{manifest_name}`" unless manifest
+
       template = manifest.template
       template.load
+
+      manifest.variables.all.each do |var|
+        value = Prompts.variable_prompt_for(var)
+        var.set!(value)
+      end
 
       plan = AppArchetype::Template::Plan.new(
         template,

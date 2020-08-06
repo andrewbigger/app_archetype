@@ -15,5 +15,6 @@ begin
   AppArchetype::CLI.start
 rescue StandardError => e
   puts "ERROR: #{e.message}"
+  puts e.backtrace.join("\n")
   exit 1
 end

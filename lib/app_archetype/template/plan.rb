@@ -101,7 +101,7 @@ module AppArchetype
       #
       def render_path(path)
         hbs = Handlebars::Handlebars.new
-        hbs.compile(path).call(@variables)
+        hbs.compile(path).call(@variables.to_h)
       end
     end
 
