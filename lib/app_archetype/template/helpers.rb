@@ -123,11 +123,6 @@ module AppArchetype
           .tr('_', '-')
           .downcase
       end
-
-      def pascal_case(string)
-        string
-          
-      end
     end
   end
 end

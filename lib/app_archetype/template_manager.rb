@@ -1,6 +1,6 @@
 module AppArchetype
   # Manager looks after a set of archetypes
-  class Manager
+  class TemplateManager
     ##
     # Default filter is a lambda that returns true for all manifests
     #
@@ -45,7 +45,7 @@ module AppArchetype
     # the filtered set.
     #
     # @example
-    #   manager = AppArchetype::Manager.new('/path/to/templates')
+    #   manager = AppArchetype::TemplateManager.new('/path/to/templates')
     #   query = -> (manifest) { manifest.name = "fudge" }
     #
     #   fudge_templates = manager.filter(query)
@@ -63,7 +63,7 @@ module AppArchetype
     # Searches for manifests matching given name and returns it to caller.
     #
     # @example:
-    #   manager = AppArchetype::Manager.new('/path/to/templates')
+    #   manager = AppArchetype::TemplateManager.new('/path/to/templates')
     #   fudge_manifest = manager.find('fudge')
     #
     # @param [String] name
@@ -87,7 +87,7 @@ module AppArchetype
     # matching manifest is returned.
     #
     # @example:
-    #   manager = AppArchetype::Manager.new('/path/to/templates')
+    #   manager = AppArchetype::TemplateManager.new('/path/to/templates')
     #   fudge_manifest = manager.find('fudge')
     #
     # @param [String] name

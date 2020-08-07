@@ -7,6 +7,9 @@
     
   Style/SpecialGlobalVars:
     Enabled: false
+
+  Style/MissingRespondToMissing:
+    Enabled: false
   
   Metrics/ClassLength:
     Max: 200

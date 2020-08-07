@@ -40,7 +40,7 @@ module AppArchetype
       # @return [Boolean]
       #
       BOOLEAN_VALIDATOR = lambda do |input|
-        [true, false].include?(input)
+        [true, false, 'true', 'false'].include?(input)
       end
 
       ##
@@ -62,7 +62,7 @@ module AppArchetype
         'string' => STRING_VALIDATOR,
         'boolean' => BOOLEAN_VALIDATOR,
         'integer' => INTEGER_VALIDATOR
-      }
+      }.freeze
 
       ##
       # Default validation function (string validator)

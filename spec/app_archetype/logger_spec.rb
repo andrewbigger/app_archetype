@@ -7,16 +7,42 @@ RSpec.describe AppArchetype::Logger do
 
   subject { Object.new.extend(described_class) }
 
+  before do
+    allow(subject).to receive(:exit).and_return(double)
+  end
+
   describe '.logger' do
     let(:out) { double(STDOUT) }
     before do
       allow(Logger).to receive(:new).and_return(logger)
       allow(logger).to receive(:formatter=)
+
       subject.logger(out)
     end
 
     it 'creates a new logger to STDOUT' do
       expect(Logger).to have_received(:new).with(out)
+    end
+  end
+
+  describe '.print_table' do
+    let(:table) { double(TTY::Table) }
+    let(:table_ascii_output) { 'rendered-table' }
+
+    before do
+      allow(subject).to receive(:logger).and_return(logger)
+      allow(logger).to receive(:info)
+      allow(table).to receive(:render).and_return(table_ascii_output)
+
+      subject.print_table(table)
+    end
+
+    it 'renders table in ascii format' do
+      expect(table).to have_received(:render).with(:ascii)
+    end
+
+    it 'prints table to info logger' do
+      expect(logger).to have_received(:info).with(table_ascii_output)
     end
   end
 

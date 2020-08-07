@@ -113,6 +113,8 @@ RSpec.describe AppArchetype::Template::Manifest do
     end
   end
 
+  subject { described_class.new(path, data) }
+
   describe '#name' do
     let(:path) { 'path/to/manifest.json' }
 
@@ -124,12 +126,8 @@ RSpec.describe AppArchetype::Template::Manifest do
       }
     end
 
-    before do
-      @manifest = described_class.new(path, data)
-    end
-
     it 'returns name' do
-      expect(@manifest.name).to eq 'test_manifest'
+      expect(subject.name).to eq 'test_manifest'
     end
   end
 
@@ -144,12 +142,8 @@ RSpec.describe AppArchetype::Template::Manifest do
       }
     end
 
-    before do
-      @manifest = described_class.new(path, data)
-    end
-
     it 'returns version' do
-      expect(@manifest.version).to eq '0.1.0'
+      expect(subject.version).to eq '0.1.0'
     end
   end
 
@@ -166,12 +160,8 @@ RSpec.describe AppArchetype::Template::Manifest do
       }
     end
 
-    before do
-      @manifest = described_class.new(path, data)
-    end
-
     it 'returns metadata' do
-      expect(@manifest.metadata).to eq meta
+      expect(subject.metadata).to eq meta
     end
   end
 
@@ -191,22 +181,63 @@ RSpec.describe AppArchetype::Template::Manifest do
 
     before do
       allow(File).to receive(:exist?).and_return(exist)
-
-      @manifest = described_class.new(path, data)
     end
 
     it 'loads template adjacent to manifest' do
-      expect(@manifest.template.path).to eq('path/to/template')
+      expect(subject.template.path).to eq('path/to/template')
     end
 
     context 'when template files do not exist' do
       let(:exist) { false }
 
       it 'raises cannot find template error' do
-        expect { @manifest.template }.to raise_error(
+        expect { subject.template }.to raise_error(
           RuntimeError,
           'cannot find template for manifest test_manifest'
         )
+      end
+    end
+  end
+
+  describe 'validate' do
+    let(:path) { 'path/to/manifest.json' }
+    let(:data) { {} }
+    let(:result) { [] }
+
+    before do
+      allow(JSON::Validator).to receive(:fully_validate).and_return(result)
+      subject.validate
+    end
+
+    it 'runs json schema validation with manifest schema' do
+      expect(JSON::Validator).to have_received(:fully_validate)
+        .with(
+          AppArchetype::Template::Manifest::SCHEMA,
+          data.to_json,
+          strict: true
+        )
+    end
+  end
+
+  describe '#valid?' do
+    let(:path) { 'path/to/manifest.json' }
+    let(:data) { {} }
+    let(:validation_results) { [] }
+
+    before do
+      allow(subject).to receive(:validate).and_return(validation_results)
+    end
+
+    context 'when manifest is valid' do
+      it 'returns true' do
+        expect(subject.valid?).to be true
+      end
+    end
+
+    context 'when manifest is invalid' do
+      let(:validation_results) { ['there was a validation error'] }
+      it 'returns true' do
+        expect(subject.valid?).to be false
       end
     end
   end

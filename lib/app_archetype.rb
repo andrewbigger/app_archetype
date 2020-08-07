@@ -3,7 +3,7 @@ require 'core_ext/string'
 require 'app_archetype/logger'
 require 'app_archetype/template'
 
-require 'app_archetype/manager'
+require 'app_archetype/template_manager'
 require 'app_archetype/renderer'
 require 'app_archetype/generators'
 

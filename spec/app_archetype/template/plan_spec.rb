@@ -22,7 +22,7 @@ RSpec.describe AppArchetype::Template::Plan do
 
     before do
       allow(subject).to receive(:destination_exist?).and_return(dest_exist)
-      template.instance_variable_set(:@source_files, ['path/to/file'])
+      allow(template).to receive(:files).and_return(['path/to/file'])
     end
 
     it 'creates file objects' do

@@ -59,10 +59,10 @@ module AppArchetype
       ##
       # Template manager creates and loads a template manager
       #
-      # @return [AppArchetype::Manager]
+      # @return [AppArchetype::TemplateManager]
       #
       def manager
-        @manager ||= AppArchetype::Manager.new(template_dir)
+        @manager ||= AppArchetype::TemplateManager.new(template_dir)
         @manager.load
 
         @manager

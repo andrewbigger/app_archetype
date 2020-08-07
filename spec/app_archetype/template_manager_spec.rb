@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe AppArchetype::Manager do
+RSpec.describe AppArchetype::TemplateManager do
   let(:template_dir) { 'path/to/templates' }
 
   subject do
@@ -20,17 +20,40 @@ RSpec.describe AppArchetype::Manager do
 
     before do
       allow(Dir).to receive(:glob).and_return(files)
-      allow(AppArchetype::Template::Manifest).to receive(:new_from_file)
-        .and_return(manifest)
-
-      subject.load
     end
 
-    it 'loads manifests' do
-      expect(subject.manifests.count).to be 2
+    context 'when manifest is valid' do
+      before do
+        allow(AppArchetype::Template::Manifest).to receive(:new_from_file)
+          .and_return(manifest)
 
-      subject.manifests.each do |manifest|
-        expect(manifest).to eq manifest
+        subject.load
+      end
+
+      it 'loads manifests' do
+        expect(subject.manifests.count).to be 2
+
+        subject.manifests.each do |manifest|
+          expect(manifest).to eq manifest
+        end
+      end
+    end
+
+    context 'when a manifest is invalid' do
+      before do
+        allow(AppArchetype::Template::Manifest).to receive(:new_from_file)
+          .and_raise('something went wrong parsing manifest')
+
+        allow(subject).to receive(:puts)
+
+        subject.load
+      end
+
+      it 'prints invalid template warning for each failed template' do
+        expect(subject)
+          .to have_received(:puts)
+          .with('WARN: `path/to/dir/manifest.json` is invalid, skipping')
+          .twice
       end
     end
   end

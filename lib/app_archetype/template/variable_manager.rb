@@ -53,13 +53,6 @@ module AppArchetype
       end
 
       ##
-      # Method missing callback
-      #
-      def respond_to_missing?(*_args)
-        true
-      end
-
-      ##
       # Method missing retrieves variable from manager and
       # returns the value to the caller if it is found.
       # 

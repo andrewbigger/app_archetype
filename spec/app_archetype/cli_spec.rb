@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe AppArchetype::CLI do
-  before do
-    allow(described_class).to receive(:exit).and_return(double)
-  end
+  subject { described_class.new }
 
   describe '.manager' do
     let(:manager) { double }
@@ -11,7 +9,7 @@ RSpec.describe AppArchetype::CLI do
 
     before do
       allow(described_class).to receive(:template_dir).and_return(template_dir)
-      allow(AppArchetype::Manager).to receive(:new).and_return(manager)
+      allow(AppArchetype::TemplateManager).to receive(:new).and_return(manager)
 
       allow(manager).to receive(:load)
 
@@ -19,7 +17,7 @@ RSpec.describe AppArchetype::CLI do
     end
 
     it 'creates a manager' do
-      expect(AppArchetype::Manager).to have_received(:new).with(template_dir)
+      expect(AppArchetype::TemplateManager).to have_received(:new).with(template_dir)
       expect(manager).to have_received(:load)
       expect(@manager).to eq manager
     end
@@ -108,6 +106,39 @@ RSpec.describe AppArchetype::CLI do
             'please check your configuration'
           )
       end
+    end
+  end
+
+  describe '.exit_on_failure?' do
+    it 'returns true' do
+      expect(described_class.exit_on_failure?).to be true
+    end
+  end
+
+  describe '#version' do
+    before do
+      allow(subject).to receive(:print_message)
+      subject.version
+    end
+
+    it 'prints current version number' do
+      expect(subject).to have_received(:print_message)
+        .with(AppArchetype::VERSION)
+    end
+  end
+
+  describe '#list' do
+    let(:manager) { double(AppArchetype::TemplateManager) }
+    let(:manifests) { [] }
+
+    before do
+      allow(subject).to receive(:print_table)
+
+      subject.list
+    end
+
+    it 'prints manifest list table' do
+      expect(subject).to have_received(:print_table)
     end
   end
 end
