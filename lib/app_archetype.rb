@@ -1,3 +1,5 @@
+require 'core_ext/string'
+
 require 'app_archetype/logger'
 require 'app_archetype/template'
 

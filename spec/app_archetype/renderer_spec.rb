@@ -5,7 +5,7 @@ RSpec.describe AppArchetype::Renderer do
   let(:template) { AppArchetype::Template::Source.new('path/to/template') }
   let(:destination) { 'path/to/destination' }
   let(:variables) do
-    Hashie::Mash.new(
+    OpenStruct.new(
       foo: 'bar'
     )
   end
@@ -19,7 +19,7 @@ RSpec.describe AppArchetype::Renderer do
   let(:overwrite) { false }
 
   before do
-    allow(AppArchetype::CLI).to receive(:logger).and_return(logger)
+    allow(subject).to receive(:logger).and_return(logger)
     allow(logger).to receive(:info)
   end
 
@@ -190,7 +190,7 @@ RSpec.describe AppArchetype::Renderer do
     end
 
     context 'when a variable is missing' do
-      let(:vars) { Hashie::Mash.new }
+      let(:vars) { OpenStruct.new }
       let(:var_value) { '' }
 
       it 'renders template with blank' do
@@ -238,7 +238,7 @@ RSpec.describe AppArchetype::Renderer do
     end
 
     context 'when a variable is missing' do
-      let(:vars) { Hashie::Mash.new }
+      let(:vars) { OpenStruct.new }
       let(:var_value) { '' }
 
       it 'renders template with blank' do

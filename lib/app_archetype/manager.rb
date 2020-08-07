@@ -29,7 +29,7 @@ module AppArchetype
       ).each do |manifest|
         begin
           @manifests << AppArchetype::Template::Manifest.new_from_file(manifest)
-        rescue StandardError => e
+        rescue StandardError
           puts "WARN: `#{manifest}` is invalid, skipping"
           next
         end

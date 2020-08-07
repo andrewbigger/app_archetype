@@ -4,7 +4,7 @@ RSpec.describe AppArchetype::Template::Plan do
   let(:template) { AppArchetype::Template::Source.new('path/to/template') }
   let(:destination) { 'path/to/destination' }
   let(:variables) do
-    Hashie::Mash.new(
+    OpenStruct.new(
       foo: 'bar'
     )
   end

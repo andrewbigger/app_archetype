@@ -78,7 +78,8 @@ module AppArchetype
         #
         def incompatible?(manifest)
           manifest_version = manifest['metadata']['app_archetype']['version']
-          manifest_version < MIN_ARCHETYPE_VERSION
+          return true if manifest_version < MIN_ARCHETYPE_VERSION
+          return true if manifest_version > AppArchetype::VERSION
         rescue NoMethodError
           true
         end
@@ -98,7 +99,7 @@ module AppArchetype
       def initialize(path, data)
         @path = path
         @data = OpenStruct.new(data)
-        @variables = AppArchetype::Template::Variables.new(@data.variables)
+        @variables = AppArchetype::Template::VariableManager.new(@data.variables)
       end
 
       ##

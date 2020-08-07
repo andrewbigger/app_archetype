@@ -1,64 +1,113 @@
 require 'spec_helper'
 
 RSpec.describe AppArchetype::CLI::Presenters do
-  describe '.show' do
-    let(:template) { double(AppArchetype::Template::Source) }
-    let(:result_table) { double }
-    let(:result_table_ascii) { 'ascii-table' }
+  describe '.manifest_list' do
+    let(:manifest) do
+      double(
+        AppArchetype::Template::Manifest, 
+        name: 'test_manifest',
+        version: '1.0.0'
+      )
+    end
+
+    let(:manifests) { [manifest, manifest] }
 
     before do
-      allow(AppArchetype::CLI).to receive(:print_message)
-
-      allow(TTY::Table).to receive(:new).and_return(result_table)
-      allow(result_table).to receive(:render).and_return(result_table_ascii)
-
-      allow(template).to receive(:name).and_return('foo')
-      allow(template).to receive(:version).and_return('1.0.0')
-      allow(template).to receive(:path).and_return('path/to/manifest.json')
-
-      described_class.show(template)
+      @info = described_class.manifest_list(manifests)
     end
 
-    it 'prints table' do
-      expect(AppArchetype::CLI)
-        .to have_received(:print_message)
-        .with(result_table_ascii)
+    it 'returns tty table' do
+      expect(@info).to be_a TTY::Table
     end
 
-    context 'when not found' do
-      let(:template) { nil }
+    it 'has result headers' do
+      AppArchetype::CLI::Presenters::RESULT_HEADER.each do |col_name|
+        expect(
+          @info.header.detect { |h| h == col_name }
+        ).not_to be nil
+      end
+    end
 
-      it 'prints not found' do
-        expect(AppArchetype::CLI)
-          .to have_received(:print_message)
-          .with('not found')
+    it 'has results' do
+      expect(@info.rows.count).to be manifests.count
+
+      @info.rows.each do |row|
+        expect(row.fields[0].value).to eq 'test_manifest'
+        expect(row.fields[1].value).to eq '1.0.0'
       end
     end
   end
 
-  describe '.list' do
-    let(:templates) { [template, template] }
-    let(:template) { double(AppArchetype::Template::Source) }
-    let(:result_table) { double }
-    let(:result_table_ascii) { 'ascii-table' }
-
-    before do
-      allow(AppArchetype::CLI).to receive(:print_message)
-
-      allow(TTY::Table).to receive(:new).and_return(result_table)
-      allow(result_table).to receive(:render).and_return(result_table_ascii)
-
-      allow(template).to receive(:name).and_return('foo')
-      allow(template).to receive(:version).and_return('1.0.0')
-      allow(template).to receive(:path).and_return('path/to/manifest.json')
-
-      described_class.list(templates)
+  describe '.variable_list' do
+    let(:variable) do
+      double(
+        AppArchetype::Template::Variable, 
+        name: 'foo',
+        description: 'a foo',
+        default: 'yolo',
+        value: 'bar'
+      )
     end
 
-    it 'prints table' do
-      expect(AppArchetype::CLI)
-        .to have_received(:print_message)
-        .with(result_table_ascii)
+    let(:variables) { [variable, variable] }
+
+    before do
+      @info = described_class.variable_list(variables)
+    end
+
+    it 'returns tty table' do
+      expect(@info).to be_a TTY::Table
+    end
+
+    it 'has variable result headers' do
+      AppArchetype::CLI::Presenters::VARIABLE_HEADER.each do |col_name|
+        expect(
+          @info.header.detect { |h| h == col_name }
+        ).not_to be nil
+      end
+    end
+
+    it 'has results' do
+      expect(@info.rows.count).to be variables.count
+
+      @info.rows.each do |row|
+        expect(row.fields[0].value).to eq 'foo'
+        expect(row.fields[1].value).to eq 'a foo'
+        expect(row.fields[2].value).to eq 'yolo'
+      end
+    end
+  end
+
+  describe '.validation_results' do
+    let(:results) do
+      [
+        'something went wrong',
+        'something went wrong'
+      ]
+    end
+
+    before do
+      @info = described_class.validation_result(results)
+    end
+
+    it 'returns tty table' do
+      expect(@info).to be_a TTY::Table
+    end
+
+    it 'has validation result headers' do
+      AppArchetype::CLI::Presenters::VALIDATION_HEADER.each do |col_name|
+        expect(
+          @info.header.detect { |h| h == col_name }
+        ).not_to be nil
+      end
+    end
+
+    it 'has results' do
+      expect(@info.rows.count).to be results.count
+
+      @info.rows.each do |row|
+        expect(row.fields[0].value).to eq 'something went wrong'
+      end
     end
   end
 end

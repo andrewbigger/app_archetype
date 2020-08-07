@@ -3,9 +3,10 @@ require 'json'
 
 module AppArchetype
   module Template
-    # Variables is a collection of variables
-    class Variables
+    # Manages a collection of variables
+    class VariableManager
       def initialize(vars)
+        vars ||= []
         @data = []
 
         vars.each do |name, spec|
@@ -54,7 +55,7 @@ module AppArchetype
       ##
       # Method missing callback
       #
-      def respond_to_missing?
+      def respond_to_missing?(*_args)
         true
       end
 
@@ -62,7 +63,7 @@ module AppArchetype
       # Method missing retrieves variable from manager and
       # returns the value to the caller if it is found.
       # 
-      # When a call is made to an undefined variable, a 
+      # When a call is made to an undefined variable, a
       # MethodMissing error will be raised.
       #
       # @params [Symbol] method

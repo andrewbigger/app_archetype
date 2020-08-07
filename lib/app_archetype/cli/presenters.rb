@@ -4,41 +4,22 @@ module AppArchetype
   class CLI < Thor
     # CLI output presenters
     module Presenters
+      ##
+      # Output table header
+      #
+      RESULT_HEADER = %w[NAME VERSION].freeze
+
+      ##
+      # Variable table header
+      #
+      VARIABLE_HEADER = %w[NAME DESCRIPTION DEFAULT].freeze
+
+      ##
+      # Validation result table header
+      #
+      VALIDATION_HEADER = %w[ERROR].freeze
+
       class <<self
-        ##
-        # Output table header
-        #
-        RESULT_HEADER = %w[NAME VERSION].freeze
-
-        ##
-        # Variable table header
-        #
-        VARIABLE_HEADER = %w[NAME DESCRIPTION DEFAULT].freeze
-
-        ##
-        # Validation result table header
-        #
-        VALIDATION_HEADER = %w[ERROR]
-
-        ##
-        # Builds a table of manifest information
-        #
-        # @param [AppArchetype::Template::Manifest] manifest
-        #
-        def manifest_info(manifest)
-          [
-            TTY::Table.new(
-              RESULT_HEADER,
-              [
-                [
-                  manifest.name,
-                  manifest.version
-                ]
-              ]
-            ),
-          ]
-        end
-
         ##
         # Builds a table of manifest information
         #

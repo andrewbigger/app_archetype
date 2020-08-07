@@ -1,3 +1,5 @@
+require 'securerandom'
+
 module AppArchetype
   module Template
     # Template rendering helpers
@@ -6,6 +8,15 @@ module AppArchetype
       # beginning of dotfiles
       def dot
         ''
+      end
+
+      ##
+      # Returns this year as YYYY
+      #
+      # @return [String]
+      #
+      def this_year
+        Time.now.strftime('%Y')
       end
 
       ##
@@ -73,51 +84,30 @@ module AppArchetype
       end
 
       ##
-      # Downcases and substitutes space in a string with underscores. 
-      # This is useful for turning a Title into a function name from
-      # a manifest variable definition.
-      #
-      # @example
-      #   str = 'A string with     space'
-      #   puts underscore(str) # => outputs 'a_string_with_____space'
-      #
-      # @param [String] string
-      #
-      # @return [String]
-      #
-      def underscore(string)
-        string
-          .gsub(/::/, '/')
-          .gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
-          .gsub(/([a-z\d])([A-Z])/, '\1_\2')
-          .tr('-', '_')
-          .tr(' ', '_')
-          .downcase
-      end
-
-      ##
-      # Changes a pascal case strring into camel case. Useful for 
+      # Changes a string into snake case. Useful for 
       # converting class names to function or file names.
       #
       # @example
       #   str = 'AGreatExample'
-      #   puts camel_case(str) # => outputs 'a_great_example'
+      #   puts snake_case(str) # => outputs 'a_great_example'
       #
       # @param [String] string
       #
       # @return [String]
       #
-      def camel_case(string)
+      def snake_case(string)
         return string.downcase if string =~ /\A[A-Z]+\z/
 
         string
           .gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
           .gsub(/([a-z])([A-Z])/, '\1_\2')
+          .gsub(/\s/, '_')
+          .tr('-', '_')
           .downcase
       end
 
       ##
-      # Downcase and converts a camel case string into dashcase
+      # Downcase and converts a string into dashcase string
       #
       # @example
       #   str = 'AGreatExample'
@@ -130,7 +120,13 @@ module AppArchetype
           .gsub(/([A-Z]+)([A-Z][a-z])/, '\1-\2')
           .gsub(/([a-z])([A-Z])/, '\1-\2')
           .tr(' ', '-')
+          .tr('_', '-')
           .downcase
+      end
+
+      def pascal_case(string)
+        string
+          
       end
     end
   end

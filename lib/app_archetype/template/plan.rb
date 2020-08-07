@@ -10,7 +10,7 @@ module AppArchetype
       # Creates a new plan from given source and variables.
       #
       # @param [AppArchetype::Template::Source] template
-      # @param [AppArchetype::Template::Variables] variables
+      # @param [AppArchetype::Template::VariableManager] variables
       # @param [String] destination_path
       # @param [Boolean] overwrite
       #

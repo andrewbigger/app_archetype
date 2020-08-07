@@ -15,7 +15,18 @@ RSpec.describe AppArchetype::Template::Manifest do
     end
 
     let(:version) { '0.0.1' }
-    let(:vars) { {} }
+    let(:vars) do
+      {
+        'foo' => {
+          'description' => 'a foo',
+          'default' => 'bar'
+        },
+        'bar' => {
+          'description' => 'a bar',
+          'default' => 'foo'
+        }
+      }
+    end
     let(:content) do
       {
         'name' => manifest_name,
@@ -53,7 +64,7 @@ RSpec.describe AppArchetype::Template::Manifest do
       end
 
       it 'has variables' do
-        expect(@parsed.variables).to eq vars
+        expect(@parsed.variables).to be_a AppArchetype::Template::VariableManager
       end
     end
 
@@ -62,6 +73,23 @@ RSpec.describe AppArchetype::Template::Manifest do
         {
           'app_archetype' => {
             'version' => '999.999.999'
+          }
+        }
+      end
+
+      it 'raises incompatibility error' do
+        expect do
+          described_class.new_from_file(file_path)
+        end.to raise_error 'provided manifest is invalid or incompatible with '\
+        'this version of app archetype'
+      end
+    end
+
+    context 'when manifest is from an earlier incompatible version of app archetype' do
+      let(:app_archetype_meta) do
+        {
+          'app_archetype' => {
+            'version' => '0.9.9'
           }
         }
       end

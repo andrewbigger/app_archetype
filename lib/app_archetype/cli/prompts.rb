@@ -2,6 +2,21 @@ module AppArchetype
   class CLI < Thor
     # CLI output presenters
     module Prompts
+      ##
+      # Variable prompt question. Asked when evaluating template
+      # variables
+      #
+      # @param [AppArchetype::Template::Variable] variable
+      #
+      # @return [Proc]
+      #
+      VAR_PROMPT_MESSAGE = lambda do |variable|
+        "\nEnter value for `#{variable.name}` variable\n\n"\
+        "DESCRIPTION: #{variable.description}\n"\
+        "TYPE: #{variable.type}\n"\
+        "DEFAULT: #{variable.default}"
+      end
+
       class <<self
         ##
         # Prompt returns a TTY prompt object for asking the user
@@ -21,23 +36,8 @@ module AppArchetype
         # @return [Boolean]
         def delete_template(manifest)
           prompt.yes?(
-            "Are you sure you want to delete #{manifest.name}?"
+            "Are you sure you want to delete `#{manifest.name}`?"
           )
-        end
-
-        ##
-        # Variable prompt question. Asked when evaluating template
-        # variables
-        #
-        # @param [AppArchetype::Template::Variable] variable
-        #
-        # @return [Proc]
-        #
-        VAR_PROMPT_MESSAGE = lambda do |variable|
-          "\nEnter value for #{variable.name} variable\n\n"\
-          "DESCRIPTION: #{variable.description}\n"\
-          "TYPE: #{variable.type}"\
-          "DEFAULT: #{variable.default}"
         end
 
         ##
@@ -45,10 +45,10 @@ module AppArchetype
         # required. Once prompt has been executed, the response is
         # returned to the caller.
         #
-        # When the value is set in the manifest, the set value is 
+        # When the value is set in the manifest, the set value is
         # returned without a prompt.
         #
-        # For boolean and integer variables, the relevant prompt 
+        # For boolean and integer variables, the relevant prompt
         # function is called.
         # 
         # By default the string variable prompt will be used.

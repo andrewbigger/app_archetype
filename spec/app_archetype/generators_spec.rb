@@ -5,7 +5,7 @@ RSpec.describe AppArchetype::Generators do
     let(:name) { 'project' }
 
     before do
-      @manifest = Hashie::Mash.new(
+      @manifest = OpenStruct.new(
         described_class::TEMPLATE_MANIFEST.call(name)
       )
     end
@@ -15,20 +15,30 @@ RSpec.describe AppArchetype::Generators do
     end
 
     it 'has expected version' do
-      expect(@manifest.version).to eq '0.0.1'
+      expect(@manifest.version).to eq '1.0.0'
     end
 
     it 'has app archetype metadata' do
-      expect(@manifest.metadata.app_archetype).not_to be nil
+      expect(@manifest.metadata['app_archetype']).not_to be nil
     end
 
     it 'renders app version into archetype metadata' do
-      expect(@manifest.metadata.app_archetype.version)
+      expect(@manifest.metadata['app_archetype']['version'])
         .to eq AppArchetype::VERSION
     end
 
     it 'has default variables' do
       expect(@manifest.variables).to eq described_class::DEFAULT_VARS
+    end
+
+    it 'renders a manifest that is compliant with the manifest schema' do
+      expect(
+        JSON::Validator.fully_validate(
+          AppArchetype::Template::Manifest::SCHEMA,
+          @manifest.to_h.to_json,
+          strict: true
+        ).empty?
+      ).to be true
     end
   end
 

@@ -72,7 +72,56 @@ RSpec.describe AppArchetype::Manager do
     end
   end
 
-  describe '#find' do
+  describe '#search_by_name' do
+    let(:search_term) { 'target' }
+    let(:lang) { '.rb' }
+
+    let(:manifest) do
+      AppArchetype::Template::Manifest.new(
+        'path/to/manifest.json',
+        'name' => 'manifest'
+      )
+    end
+
+    let(:target_manifest) do
+      AppArchetype::Template::Manifest.new(
+        'path/to/manifest.json',
+        'name' => 'target'
+      )
+    end
+
+    let(:another_target_manifest) do
+      AppArchetype::Template::Manifest.new(
+        'path/to/manifest.json',
+        'name' => 'target and more'
+      )
+    end
+
+    let(:manifests) do
+      [
+        manifest,
+        manifest,
+        target_manifest,
+        another_target_manifest
+      ]
+    end
+
+    before do
+      subject.instance_variable_set(:@manifests, manifests)
+      @result = subject.search_by_name(search_term)
+    end
+
+    it 'returns both matching manifests' do
+      expect(@result).to eq(
+        [
+          target_manifest,
+          another_target_manifest
+        ]
+      )
+    end
+  end
+
+  describe '#find_by_name' do
     let(:search_term) { 'target' }
     let(:lang) { '.rb' }
 
@@ -108,11 +157,42 @@ RSpec.describe AppArchetype::Manager do
 
     before do
       subject.instance_variable_set(:@manifests, manifests)
-      @result = subject.find(search_term)
     end
 
-    it 'returns first found' do
-      expect(@result).to eq target_manifest
+    it 'returns only matching manifest' do
+      expect(subject.find_by_name(search_term)).to eq target_manifest
+    end
+
+    context 'when there are 2 manifests with the same name' do
+      let(:manifests) do
+        [
+          manifest,
+          manifest,
+          target_manifest,
+          target_manifest
+        ]
+      end
+
+      it 'raises runtime error' do
+        expect do
+          subject.find_by_name(search_term)
+        end.to raise_error(
+          'more than one manifest matching the given name were found'
+        )
+      end
+
+      context 'when ignoring duplicates' do
+        it 'ignores error' do
+          expect do
+            subject.find_by_name(search_term, ignore_dupe: true)
+          end.not_to raise_error
+        end
+
+        it 'returns first manifest' do
+          expect(subject.find_by_name(search_term, ignore_dupe: true))
+            .to eq target_manifest
+        end
+      end
     end
   end
 end
