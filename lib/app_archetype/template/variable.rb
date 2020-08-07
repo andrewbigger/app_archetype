@@ -137,12 +137,12 @@ module AppArchetype
 
       ##
       # Returns variable value.
-      # 
+      #
       # If the value has not been set (i.e. overridden) then the
       # default value will be returned.
       #
-      # Values set beginning with `#` are passed into the helpers 
-      # class and evaluated as functions. That permits the manifest 
+      # Values set beginning with `#` are passed into the helpers
+      # class and evaluated as functions. That permits the manifest
       # to use string helpers as values from the manifest.
       #
       # Function calls must be in the format `#method_name,arg1,arg2`
@@ -167,10 +167,10 @@ module AppArchetype
       end
 
       ##
-      # Retrieves the appropriate validator function basedd on the 
+      # Retrieves the appropriate validator function basedd on the
       # specified type.
       #
-      # If a type is not set then a string validator function is 
+      # If a type is not set then a string validator function is
       # returned by default
       #
       # @return [Proc]
@@ -208,6 +208,7 @@ module AppArchetype
       # indicates the variable value has been set to a function
       def method?
         return false unless @value.is_a?(String)
+
         @value[0, 1] == '#'
       end
 

@@ -28,7 +28,7 @@ module AppArchetype
         end
 
         ##
-        # Y/N prompt to ensure user is sure they wish to delete 
+        # Y/N prompt to ensure user is sure they wish to delete
         # the selected template
         #
         # @param [AppArchetype::Template::Manifest] manifest
@@ -50,7 +50,7 @@ module AppArchetype
         #
         # For boolean and integer variables, the relevant prompt
         # function is called.
-        # 
+        #
         # By default the string variable prompt will be used.
         #
         # @param [AppArchetype::Template::Variable] var
@@ -66,7 +66,7 @@ module AppArchetype
         end
 
         ##
-        # Prompt for boolean variable. This quizzes the user as to 
+        # Prompt for boolean variable. This quizzes the user as to
         # whether they want the variable set or not. The response
         # is returned to the caller.
         #
@@ -84,7 +84,7 @@ module AppArchetype
         # Prompt for integer. This quizzes the user for their
         # choice and then attempts to convert it to an integer.
         #
-        # In the event a non integer value is entered, a 
+        # In the event a non integer value is entered, a
         # RuntimeError is thrown.
         #
         # @param [AppArchetype::Template::Variable] variable

@@ -55,7 +55,7 @@ module AppArchetype
       # Converts a string to upper case
       #
       # @param [String] string
-      # 
+      #
       # @return [String]
       #
       def upcase(string)
@@ -84,7 +84,7 @@ module AppArchetype
       end
 
       ##
-      # Changes a string into snake case. Useful for 
+      # Changes a string into snake case. Useful for
       # converting class names to function or file names.
       #
       # @example

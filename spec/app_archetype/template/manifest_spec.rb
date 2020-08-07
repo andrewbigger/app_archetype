@@ -64,7 +64,8 @@ RSpec.describe AppArchetype::Template::Manifest do
       end
 
       it 'has variables' do
-        expect(@parsed.variables).to be_a AppArchetype::Template::VariableManager
+        expect(@parsed.variables)
+          .to be_a AppArchetype::Template::VariableManager
       end
     end
 
@@ -85,7 +86,7 @@ RSpec.describe AppArchetype::Template::Manifest do
       end
     end
 
-    context 'when manifest is from an earlier incompatible version of app archetype' do
+    context 'when manifest is from an incompatible version of app archetype' do
       let(:app_archetype_meta) do
         {
           'app_archetype' => {

@@ -4,7 +4,7 @@ RSpec.describe AppArchetype::CLI::Presenters do
   describe '.manifest_list' do
     let(:manifest) do
       double(
-        AppArchetype::Template::Manifest, 
+        AppArchetype::Template::Manifest,
         name: 'test_manifest',
         version: '1.0.0'
       )
@@ -41,7 +41,7 @@ RSpec.describe AppArchetype::CLI::Presenters do
   describe '.variable_list' do
     let(:variable) do
       double(
-        AppArchetype::Template::Variable, 
+        AppArchetype::Template::Variable,
         name: 'foo',
         description: 'a foo',
         default: 'yolo',

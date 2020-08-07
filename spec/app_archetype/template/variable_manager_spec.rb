@@ -38,10 +38,10 @@ RSpec.describe AppArchetype::Template::VariableManager do
     it 'has expected variables' do
       expect(subject.all.map(&:name))
         .to eq(
-          [
-            'example_string', 
-            'example_string_with_value',
-            'example_random_string'
+          %w[
+            example_string
+            example_string_with_value
+            example_random_string
           ]
         )
     end

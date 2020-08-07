@@ -99,7 +99,8 @@ module AppArchetype
       def initialize(path, data)
         @path = path
         @data = OpenStruct.new(data)
-        @variables = AppArchetype::Template::VariableManager.new(@data.variables)
+        @variables = AppArchetype::Template::VariableManager
+                     .new(@data.variables)
       end
 
       ##

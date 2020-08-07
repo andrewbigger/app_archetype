@@ -17,7 +17,10 @@ RSpec.describe AppArchetype::CLI do
     end
 
     it 'creates a manager' do
-      expect(AppArchetype::TemplateManager).to have_received(:new).with(template_dir)
+      expect(AppArchetype::TemplateManager)
+        .to have_received(:new)
+        .with(template_dir)
+
       expect(manager).to have_received(:load)
       expect(@manager).to eq manager
     end
@@ -124,21 +127,6 @@ RSpec.describe AppArchetype::CLI do
     it 'prints current version number' do
       expect(subject).to have_received(:print_message)
         .with(AppArchetype::VERSION)
-    end
-  end
-
-  describe '#list' do
-    let(:manager) { double(AppArchetype::TemplateManager) }
-    let(:manifests) { [] }
-
-    before do
-      allow(subject).to receive(:print_table)
-
-      subject.list
-    end
-
-    it 'prints manifest list table' do
-      expect(subject).to have_received(:print_table)
     end
   end
 end

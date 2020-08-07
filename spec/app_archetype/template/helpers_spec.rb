@@ -65,7 +65,10 @@ RSpec.describe AppArchetype::Template::Helpers do
       it 'raises an error' do
         expect do
           subject.randomize(str, '33')
-        end.to raise_error(RuntimeError, 'randomize supports up to 32 characters')
+        end.to raise_error(
+          RuntimeError,
+          'randomize supports up to 32 characters'
+        )
       end
     end
   end

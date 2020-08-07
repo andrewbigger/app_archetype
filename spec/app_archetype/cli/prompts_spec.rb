@@ -24,7 +24,9 @@ RSpec.describe AppArchetype::CLI::Prompts do
     end
 
     it 'displays prompt' do
-      expect(@prompt.include?("Enter value for `#{var_name}` variable")).to be true
+      expect(
+        @prompt.include?("Enter value for `#{var_name}` variable")
+      ).to be true
     end
 
     it 'displays variable description' do

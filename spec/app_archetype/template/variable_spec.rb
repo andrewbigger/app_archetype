@@ -214,7 +214,7 @@ RSpec.describe AppArchetype::Template::Variable do
   end
 
   describe '#valid?' do
-    context 'when validator returns true' do 
+    context 'when validator returns true' do
       let(:result) { true }
       let(:validator) { double(call: result) }
 

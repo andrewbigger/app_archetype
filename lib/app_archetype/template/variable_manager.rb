@@ -55,7 +55,7 @@ module AppArchetype
       ##
       # Method missing retrieves variable from manager and
       # returns the value to the caller if it is found.
-      # 
+      #
       # When a call is made to an undefined variable, a
       # MethodMissing error will be raised.
       #
