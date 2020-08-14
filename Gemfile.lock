@@ -2,11 +2,11 @@ PATH
   remote: .
   specs:
     app_archetype (1.0.1)
-      highline (~> 2.0)
+      highline
       json
       json-schema
       jsonnet
-      logger (~> 1.4)
+      logger
       os
       ostruct
       ruby-handlebars
@@ -172,17 +172,17 @@ PLATFORMS
 
 DEPENDENCIES
   app_archetype!
-  bump (~> 0.6)
-  byebug (~> 11.0)
-  private_gem (~> 1.1)
-  pry (~> 0.11)
-  puma (~> 4.3)
-  rake (~> 13.0)
-  rspec (~> 3.7, >= 3.7.0)
-  rubocop (~> 0.58)
-  rubycritic (~> 3.4, >= 3.4.0)
-  simplecov (~> 0.16)
-  yard (~> 0.9)
+  bump
+  byebug
+  private_gem
+  pry
+  puma
+  rake
+  rspec
+  rubocop
+  rubycritic
+  simplecov
+  yard
 
 BUNDLED WITH
    2.1.4
