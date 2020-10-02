@@ -18,3 +18,5 @@ target/reports
 .DS_Store
 
 /doc/
+
+vendor/cache

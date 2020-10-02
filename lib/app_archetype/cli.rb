@@ -1,6 +1,6 @@
 require 'logger'
 require 'thor'
-require 'tty-prompt'
+require 'highline'
 
 require 'app_archetype'
 require 'app_archetype/cli/presenters'
@@ -25,11 +25,9 @@ module AppArchetype
           raise 'ARCHETYPE_TEMPLATE_DIR environment variable not set'
         end
 
-        unless File.exist?(@template_dir)
-          raise "ARCHETYPE_TEMPLATE_DIR #{@template_dir} does not exist"
-        end
+        return @template_dir if File.exist?(@template_dir)
 
-        @template_dir
+        raise "ARCHETYPE_TEMPLATE_DIR #{@template_dir} does not exist"
       end
 
       ##
@@ -83,7 +81,7 @@ module AppArchetype
 
     desc 'list', 'Lists known templates in ARCHETYPE_TEMPLATE_DIR'
     def list
-      print_table(
+      print_message(
         Presenters.manifest_list(
           CLI.manager.manifests
         )
@@ -141,7 +139,7 @@ module AppArchetype
 
       print_message("VALIDATION RESULTS FOR `#{name}`")
       if result.any?
-        print_table(
+        print_message(
           Presenters.validation_result(result)
         )
 
@@ -157,7 +155,7 @@ module AppArchetype
       return print_message("Manifest `#{search_term}` not found") unless result
 
       print_message("VARIABLES FOR `#{search_term}`")
-      print_table(
+      print_message(
         Presenters.variable_list(result.variables.all)
       )
     end
@@ -168,7 +166,7 @@ module AppArchetype
       return print_message("Manifest `#{search_term}` not found") unless result
 
       print_message("SEARCH RESULTS FOR `#{search_term}`")
-      print_table(
+      print_message(
         Presenters.manifest_list([result])
       )
     end

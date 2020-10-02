@@ -59,8 +59,8 @@ module AppArchetype
       # When a call is made to an undefined variable, a
       # MethodMissing error will be raised.
       #
-      # @params [Symbol] method
-      # @params [Array] args
+      # @param [Symbol] method
+      # @param [Array] args
       #
       # @return [Object]
       #

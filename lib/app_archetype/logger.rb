@@ -21,18 +21,6 @@ module AppArchetype
     end
 
     ##
-    # Prints TTY table to STDOUT
-    #
-    # @param [TTY::Table] table
-    #
-    # @return [::Logger]
-    def print_table(table)
-      logger.info(
-        table.render(:ascii)
-      )
-    end
-
-    ##
     # Prints command line message to STDOUT
     #
     # For use when printing info messages for a user to STDOUT

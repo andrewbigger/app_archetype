@@ -1,3 +1,5 @@
+require 'highline'
+
 module AppArchetype
   class CLI < Thor
     # CLI output presenters
@@ -22,9 +24,40 @@ module AppArchetype
         # Prompt returns a TTY prompt object for asking the user
         # questions.
         #
-        # @return [TTY::Prompt]
+        # @return [HighLine]
         def prompt
-          TTY::Prompt.new
+          HighLine.new
+        end
+
+        ##
+        # A yes/no prompt for asking the user a yes or no question.
+        #
+        # @return [Boolean]
+        #
+        def yes?(message)
+          prompt.ask("#{message} [Y/n]", String) { |input| input.strip == 'Y' }
+        end
+
+        ##
+        # Prompt for requesting user input.
+        #
+        # A default can be provided in the event the user does not
+        # provide an answer.
+        #
+        # Validator also performs type conversion by default it is
+        # a string
+        #
+        # @param message [String]
+        # @param default [Object]
+        # @param validator [Object|Lambda]
+        #
+        # @return [Object]
+        #
+        def ask(message, validator: String, default: nil)
+          resp = prompt.ask(message, validator)
+          return default if !default.nil? && resp.to_s.empty?
+
+          resp
         end
 
         ##
@@ -35,7 +68,7 @@ module AppArchetype
         #
         # @return [Boolean]
         def delete_template(manifest)
-          prompt.yes?(
+          yes?(
             "Are you sure you want to delete `#{manifest.name}`?"
           )
         end
@@ -75,7 +108,7 @@ module AppArchetype
         # @return [Boolean]
         #
         def boolean_variable_prompt(variable)
-          prompt.yes?(
+          yes?(
             VAR_PROMPT_MESSAGE.call(variable)
           )
         end
@@ -92,10 +125,10 @@ module AppArchetype
         # @return [Integer]
         #
         def integer_variable_prompt(variable)
-          prompt.ask(
+          ask(
             VAR_PROMPT_MESSAGE.call(variable),
             default: variable.default,
-            convert: :int
+            validator: Integer
           )
         end
 
@@ -103,12 +136,12 @@ module AppArchetype
         # Prompt for a string. Asks user for input and returns
         # it.
         #
-        # @param [AppArchetype::Template::Variable]
+        # @param [AppArchetype::Template::Variable] variable
         #
         # @return [String]
         #
         def string_variable_prompt(variable)
-          prompt.ask(
+          ask(
             VAR_PROMPT_MESSAGE.call(variable),
             default: variable.default
           )

@@ -75,8 +75,8 @@ module AppArchetype
       ##
       # Joins a string with specified delimiter
       #
-      # @param [String] delimiter
-      # @param [Array] strings to join
+      # @param [String] delim
+      # @param [Array] strings
       #
       # @return [String]
       def join(delim, *strings)

@@ -44,12 +44,92 @@ RSpec.describe AppArchetype::CLI::Prompts do
 
   describe '.prompt' do
     it 'returns a prompt' do
-      expect(described_class.prompt).to be_a(TTY::Prompt)
+      expect(described_class.prompt).to be_a(HighLine)
+    end
+  end
+
+  describe '.yes?' do
+    let(:prompt) { double(HighLine) }
+    let(:message) { 'Would you like to do stuff?' }
+    let(:response) { 'Y' }
+
+    before do
+      allow(subject).to receive(:prompt).and_return(prompt)
+      allow(prompt).to receive(:ask).and_yield(response)
+
+      @resp = subject.yes?(message)
+    end
+
+    it 'asks question' do
+      expect(prompt).to have_received(:ask).with("#{message} [Y/n]", String)
+    end
+
+    it 'returns true when user responds Y' do
+      expect(@resp).to be true
+    end
+
+    context 'when user inputs anything other than Y' do
+      let(:response) { 'Nope' }
+
+      it 'returns false' do
+        expect(@resp).to be false
+      end
+    end
+  end
+
+  describe '.ask' do
+    let(:prompt) { double(HighLine) }
+
+    let(:message) { 'Give me some info' }
+    let(:validator) { String }
+    let(:default) { 'Default' }
+
+    let(:response) { 'Sure here it is' }
+
+    before do
+      allow(subject).to receive(:prompt).and_return(prompt)
+      allow(prompt).to receive(:ask).and_return(response)
+
+      @resp = subject.ask(message, validator: validator, default: default)
+    end
+
+    it 'asks question with validator' do
+      expect(prompt).to have_received(:ask).with(message, validator)
+    end
+
+    it 'returns user response as string' do
+      expect(@resp).to eq response
+    end
+
+    context 'when default is specifed and empty response' do
+      let(:response) { '' }
+
+      it 'returns default' do
+        expect(@resp).to eq default
+      end
+    end
+
+    context 'when empty and no default specified' do
+      let(:default) { nil }
+      let(:response) { '' }
+
+      it 'returns empty string' do
+        expect(@resp).to eq ''
+      end
+    end
+
+    context 'when asking for an integer' do
+      let(:response) { 1 }
+      let(:validator) { Integer }
+
+      it 'returns user response as integer' do
+        expect(@resp).to eq 1
+      end
     end
   end
 
   describe '.delete_template' do
-    let(:prompt) { double(TTY::Prompt) }
+    let(:prompt) { double(HighLine) }
 
     let(:manifest_name) { 'test_manifest' }
     let(:manifest) do
@@ -60,13 +140,13 @@ RSpec.describe AppArchetype::CLI::Prompts do
 
     before do
       allow(subject).to receive(:prompt).and_return(prompt)
-      allow(prompt).to receive(:yes?).and_return(choice)
+      allow(subject).to receive(:yes?).and_return(choice)
 
       @result = described_class.delete_template(manifest)
     end
 
     it 'asks if it is okay to delete template' do
-      expect(prompt).to have_received(:yes?)
+      expect(subject).to have_received(:yes?)
         .with('Are you sure you want to delete `test_manifest`?')
     end
 
@@ -76,13 +156,11 @@ RSpec.describe AppArchetype::CLI::Prompts do
   end
 
   describe '.variable_prompt_for' do
-    let(:prompt) { double(TTY::Prompt) }
     let(:has_value) { false }
 
     before do
       allow(variable).to receive(:value?).and_return(has_value)
 
-      allow(described_class).to receive(:prompt).and_return(prompt)
       allow(described_class).to receive(:boolean_variable_prompt)
       allow(described_class).to receive(:integer_variable_prompt)
       allow(described_class).to receive(:string_variable_prompt)
@@ -149,18 +227,15 @@ RSpec.describe AppArchetype::CLI::Prompts do
   end
 
   describe '.boolean_variable_prompt' do
-    let(:prompt) { double(TTY::Prompt) }
     let(:choice) { false }
 
     before do
-      allow(subject).to receive(:prompt).and_return(prompt)
-      allow(prompt).to receive(:yes?).and_return(choice)
-
+      allow(subject).to receive(:yes?).and_return(choice)
       @result = described_class.boolean_variable_prompt(variable)
     end
 
     it 'asks for boolean input' do
-      expect(prompt).to have_received(:yes?)
+      expect(subject).to have_received(:yes?)
         .with(
           AppArchetype::CLI::Prompts::VAR_PROMPT_MESSAGE.call(variable)
         )
@@ -172,22 +247,19 @@ RSpec.describe AppArchetype::CLI::Prompts do
   end
 
   describe '.integer_variable_prompt' do
-    let(:prompt) { double(TTY::Prompt) }
     let(:choice) { 1 }
 
     before do
-      allow(subject).to receive(:prompt).and_return(prompt)
-      allow(prompt).to receive(:ask).and_return(choice)
-
+      allow(subject).to receive(:ask).and_return(choice)
       @result = described_class.integer_variable_prompt(variable)
     end
 
     it 'asks for boolean input' do
-      expect(prompt).to have_received(:ask)
+      expect(subject).to have_received(:ask)
         .with(
           AppArchetype::CLI::Prompts::VAR_PROMPT_MESSAGE.call(variable),
           default: variable.default,
-          convert: :int
+          validator: Integer
         )
     end
 
@@ -197,18 +269,16 @@ RSpec.describe AppArchetype::CLI::Prompts do
   end
 
   describe '.string_variable_prompt' do
-    let(:prompt) { double(TTY::Prompt) }
     let(:choice) { 'some string' }
 
     before do
-      allow(subject).to receive(:prompt).and_return(prompt)
-      allow(prompt).to receive(:ask).and_return(choice)
+      allow(subject).to receive(:ask).and_return(choice)
 
       @result = described_class.string_variable_prompt(variable)
     end
 
     it 'asks for boolean input' do
-      expect(prompt).to have_received(:ask)
+      expect(subject).to have_received(:ask)
         .with(
           AppArchetype::CLI::Prompts::VAR_PROMPT_MESSAGE.call(variable),
           default: variable.default

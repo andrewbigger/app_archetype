@@ -27,3 +27,9 @@
     Exclude:
       - 'app_archetype.gemspec'
       - 'spec/**/*'
+
+  Gemspec/RequiredRubyVersion:
+    Enabled: false
+
+  Style/IfUnlessModifier:
+    Enabled: false

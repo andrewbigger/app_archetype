@@ -9,32 +9,27 @@ RSpec.describe AppArchetype::CLI::Presenters do
         version: '1.0.0'
       )
     end
+    let(:manifest_list_row) { ['test_manifest', '1.0.0'] }
 
+    let(:presenter) { double(CliFormat::Presenter) }
     let(:manifests) { [manifest, manifest] }
 
     before do
-      @info = described_class.manifest_list(manifests)
+      allow(presenter).to receive(:show)
+      allow(subject).to receive(:table).and_return(presenter)
+
+      described_class.manifest_list(manifests)
     end
 
-    it 'returns tty table' do
-      expect(@info).to be_a TTY::Table
+    it 'builds table presenter' do
+      expect(subject).to have_received(:table).with(
+        header: AppArchetype::CLI::Presenters::RESULT_HEADER,
+        data: [manifest_list_row, manifest_list_row]
+      )
     end
 
-    it 'has result headers' do
-      AppArchetype::CLI::Presenters::RESULT_HEADER.each do |col_name|
-        expect(
-          @info.header.detect { |h| h == col_name }
-        ).not_to be nil
-      end
-    end
-
-    it 'has results' do
-      expect(@info.rows.count).to be manifests.count
-
-      @info.rows.each do |row|
-        expect(row.fields[0].value).to eq 'test_manifest'
-        expect(row.fields[1].value).to eq '1.0.0'
-      end
+    it 'shows table' do
+      expect(presenter).to have_received(:show)
     end
   end
 
@@ -48,33 +43,27 @@ RSpec.describe AppArchetype::CLI::Presenters do
         value: 'bar'
       )
     end
+    let(:variable_row) { ['foo', 'a foo', 'yolo'] }
 
+    let(:presenter) { double(CliFormat::Presenter) }
     let(:variables) { [variable, variable] }
 
     before do
-      @info = described_class.variable_list(variables)
+      allow(presenter).to receive(:show)
+      allow(subject).to receive(:table).and_return(presenter)
+
+      described_class.variable_list(variables)
     end
 
-    it 'returns tty table' do
-      expect(@info).to be_a TTY::Table
+    it 'builds table presenter' do
+      expect(subject).to have_received(:table).with(
+        header: AppArchetype::CLI::Presenters::VARIABLE_HEADER,
+        data: [variable_row, variable_row]
+      )
     end
 
-    it 'has variable result headers' do
-      AppArchetype::CLI::Presenters::VARIABLE_HEADER.each do |col_name|
-        expect(
-          @info.header.detect { |h| h == col_name }
-        ).not_to be nil
-      end
-    end
-
-    it 'has results' do
-      expect(@info.rows.count).to be variables.count
-
-      @info.rows.each do |row|
-        expect(row.fields[0].value).to eq 'foo'
-        expect(row.fields[1].value).to eq 'a foo'
-        expect(row.fields[2].value).to eq 'yolo'
-      end
+    it 'shows table' do
+      expect(presenter).to have_received(:show)
     end
   end
 
@@ -86,28 +75,25 @@ RSpec.describe AppArchetype::CLI::Presenters do
       ]
     end
 
+    let(:result_row) { ['something went wrong'] }
+    let(:presenter) { double(CliFormat::Presenter) }
+
     before do
-      @info = described_class.validation_result(results)
+      allow(presenter).to receive(:show)
+      allow(subject).to receive(:table).and_return(presenter)
+
+      described_class.validation_result(results)
     end
 
-    it 'returns tty table' do
-      expect(@info).to be_a TTY::Table
+    it 'builds table presenter' do
+      expect(subject).to have_received(:table).with(
+        header: AppArchetype::CLI::Presenters::VALIDATION_HEADER,
+        data: [result_row, result_row]
+      )
     end
 
-    it 'has validation result headers' do
-      AppArchetype::CLI::Presenters::VALIDATION_HEADER.each do |col_name|
-        expect(
-          @info.header.detect { |h| h == col_name }
-        ).not_to be nil
-      end
-    end
-
-    it 'has results' do
-      expect(@info.rows.count).to be results.count
-
-      @info.rows.each do |row|
-        expect(row.fields[0].value).to eq 'something went wrong'
-      end
+    it 'shows table' do
+      expect(presenter).to have_received(:show)
     end
   end
 end

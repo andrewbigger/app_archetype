@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'app_archetype/version'
@@ -18,28 +16,24 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'highline'
-  spec.add_dependency 'json'
-  spec.add_dependency 'json-schema'
-  spec.add_dependency 'jsonnet'
-  spec.add_dependency 'logger'
-  spec.add_dependency 'os'
-  spec.add_dependency 'ostruct'
-  spec.add_dependency 'ruby-handlebars'
-  spec.add_dependency 'thor'
-  spec.add_dependency 'tty'
-  spec.add_dependency 'tty-prompt'
-  spec.add_dependency 'tty-table'
+  spec.add_dependency 'cli-format', '~> 0.2'
+  spec.add_dependency 'highline', '~> 2.0'
+  spec.add_dependency 'json', '~> 2.3'
+  spec.add_dependency 'jsonnet', '~> 0.3.0'
+  spec.add_dependency 'json-schema', '~> 2.8'
+  spec.add_dependency 'logger', '~> 1.4.2'
+  spec.add_dependency 'os', '~> 1.1'
+  spec.add_dependency 'ostruct', '~> 0.3'
+  spec.add_dependency 'ruby-handlebars', '~> 0.4'
+  spec.add_dependency 'thor', '~> 1.0'
 
-  spec.add_development_dependency 'bump'
-  spec.add_development_dependency 'byebug'
-  spec.add_development_dependency 'private_gem'
-  spec.add_development_dependency 'pry'
-  spec.add_development_dependency 'puma'
-  spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'rspec'
-  spec.add_development_dependency 'rubocop'
-  spec.add_development_dependency 'rubycritic'
-  spec.add_development_dependency 'simplecov'
-  spec.add_development_dependency 'yard'
+  spec.add_development_dependency 'bump', '~> 0.9'
+  spec.add_development_dependency 'private_gem', '~> 1.1'
+  spec.add_development_dependency 'pry', '~> 0.13'
+  spec.add_development_dependency 'rake', '~> 13.0'
+  spec.add_development_dependency 'rspec', '~> 3.9'
+  spec.add_development_dependency 'rubocop', '~> 0.92'
+  spec.add_development_dependency 'rubycritic', '~> 4.5'
+  spec.add_development_dependency 'simplecov', '~> 0.19'
+  spec.add_development_dependency 'yard', '~> 0.9'
 end
