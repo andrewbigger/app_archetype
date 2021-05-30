@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    app_archetype (1.1.0)
+    app_archetype (1.2.0)
       cli-format (~> 0.2)
       highline (~> 2.0)
       json (~> 2.3)
@@ -16,12 +16,12 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (6.0.3.3)
+    activesupport (6.1.3.2)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-      i18n (>= 0.7, < 2)
-      minitest (~> 5.1)
-      tzinfo (~> 1.1)
-      zeitwerk (~> 2.2, >= 2.2.2)
+      i18n (>= 1.6, < 2)
+      minitest (>= 5.1)
+      tzinfo (~> 2.0)
+      zeitwerk (~> 2.3)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     ast (2.4.1)
@@ -37,7 +37,7 @@ GEM
     coderay (1.1.3)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
-    concurrent-ruby (1.1.7)
+    concurrent-ruby (1.1.8)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.4.4)
@@ -54,10 +54,10 @@ GEM
       ruby_parser (~> 3.1, > 3.1.0)
       sexp_processor (~> 4.8)
     highline (2.0.3)
-    i18n (1.8.5)
+    i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
-    json (2.3.1)
+    json (2.5.1)
     json-schema (2.8.1)
       addressable (>= 2.4)
     jsonnet (0.3.0)
@@ -65,12 +65,17 @@ GEM
     kwalify (0.7.2)
     launchy (2.5.0)
       addressable (~> 2.7)
-    logger (1.4.2)
+    logger (1.4.3)
     method_source (1.0.0)
-    mini_portile2 (2.5.0)
-    minitest (5.14.2)
+    mini_portile2 (2.5.2)
+      net-ftp (~> 0.1)
+    minitest (5.14.4)
+    net-ftp (0.1.2)
+      net-protocol
+      time
+    net-protocol (0.1.0)
     os (1.1.1)
-    ostruct (0.3.0)
+    ostruct (0.3.3)
     parallel (1.19.2)
     parser (2.7.1.5)
       ast (~> 2.4.1)
@@ -141,9 +146,10 @@ GEM
     text-table (1.2.4)
     thor (1.0.1)
     thread_safe (0.3.6)
+    time (0.1.0)
     tty-which (0.4.2)
-    tzinfo (1.2.7)
-      thread_safe (~> 0.1)
+    tzinfo (2.0.4)
+      concurrent-ruby (~> 1.0)
     unicode-display_width (1.7.0)
     virtus (1.0.5)
       axiom-types (~> 0.1)
@@ -151,7 +157,7 @@ GEM
       descendants_tracker (~> 0.0, >= 0.0.3)
       equalizer (~> 0.0, >= 0.0.9)
     yard (0.9.25)
-    zeitwerk (2.4.0)
+    zeitwerk (2.4.2)
 
 PLATFORMS
   ruby
@@ -169,4 +175,4 @@ DEPENDENCIES
   yard (~> 0.9)
 
 BUNDLED WITH
-   2.1.4
+   2.2.15
