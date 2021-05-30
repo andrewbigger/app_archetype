@@ -123,6 +123,76 @@ module AppArchetype
           .tr('_', '-')
           .downcase
       end
+
+      ##
+      # Camelcases a given string
+      #
+      # Usage:
+      # in_string = "an example"
+      # out_string = camel_case(in_string) => AnExample
+      #
+      # @param [String] string
+      # @return [String]
+      def camel_case(string)
+        str = snake_case(string)
+        snake_to_camel(str)
+      end
+
+      ##
+      # Converts snake case string to camelcase
+      #
+      # Usage:
+      # in_string = "an_example"
+      # out_string = snake_to_camel(in_string) => AnExample
+      #
+      # @param [String] string
+      # @return [String]
+      def snake_to_camel(string)
+        str = snake_case(string)
+        str.to_s.split('_').map(&:capitalize).join('')
+      end
+
+      ##
+      # Attempts to pluralize a word
+      #
+      # Usage:
+      # in_string = "Thing"
+      # out_string = pluralize(in_string) => "Things"
+      #
+      # @param [String] string
+      # @return [String]
+      #
+      def pluralize(string)
+        str = string.to_s
+
+        if str.match(/([^aeiouy]|qu)y$/i)
+          str = str.gsub(/y\Z/, 'ies')
+        else
+          str << 's'
+        end
+
+        str
+      end
+
+      ##
+      # Singularizes plural words
+      #
+      # Usage:
+      # in_string = "Things"
+      # out_string = singularize(in_string) => "Thing"
+      #
+      # @param [String] string
+      # @return [String]
+      #
+      def singularize(string)
+        str = string.to_s
+
+        if str.end_with?('ies')
+          str.gsub(/ies\Z/, 'y')
+        else
+          str.gsub(/s\Z/, '')
+        end
+      end
     end
   end
 end

@@ -21,6 +21,33 @@ class String
   end
 
   ##
+  # Converts a string to camel case
+  #
+  # @return [String]
+  #
+  def camel_case
+    helper.camel_case(self)
+  end
+
+  ##
+  # Attempts to pluralize a word
+  #
+  # @return [String]
+  #
+  def pluralize
+    helper.pluralize(self)
+  end
+
+  ##
+  # Attempts to singluarize a word
+  #
+  # @return [String]
+  #
+  def singularize
+    helper.singularize(self)
+  end
+
+  ##
   # Adds a random string of specified length at the end
   #
   # @return [String]

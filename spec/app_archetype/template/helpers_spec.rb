@@ -165,4 +165,61 @@ RSpec.describe AppArchetype::Template::Helpers do
       end
     end
   end
+
+  describe '#camel_case' do
+    let(:str) { 'My Project' }
+
+    it 'camel cases string' do
+      expect(subject.camel_case(str))
+        .to eq 'MyProject'
+    end
+
+    context 'when given a camel case string' do
+      let(:str) { 'MyProject' }
+
+      it 'returns string as is' do
+        expect(subject.camel_case(str)).to eq str
+      end
+    end
+  end
+
+  describe '#snake_to_camel' do
+    let(:input) { 'a_type_of_thing' }
+
+    it 'camelizes the given string' do
+      expect(subject.snake_to_camel(input)).to eq 'ATypeOfThing'
+    end
+  end
+
+  describe '#pluralize' do
+    let(:input) { 'Apple' }
+
+    it 'pluralizes the given string' do
+      expect(subject.pluralize(input)).to eq 'Apples'
+    end
+
+    context 'when string ends in y' do
+      let(:input) { 'Quantity' }
+
+      it 'pluralizes the given string' do
+        expect(subject.pluralize(input)).to eq 'Quantities'
+      end
+    end
+  end
+
+  describe '#singularize' do
+    let(:input) { 'Bananas' }
+
+    it 'singularizes the given string' do
+      expect(subject.singularize(input)).to eq 'Banana'
+    end
+
+    context 'when string ends in ies' do
+      let(:input) { 'Quantities' }
+
+      it 'singularizes the given string' do
+        expect(subject.singularize(input)).to eq 'Quantity'
+      end
+    end
+  end
 end
