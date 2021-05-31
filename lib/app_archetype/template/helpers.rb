@@ -20,6 +20,24 @@ module AppArchetype
       end
 
       ##
+      # Returns timestamp at current time
+      #
+      # @return [String]
+      #
+      def timestamp_now
+        Time.now.strftime('%Y%m%d%H%M%S%L')
+      end
+
+      ##
+      # Returns timestamp at utc current time
+      #
+      # @return [String]
+      #
+      def timestamp_utc_now
+        Time.now.utc.strftime('%Y%m%d%H%M%S%L')
+      end
+
+      ##
       # Generates a random string at specified length
       #
       # @param [String] length

@@ -22,6 +22,32 @@ RSpec.describe AppArchetype::Template::Helpers do
     end
   end
 
+  describe '#timestamp_now' do
+    let(:time) { Time.new(2002, 10, 31, 2, 2, 2, 0) }
+
+    before do
+      allow(Time).to receive(:now)
+        .and_return(time)
+    end
+
+    it 'returns timestamp' do
+      expect(subject.timestamp_now).to eq '20021031020202000'
+    end
+  end
+
+  describe '#timestamp_utc_now' do
+    let(:time) { Time.new(2002, 10, 31, 2, 2, 2, 0) }
+
+    before do
+      allow(Time).to receive(:now)
+        .and_return(time)
+    end
+
+    it 'returns timestamp' do
+      expect(subject.timestamp_utc_now).to eq '20021031020202000'
+    end
+  end
+
   describe '#random_string' do
     let(:length) { '10' }
 
