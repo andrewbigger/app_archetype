@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    app_archetype (1.2.1)
+    app_archetype (1.2.2)
       cli-format (~> 0.2)
       highline (~> 2.0)
       json (~> 2.3)
@@ -57,7 +57,6 @@ GEM
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
-    io-wait (0.1.0)
     json (2.5.1)
     json-schema (2.8.1)
       addressable (>= 2.4)
@@ -68,15 +67,8 @@ GEM
       addressable (~> 2.7)
     logger (1.4.3)
     method_source (1.0.0)
-    mini_portile2 (2.5.2)
-      net-ftp (~> 0.1)
+    mini_portile2 (2.6.1)
     minitest (5.14.4)
-    net-ftp (0.1.2)
-      net-protocol
-      time
-    net-protocol (0.1.1)
-      io-wait
-      timeout
     os (1.1.1)
     ostruct (0.3.3)
     parallel (1.19.2)
@@ -149,8 +141,6 @@ GEM
     text-table (1.2.4)
     thor (1.0.1)
     thread_safe (0.3.6)
-    time (0.1.0)
-    timeout (0.1.1)
     tty-which (0.4.2)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
