@@ -1,4 +1,5 @@
 require 'ruby-handlebars'
+require_relative '../../core_ext/string'
 
 module AppArchetype
   module Template
