@@ -6,9 +6,9 @@ Gem::Specification.new do |spec|
   spec.name          = 'app_archetype'
   spec.version       = AppArchetype::VERSION
   spec.authors       = ['Andrew Bigger']
-  spec.email         = ['andrew@biggerconcept.com']
+  spec.email         = ['andrew.bigger@gmail.com']
   spec.summary       = 'Code project template renderer'
-  spec.homepage      = 'https://bitbucket.org/biggerconcept/app_archetype'
+  spec.homepage      = 'https://github.com/andrewbigger/app_archetype'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
