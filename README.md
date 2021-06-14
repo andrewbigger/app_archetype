@@ -1,5 +1,7 @@
 # App Archetype
 
+[![Ruby](https://github.com/andrewbigger/app_archetype/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/andrewbigger/app_archetype/actions/workflows/build.yml)
+
 Code project template renderer
 
 ## Installation
@@ -130,6 +132,10 @@ You can list the templates in your template directory at any time by running the
 ```bash
 archetype list
 ```
+
+## Contributing
+
+See CONTRIBUTING.md for more information
 
 ## Licence
 

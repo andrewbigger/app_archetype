@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    app_archetype (1.2.2)
+    app_archetype (1.2.3)
       cli-format (~> 0.2)
       highline (~> 2.0)
       json (~> 2.3)
@@ -37,7 +37,7 @@ GEM
     coderay (1.1.3)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
-    concurrent-ruby (1.1.8)
+    concurrent-ruby (1.1.9)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.4.4)
