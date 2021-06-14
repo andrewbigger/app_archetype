@@ -4,14 +4,19 @@ Code project template renderer
 
 ## Installation
 
-Install the gem into your system:
+Add the following to your Gemfile
 
-```bash
-gem build
-gem install app_archetype*.gem
+```ruby
+gem 'app_archetype'
 ```
 
-Once installed you'll need to create a template directory and set it in your environment:
+Or install the gem into your system:
+
+```bash
+gem install app_archetype
+```
+
+If installed as a system gem, you'll need to create a template directory and set it in your environment:
 
 ```bash
 mkdir $HOME/Code/templates
@@ -128,4 +133,4 @@ archetype list
 
 ## Licence
 
-This gem is not for redistribution
+This gem is covered by the terms of the MIT licence. See LICENCE for more information
