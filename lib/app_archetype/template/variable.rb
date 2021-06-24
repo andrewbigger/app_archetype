@@ -16,7 +16,8 @@ module AppArchetype
       DEFAULT_VALUES = {
         'string' => '',
         'boolean' => false,
-        'integer' => 0
+        'integer' => 0,
+        'map' => {}
       }.freeze
 
       ##
@@ -56,12 +57,24 @@ module AppArchetype
       end
 
       ##
+      # Map validation function. Ensures given input is a map
+      #
+      # @param [Object] input
+      #
+      # @return [Boolean]
+      #
+      MAP_VALIDATOR = lambda do |input|
+        input.is_a?(Hash)
+      end
+
+      ##
       # Maps type to validation function
       #
       VALIDATORS = {
         'string' => STRING_VALIDATOR,
         'boolean' => BOOLEAN_VALIDATOR,
-        'integer' => INTEGER_VALIDATOR
+        'integer' => INTEGER_VALIDATOR,
+        'map' => MAP_VALIDATOR
       }.freeze
 
       ##
@@ -185,7 +198,7 @@ module AppArchetype
       ##
       # Returns true if the value input is valid.
       #
-      # @param [String] input
+      # @param [Object] input
       #
       # @return [Boolean]
       #

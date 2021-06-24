@@ -72,6 +72,20 @@ RSpec.describe AppArchetype::Template::Variable do
     end
   end
 
+  describe '::MAP_VALIDATOR' do
+    it 'returns true when given hash' do
+      expect(
+        described_class::MAP_VALIDATOR.call({})
+      ).to be true
+    end
+
+    it 'returns false when given a non hash input' do
+      expect(
+        described_class::MAP_VALIDATOR.call('zyzz')
+      ).to be false
+    end
+  end
+
   describe '#set!' do
     context 'setting with a valid value' do
       before { subject.set!('a value') }
