@@ -58,6 +58,19 @@ RSpec.describe AppArchetype::Template::VariableManager do
     end
   end
 
+  describe '#add' do
+    let(:new_var) { double(AppArchetype::Template::Variable) }
+
+    before do
+      subject.add(new_var)
+    end
+
+    it 'adds variable to set' do
+      expect(subject.instance_variable_get(:@data).include?(new_var))
+        .to be true
+    end
+  end
+
   describe '#to_h' do
     let(:instance_helpers) { double }
     let(:random_result) { 'random-string-25-chars-long' }

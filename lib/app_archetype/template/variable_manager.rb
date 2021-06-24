@@ -35,6 +35,15 @@ module AppArchetype
       end
 
       ##
+      # Adds a variable to the set
+      #
+      # @param [AppArchetype::Template::Variable] var
+      #
+      def add(var)
+        @data << var
+      end
+
+      ##
       # Creates a hash representation of variables.
       #
       # The variable name is the key, and the currrent value
