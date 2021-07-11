@@ -6,17 +6,19 @@ Code project template renderer
 
 ## Installation
 
-Add the following to your Gemfile
-
-```ruby
-gem 'app_archetype'
-```
-
-Or install the gem into your system:
+This is best run as a CLI tool installed into your system:
 
 ```bash
 gem install app_archetype
 ```
+
+For inclusion in another script or application, add this line to your application's Gemfile:
+
+Add the following to your Gemfile
+
+## Getting Started
+
+### Setting up your environment for CLI use
 
 If installed as a system gem, you'll need to create a template directory and set it in your environment:
 
@@ -57,7 +59,7 @@ Templates are a collection of files in the template folder with a manifest. The 
  | - | - manifest.json
 ```
 
-Each template must include a manifest which has instructions necessary to render the template at run time. 
+Each template must include a manifest which has instructions necessary to render the template at run time.
 
 To create a blank template run the new command with the relative (from your template directory) path to your new template. For example to create a ruby gem you might:
 
