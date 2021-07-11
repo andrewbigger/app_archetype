@@ -1,7 +1,7 @@
 require 'highline'
 
 module AppArchetype
-  class CLI < Thor
+  class CLI < ::Thor
     # CLI output presenters
     module Prompts
       ##

@@ -1,7 +1,7 @@
 require 'cli-format'
 
 module AppArchetype
-  class CLI < Thor
+  class CLI < ::Thor
     # CLI output presenters
     module Presenters
       ##

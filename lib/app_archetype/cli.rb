@@ -8,7 +8,7 @@ require 'app_archetype/cli/prompts'
 
 module AppArchetype
   # Command line interface helpers and actions
-  class CLI < Thor
+  class CLI < ::Thor
     package_name 'Archetype'
 
     class <<self
