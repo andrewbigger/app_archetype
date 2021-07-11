@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    app_archetype (1.2.6)
+    app_archetype (1.2.7)
       cli-format (~> 0.2)
       highline (~> 2.0)
       json (~> 2.3)
