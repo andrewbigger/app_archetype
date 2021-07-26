@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'cli-format', '~> 0.2'
   spec.add_dependency 'highline', '~> 2.0'
   spec.add_dependency 'json', '~> 2.3'
-  spec.add_dependency 'jsonnet', '~> 0.3.0'
+  spec.add_dependency 'jsonnet', '~> 0.4.0'
   spec.add_dependency 'json-schema', '~> 2.8'
   spec.add_dependency 'logger', '~> 1.4.2'
   spec.add_dependency 'os', '~> 1.1'

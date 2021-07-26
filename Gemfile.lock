@@ -1,12 +1,12 @@
 PATH
   remote: .
   specs:
-    app_archetype (1.2.7)
+    app_archetype (1.2.8)
       cli-format (~> 0.2)
       highline (~> 2.0)
       json (~> 2.3)
       json-schema (~> 2.8)
-      jsonnet (~> 0.3.0)
+      jsonnet (~> 0.4.0)
       logger (~> 1.4.2)
       os (~> 1.1)
       ostruct (~> 0.3)
@@ -60,7 +60,7 @@ GEM
     json (2.5.1)
     json-schema (2.8.1)
       addressable (>= 2.4)
-    jsonnet (0.3.0)
+    jsonnet (0.4.0)
       mini_portile2 (>= 2.2.0)
     kwalify (0.7.2)
     launchy (2.5.0)
