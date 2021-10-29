@@ -53,6 +53,19 @@ module AppArchetype
       cmd.run
     end
 
+    desc 'new', 'Creates a template in ARCHETYPE_TEMPLATE_DIR'
+
+    method_option(
+      :name,
+      type: :string,
+      desc: 'Name of template'
+    )
+
+    def new
+      cmd =  AppArchetype::Commands::NewTemplate.new(options, template_dir)
+      cmd.run
+    end
+
     protected
 
     ##
