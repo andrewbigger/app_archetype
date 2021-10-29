@@ -29,6 +29,13 @@ module AppArchetype
       cmd.run
     end
 
+    desc 'path', 'Prints template path to STDOUT'
+
+    def path
+      cmd =  AppArchetype::Commands::PrintPath.new(options, template_dir)
+      cmd.run
+    end
+
     protected
 
     ##
