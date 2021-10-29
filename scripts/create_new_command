@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 
 require 'thor'
+
 require 'app_archetype'
+require 'app_archetype/cli'
 require 'active_support/all'
 
 puts 'CREATE NEW COMMAND'
@@ -14,21 +16,12 @@ manifest = manager.find_by_name('command')
 template = manifest.template
 template.load
 
-manifest.variables.all.each do |var|
-  value = AppArchetype::CLI::Prompts.variable_prompt_for(var)
-  var.set!(value)
-end
-
-plan = AppArchetype::Template::Plan.new(
-  template,
-  manifest.variables,
-  destination_path: File.expand_path(File.join(__dir__, '..')),
-  overwrite: false
+command = AppArchetype::Commands::RenderTemplate.new(
+  manager,
+  File.expand_path(File.join(__dir__, '..'))
 )
 
-plan.devise
-plan.execute
-
+command.render_template(manifest, template)
 command_name = manifest.variables.get('command_name').value
 
 next_steps = <<~TEXT

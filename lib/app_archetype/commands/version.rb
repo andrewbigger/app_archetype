@@ -4,7 +4,7 @@ module AppArchetype
   module Commands
     # Prints gem version to STDOUT
     class Version
-      def initialize(options)
+      def initialize(options = Hashie::Mash.new)
         @options = options
         @prompt = TTY::Prompt.new
       end

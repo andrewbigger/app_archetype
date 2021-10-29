@@ -4,11 +4,11 @@ module AppArchetype
   module Commands
     # Prompts user for variable values and renders template to disk
     class RenderTemplate
-      def initialize(options, manager, destination_path)
-        @options = options
-        @prompt = TTY::Prompt.new
+      def initialize(manager, destination_path, options = Hashie::Mash.new)
         @manager = manager
         @destination_path = destination_path
+        @options = options
+        @prompt = TTY::Prompt.new
       end
 
       ##
@@ -47,11 +47,46 @@ module AppArchetype
         template = manifest.template
         template.load
 
+        resolve_variables(manifest)
+        render_template(
+          manifest,
+          template,
+          overwrite: @options.overwrite
+        )
+
+        puts("✔ Rendered #{name} to #{@destination_path}")
+      end
+
+      ##
+      # Prompts user for values for each variable
+      # specified in the given manifest. And then
+      # sets the value of those variables to the
+      # answers to the prompts.
+      #
+      # @param[AppArchetype::Template::Manifest] manifest
+      # 
+      def resolve_variables(manifest)
         manifest.variables.all.each do |var|
           value = variable_prompt_for(var)
           var.set!(value)
         end
+      end
 
+      ##
+      # Builds plan to render template and executes
+      # it - essentially rendering the template to
+      # the output location
+      #
+      # @param [AppArchetype::Template::Manifest] manifest
+      # @param [AppArchetype::Template] template
+      # @param [String] destiniation
+      # @param [Boolean] overwrite
+      #
+      def render_template(
+        manifest,
+        template,
+        overwrite: false
+      )
         plan = AppArchetype::Template::Plan.new(
           template,
           manifest.variables,
@@ -61,8 +96,6 @@ module AppArchetype
 
         plan.devise
         plan.execute
-
-        puts("✔ Rendered #{name} to #{@destination_path}")
       end
 
       private

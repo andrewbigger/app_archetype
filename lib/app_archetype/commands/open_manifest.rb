@@ -4,11 +4,11 @@ module AppArchetype
   module Commands
     # Opens manifest in configured editor
     class OpenManifest
-      def initialize(options, manager, editor)
-        @options = options
-        @prompt = TTY::Prompt.new
+      def initialize(manager, editor, options = Hashie::Mash.new)
         @manager = manager
         @editor = editor
+        @options = options
+        @prompt = TTY::Prompt.new
       end
 
       ##

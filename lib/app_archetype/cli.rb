@@ -29,8 +29,8 @@ module AppArchetype
     #
     def list
       cmd = AppArchetype::Commands::ListTemplates.new(
-        options,
-        manager.manifests
+        manager,
+        options
       )
       cmd.run
     end
@@ -42,8 +42,8 @@ module AppArchetype
     #
     def path
       cmd = AppArchetype::Commands::PrintPath.new(
-        options,
-        template_dir
+        template_dir,
+        options
       )
       cmd.run
     end
@@ -61,9 +61,9 @@ module AppArchetype
     #
     def open
       cmd = AppArchetype::Commands::OpenManifest.new(
-        options,
         manager,
-        editor
+        editor,
+        options
       )
       cmd.run
     end
@@ -81,8 +81,8 @@ module AppArchetype
     #
     def new
       cmd = AppArchetype::Commands::NewTemplate.new(
-        options,
-        template_dir
+        template_dir,
+        options
       )
       cmd.run
     end
@@ -100,8 +100,8 @@ module AppArchetype
     #
     def delete
       cmd = AppArchetype::Commands::DeleteTemplate.new(
-        options,
-        manager
+        manager,
+        options
       )
       cmd.run
     end
@@ -119,8 +119,8 @@ module AppArchetype
     #
     def validate
       cmd = AppArchetype::Commands::ValidateManifest.new(
-        options,
-        manager
+        manager,
+        options
       )
       cmd.run
     end
@@ -138,8 +138,8 @@ module AppArchetype
     #
     def variables
       cmd = AppArchetype::Commands::PrintTemplateVariables.new(
-        options,
-        manager
+        manager,
+        options
       )
       cmd.run
     end
@@ -157,8 +157,8 @@ module AppArchetype
     #
     def find
       cmd = AppArchetype::Commands::FindTemplates.new(
-        options,
-        manager
+        manager,
+        options
       )
       cmd.run
     end
@@ -190,9 +190,9 @@ module AppArchetype
     #
     def render
       cmd = AppArchetype::Commands::RenderTemplate.new(
-        options,
         manager,
-        options.out
+        options.out,
+        options
       )
       cmd.run
     end

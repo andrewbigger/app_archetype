@@ -9,10 +9,10 @@ module AppArchetype
       #
       RESULT_HEADER = %w[NAME VERSION].freeze
 
-      def initialize(options, manager)
+      def initialize(manager, options = Hashie::Mash.new)
+        @manager = manager
         @options = options
         @prompt = TTY::Prompt.new
-        @manager = manager
       end
 
       ##

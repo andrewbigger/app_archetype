@@ -10,10 +10,10 @@ module AppArchetype
       #
       VALIDATION_HEADER = %w[ERROR].freeze
 
-      def initialize(options, manager)
+      def initialize(manager, options = Hashie::Mash.new)
+        @manager = manager
         @options = options
         @prompt = TTY::Prompt.new
-        @manager = manager
       end
 
       ##

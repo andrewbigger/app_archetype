@@ -4,10 +4,10 @@ module AppArchetype
   module Commands
     # Deletes template from collection
     class DeleteTemplate
-      def initialize(options, manager)
+      def initialize(manager, options = Hashie::Mash.new)
+        @manager = manager
         @options = options
         @prompt = TTY::Prompt.new
-        @manager = manager
       end
 
       ##

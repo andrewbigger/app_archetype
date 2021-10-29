@@ -10,9 +10,9 @@ module AppArchetype
       #
       RESULT_HEADER = %w[NAME VERSION].freeze
 
-      def initialize(options, manifests)
+      def initialize(manager, options = Hashie::Mash.new)
+        @manager = manager
         @options = options
-        @manifests = manifests
         @prompt = TTY::Prompt.new
       end
 
@@ -36,7 +36,7 @@ module AppArchetype
       def manifest_list_table
         TTY::Table.new(
           header: RESULT_HEADER,
-          rows: @manifests.map do |manifest|
+          rows: @manager.manifests.map do |manifest|
             [
               manifest.name,
               manifest.version
