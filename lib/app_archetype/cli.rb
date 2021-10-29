@@ -25,14 +25,20 @@ module AppArchetype
     desc 'list_templates', 'Prints a list of known templates to STDOUT'
 
     def list_templates
-      cmd =  AppArchetype::Commands::ListTemplates.new(options, manager.manifests)
+      cmd = AppArchetype::Commands::ListTemplates.new(
+        options,
+        manager.manifests
+      )
       cmd.run
     end
 
     desc 'path', 'Prints template path to STDOUT'
 
     def path
-      cmd =  AppArchetype::Commands::PrintPath.new(options, template_dir)
+      cmd = AppArchetype::Commands::PrintPath.new(
+        options,
+        template_dir
+      )
       cmd.run
     end
 
@@ -62,7 +68,26 @@ module AppArchetype
     )
 
     def new
-      cmd =  AppArchetype::Commands::NewTemplate.new(options, template_dir)
+      cmd =  AppArchetype::Commands::NewTemplate.new(
+        options,
+        template_dir
+      )
+      cmd.run
+    end
+
+    desc 'delete', 'Deletes a template in ARCHETYPE_TEMPLATE_DIR'
+
+    method_option(
+      :name,
+      type: :string,
+      desc: 'Name of template'
+    )
+
+    def delete
+      cmd =  AppArchetype::Commands::DeleteTemplate.new(
+        options,
+        manager
+      )
       cmd.run
     end
 

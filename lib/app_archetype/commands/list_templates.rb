@@ -15,7 +15,7 @@ module AppArchetype
         @prompt = TTY::Prompt.new
       end
 
-      def run
+      def run 
         puts(manifest_list_table.render)
       end
 
