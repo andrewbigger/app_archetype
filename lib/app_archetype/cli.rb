@@ -36,6 +36,23 @@ module AppArchetype
       cmd.run
     end
 
+    desc 'open', 'Opens template manifest file'
+
+    method_option(
+      :name,
+      type: :string,
+      desc: 'Name of manifest'
+    )
+
+    def open
+      cmd = AppArchetype::Commands::OpenManifest.new(
+        options,
+        manager,
+        editor
+      )
+      cmd.run
+    end
+
     protected
 
     ##

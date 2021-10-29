@@ -109,5 +109,14 @@ module AppArchetype
 
       results.first
     end
+
+    ##
+    # Returns a list of manifest names from loaded templates
+    #
+    # @return [Array]
+    #
+    def manifest_names
+      @manifests.map { |m| m.name }
+    end
   end
 end
