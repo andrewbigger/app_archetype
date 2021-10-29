@@ -123,6 +123,22 @@ module AppArchetype
       cmd.run
     end
 
+    desc 'find', 'Finds a template in collection'
+
+    method_option(
+      :name,
+      type: :string,
+      desc: 'Name of template'
+    )
+
+    def find_templates
+      cmd = AppArchetype::Commands::FindTemplates.new(
+        options,
+        manager
+      )
+      cmd.run
+    end
+
     protected
 
     ##
