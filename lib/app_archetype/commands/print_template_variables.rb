@@ -3,6 +3,7 @@ require 'tty-table'
 
 module AppArchetype
   module Commands
+    # Summarizes and prints variables from template manifest
     class PrintTemplateVariables
       ##
       # Variable table header
@@ -15,6 +16,20 @@ module AppArchetype
         @manager = manager
       end
 
+      ##
+      # Prints manifest variables, descriptions and defaults
+      #
+      # First it looks to the options for the manifest name.
+      # If one is not provided then the user will be prompted
+      # to choose a manifest from the list of known manifests.
+      #
+      # If the manifest cannot be found a RuntimeError will be
+      # raised.
+      #
+      # Once the manifest is found, an info table is rendered
+      # with the variable names, descriptions and any defined
+      # defaults.
+      #
       def run
         name = @options.name
         name ||= @prompt.select('Please choose manifest', @manager.manifest_names)

@@ -2,6 +2,7 @@ require 'tty-prompt'
 
 module AppArchetype
   module Commands
+    # Finds template by name in collection
     class FindTemplates
       ##
       # Output table header
@@ -14,6 +15,21 @@ module AppArchetype
         @manager = manager
       end
 
+      ##
+      # Finds a template by name from the collection
+      #
+      # First it looks for a name option, if this is not
+      # set then the user is prompted for the template name.
+      #
+      # Then the template manager runs a search to find a
+      # manifest with a fully or partially matching name
+      #
+      # If there are found results they will be rendered
+      # to STDOUT in a table.
+      #
+      # When there are no results found then a message
+      # confirming this will be printed to STDOUT.
+      #
       def run
         name = @options.name
         name ||= @prompt.ask('Please enter a template name')
@@ -36,7 +52,7 @@ module AppArchetype
       #
       def manifest_list_table(manifests)
         TTY::Table.new(
-          header: RESULT_HEADER, 
+          header: RESULT_HEADER,
           rows: manifests.map do |manifest|
             [
               manifest.name,

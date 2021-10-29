@@ -116,7 +116,7 @@ module AppArchetype
     # @return [Array]
     #
     def manifest_names
-      @manifests.map { |m| m.name }
+      @manifests.map(&:name)
     end
   end
 end

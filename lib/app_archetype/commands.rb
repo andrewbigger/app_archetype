@@ -5,6 +5,7 @@ Dir[COMMANDS].sort.each do |file|
 end
 
 module AppArchetype
+  # Module for CLI command classes
   module Commands
   end
 end

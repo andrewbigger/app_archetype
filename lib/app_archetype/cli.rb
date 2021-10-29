@@ -12,6 +12,9 @@ module AppArchetype
 
     desc 'version', 'Print app archetype version to STDOUT'
 
+    ##
+    # Runs version command
+    #
     def version
       cmd = AppArchetype::Commands::Version.new(options)
       cmd.run
@@ -19,9 +22,12 @@ module AppArchetype
 
     map %w[--version -v] => :version
 
-    desc 'list_templates', 'Prints a list of known templates to STDOUT'
+    desc 'list', 'Prints a list of known templates to STDOUT'
 
-    def list_templates
+    ##
+    # Runs list templates command
+    #
+    def list
       cmd = AppArchetype::Commands::ListTemplates.new(
         options,
         manager.manifests
@@ -31,6 +37,9 @@ module AppArchetype
 
     desc 'path', 'Prints template path to STDOUT'
 
+    ##
+    # Runs print path command
+    #
     def path
       cmd = AppArchetype::Commands::PrintPath.new(
         options,
@@ -47,6 +56,9 @@ module AppArchetype
       desc: 'Name of manifest'
     )
 
+    ##
+    # Runs open manifest command
+    #
     def open
       cmd = AppArchetype::Commands::OpenManifest.new(
         options,
@@ -64,8 +76,11 @@ module AppArchetype
       desc: 'Name of template'
     )
 
+    ##
+    # Runs new template commmand
+    #
     def new
-      cmd =  AppArchetype::Commands::NewTemplate.new(
+      cmd = AppArchetype::Commands::NewTemplate.new(
         options,
         template_dir
       )
@@ -80,8 +95,11 @@ module AppArchetype
       desc: 'Name of template'
     )
 
+    ##
+    # Runs delete template command
+    #
     def delete
-      cmd =  AppArchetype::Commands::DeleteTemplate.new(
+      cmd = AppArchetype::Commands::DeleteTemplate.new(
         options,
         manager
       )
@@ -96,8 +114,11 @@ module AppArchetype
       desc: 'Name of template'
     )
 
+    ##
+    # Runs validate manifest command
+    #
     def validate
-      cmd =  AppArchetype::Commands::ValidateManifest.new(
+      cmd = AppArchetype::Commands::ValidateManifest.new(
         options,
         manager
       )
@@ -112,8 +133,11 @@ module AppArchetype
       desc: 'Name of template'
     )
 
+    ##
+    # Runs print template variables command
+    #
     def variables
-      cmd =  AppArchetype::Commands::PrintTemplateVariables.new(
+      cmd = AppArchetype::Commands::PrintTemplateVariables.new(
         options,
         manager
       )
@@ -128,7 +152,10 @@ module AppArchetype
       desc: 'Name of template'
     )
 
-    def find_templates
+    ##
+    # Runs find templates command
+    #
+    def find
       cmd = AppArchetype::Commands::FindTemplates.new(
         options,
         manager
@@ -158,8 +185,11 @@ module AppArchetype
       desc: 'Option to overwrite any existing files'
     )
 
+    ##
+    # Runs render template command
+    #
     def render
-      cmd =  AppArchetype::Commands::RenderTemplate.new(
+      cmd = AppArchetype::Commands::RenderTemplate.new(
         options,
         manager,
         options.out

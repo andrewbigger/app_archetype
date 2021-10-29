@@ -3,6 +3,7 @@ require 'tty-table'
 
 module AppArchetype
   module Commands
+    # Lists known templates for user
     class ListTemplates
       ##
       # Output table header
@@ -15,7 +16,15 @@ module AppArchetype
         @prompt = TTY::Prompt.new
       end
 
-      def run 
+      ##
+      # Lists all known and valid manifests
+      #
+      # This renders a manifest list table
+      #
+      # Note: any invalid manifests will be excluded
+      # from this list.
+      #
+      def run
         puts(manifest_list_table.render)
       end
 
@@ -24,11 +33,9 @@ module AppArchetype
       ##
       # Builds a table of manifest information
       #
-      # @param [Array] manifests
-      #
       def manifest_list_table
         TTY::Table.new(
-          header: RESULT_HEADER, 
+          header: RESULT_HEADER,
           rows: @manifests.map do |manifest|
             [
               manifest.name,
