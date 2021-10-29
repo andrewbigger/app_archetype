@@ -15,6 +15,7 @@ module AppArchetype
         name ||= @prompt.select('Please choose manifest', @manager.manifest_names)
 
         manifest = @manager.find_by_name(name)
+        raise "Unable to find manifest #{name}" unless manifest
 
         pid = Process.spawn("#{@editor} #{manifest.path}")
         Process.waitpid(pid)

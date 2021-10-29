@@ -1,4 +1,5 @@
 require 'tty-prompt'
+require 'tty-table'
 
 module AppArchetype
   module Commands
@@ -22,6 +23,7 @@ module AppArchetype
         )
 
         manifest = @manager.find_by_name(name)
+        raise "Unable to find manifest #{name}" unless manifest
 
         result = manifest.validate
         if result.any?
@@ -36,7 +38,7 @@ module AppArchetype
       private
 
       ##
-      # Builds a table of manifest information
+      # Builds a table of validation results
       #
       # @param [Array] manifests
       #

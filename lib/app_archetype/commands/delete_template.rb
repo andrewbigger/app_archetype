@@ -17,6 +17,7 @@ module AppArchetype
         )
 
         manifest = @manager.find_by_name(name)
+        raise "Unable to find manifest #{name}" unless manifest
 
         ok_to_proceed = @prompt.yes?("Are you sure you want to delete #{name}?")
 

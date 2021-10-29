@@ -96,11 +96,27 @@ module AppArchetype
     method_option(
       :name,
       type: :string,
-      desc: 'Name of temlate'
+      desc: 'Name of template'
     )
 
     def validate
       cmd =  AppArchetype::Commands::ValidateManifest.new(
+        options,
+        manager
+      )
+      cmd.run
+    end
+
+    desc 'variables', 'Prints template variables'
+
+    method_option(
+      :name,
+      type: :string,
+      desc: 'Name of template'
+    )
+
+    def variables
+      cmd =  AppArchetype::Commands::PrintTemplateVariables.new(
         options,
         manager
       )
