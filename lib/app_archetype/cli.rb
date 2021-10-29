@@ -91,6 +91,22 @@ module AppArchetype
       cmd.run
     end
 
+    desc 'validate', 'Runs a schema validation on template manifest'
+
+    method_option(
+      :name,
+      type: :string,
+      desc: 'Name of temlate'
+    )
+
+    def validate
+      cmd =  AppArchetype::Commands::ValidateManifest.new(
+        options,
+        manager
+      )
+      cmd.run
+    end
+
     protected
 
     ##
