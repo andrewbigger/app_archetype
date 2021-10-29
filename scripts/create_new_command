@@ -3,8 +3,8 @@
 require 'thor'
 
 require 'app_archetype'
-require 'app_archetype/cli'
 require 'active_support/all'
+require_relative '../lib/app_archetype/commands'
 
 puts 'CREATE NEW COMMAND'
 
@@ -20,8 +20,9 @@ command = AppArchetype::Commands::RenderTemplate.new(
   manager,
   File.expand_path(File.join(__dir__, '..'))
 )
-
+command.resolve_variables(manifest)
 command.render_template(manifest, template)
+
 command_name = manifest.variables.get('command_name').value
 
 next_steps = <<~TEXT

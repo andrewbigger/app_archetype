@@ -1,3 +1,5 @@
+require 'hashie'
+
 COMMANDS = File.join(__dir__, 'commands', '*.rb')
 
 Dir[COMMANDS].sort.each do |file|
