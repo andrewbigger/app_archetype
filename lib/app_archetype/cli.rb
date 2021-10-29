@@ -5,9 +5,6 @@ require 'highline'
 require 'app_archetype'
 require 'app_archetype/commands'
 
-require 'app_archetype/cli/presenters'
-require 'app_archetype/cli/prompts'
-
 module AppArchetype
   # Command line interface helpers and actions
   class CLI < ::Thor
@@ -135,6 +132,37 @@ module AppArchetype
       cmd = AppArchetype::Commands::FindTemplates.new(
         options,
         manager
+      )
+      cmd.run
+    end
+
+    desc 'render', 'Renders project template'
+
+    method_option(
+      :name,
+      type: :string,
+      desc: 'Name of template'
+    )
+
+    method_option(
+      :out,
+      type: :string,
+      desc: 'Destination path for rendered template',
+      default: FileUtils.pwd
+    )
+
+    method_option(
+      :overwrite,
+      type: :boolean,
+      default: false,
+      desc: 'Option to overwrite any existing files'
+    )
+
+    def render
+      cmd =  AppArchetype::Commands::RenderTemplate.new(
+        options,
+        manager,
+        options.out
       )
       cmd.run
     end
