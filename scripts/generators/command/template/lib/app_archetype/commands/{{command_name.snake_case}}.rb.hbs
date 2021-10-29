@@ -1,0 +1,16 @@
+require 'tty-prompt'
+
+module AppArchetype
+  module Commands
+    class {{command_name.camel_case}}
+      def initialize(options)
+        @options = options
+        @prompt = TTY::Prompt.new
+      end
+
+      def run
+        puts('✔ {{command_name.snake_case}} complete')
+      end
+    end
+  end
+end

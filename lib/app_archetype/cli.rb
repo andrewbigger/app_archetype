@@ -3,6 +3,8 @@ require 'thor'
 require 'highline'
 
 require 'app_archetype'
+require 'app_archetype/commands'
+
 require 'app_archetype/cli/presenters'
 require 'app_archetype/cli/prompts'
 
