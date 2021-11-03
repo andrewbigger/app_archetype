@@ -1,27 +1,14 @@
 #!/usr/bin/env ruby
 
-require 'thor'
-
-require 'app_archetype'
-require 'active_support/all'
-require_relative '../lib/app_archetype/commands'
+require_relative '../lib/app_archetype'
 
 puts 'CREATE NEW COMMAND'
 
-template_dir = File.join(__dir__, 'generators')
-manager = AppArchetype::TemplateManager.new(template_dir)
-manager.load
-
-manifest = manager.find_by_name('command')
-template = manifest.template
-template.load
-
-command = AppArchetype::Commands::RenderTemplate.new(
-  manager,
-  File.expand_path(File.join(__dir__, '..'))
+manifest = AppArchetype.render_template(
+  collection_dir: File.join(__dir__, 'generators'),
+  template_name: 'command',
+  destination_path: File.expand_path(File.join(__dir__, '..'))
 )
-command.resolve_variables(manifest)
-command.render_template(manifest, template)
 
 command_name = manifest.variables.get('command_name').value
 
@@ -33,10 +20,10 @@ next_steps = <<~TEXT
   Add the following to cli.rb within AppArchetype::CLI:
 
   ```
-  desc '#{command_name.underscore}', 'TODO: description'
+  desc '#{command_name.snake_case}', 'TODO: description'
 
-  def #{command_name.underscore}
-    cmd =  AppArchetype::Commands::#{command_name.camelize}.new(options)
+  def #{command_name.snake_case}
+    cmd =  AppArchetype::Commands::#{command_name.camel_case}.new(options)
     cmd.run
   end
   ```

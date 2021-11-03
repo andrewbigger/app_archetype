@@ -17,6 +17,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'cli-format', '~> 0.2'
+  spec.add_dependency 'hashie'
   spec.add_dependency 'highline', '~> 2.0'
   spec.add_dependency 'json', '~> 2.3'
   spec.add_dependency 'jsonnet', '~> 0.4.0'

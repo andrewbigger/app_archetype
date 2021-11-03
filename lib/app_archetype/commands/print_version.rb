@@ -3,10 +3,9 @@ require 'tty-prompt'
 module AppArchetype
   module Commands
     # Prints gem version to STDOUT
-    class Version
+    class PrintVersion
       def initialize(options = Hashie::Mash.new)
         @options = options
-        @prompt = TTY::Prompt.new
       end
 
       ##

@@ -218,4 +218,36 @@ RSpec.describe AppArchetype::TemplateManager do
       end
     end
   end
+
+  describe '#manifest_names' do
+    let(:manifest) do
+      AppArchetype::Template::Manifest.new(
+        'path/to/manifest.json',
+        'name' => 'manifest'
+      )
+    end
+
+    let(:manifests) do
+      [
+        manifest,
+        manifest,
+        manifest
+      ]
+    end
+
+    before do
+      subject.instance_variable_set(:@manifests, manifests)
+      @result = subject.manifest_names
+    end
+
+    it 'returns array of manifest names' do
+      expect(@result).to eq(
+        %w[
+          manifest
+          manifest
+          manifest
+        ]
+      )
+    end
+  end
 end

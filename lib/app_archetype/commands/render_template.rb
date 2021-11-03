@@ -64,7 +64,7 @@ module AppArchetype
       # answers to the prompts.
       #
       # @param[AppArchetype::Template::Manifest] manifest
-      # 
+      #
       def resolve_variables(manifest)
         manifest.variables.all.each do |var|
           value = variable_prompt_for(var)
@@ -91,7 +91,7 @@ module AppArchetype
           template,
           manifest.variables,
           destination_path: @destination_path,
-          overwrite: @options.overwrite
+          overwrite: overwrite
         )
 
         plan.devise

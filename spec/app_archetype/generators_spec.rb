@@ -101,7 +101,7 @@ RSpec.describe AppArchetype::Generators do
     it 'makes template dir' do
       expect(FileUtils)
         .to have_received(:mkdir_p)
-        .with(File.join(templates_path, name))
+        .with(File.join(templates_path, 'template'))
     end
 
     it 'renders blank manifest' do

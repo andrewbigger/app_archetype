@@ -60,7 +60,7 @@ module AppArchetype
       # @param [String] path
       #
       def render_empty_template(name, path)
-        template_path = File.join(path, name)
+        template_path = File.join(path, 'template')
         manifest_path = File.join(path, 'manifest.json')
         readme_path = File.join(path, 'README.md')
 

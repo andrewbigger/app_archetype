@@ -25,7 +25,7 @@ module AppArchetype
       # from this list.
       #
       def run
-        puts(manifest_list_table.render)
+        puts(manifest_list_table.render.strip)
       end
 
       private

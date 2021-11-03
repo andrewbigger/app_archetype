@@ -7,7 +7,6 @@ module AppArchetype
       def initialize(template_dir, options = Hashie::Mash.new)
         @template_dir = template_dir
         @options = options
-        @prompt = TTY::Prompt.new
       end
 
       ##
