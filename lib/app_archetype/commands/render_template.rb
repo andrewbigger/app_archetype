@@ -42,7 +42,11 @@ module AppArchetype
         name ||= @prompt.select('Please choose manifest', @manager.manifest_names)
 
         manifest = @manager.find_by_name(name)
-        raise "Unable to find manifest #{name}" unless manifest
+
+        unless manifest
+          puts "✖ No template with name `#{name}` found."
+          return
+        end
 
         template = manifest.template
         template.load
@@ -79,7 +83,6 @@ module AppArchetype
       #
       # @param [AppArchetype::Template::Manifest] manifest
       # @param [AppArchetype::Template] template
-      # @param [String] destiniation
       # @param [Boolean] overwrite
       #
       def render_template(
@@ -97,8 +100,6 @@ module AppArchetype
         plan.devise
         plan.execute
       end
-
-      private
 
       ##
       # Resolver for a given variable
@@ -133,7 +134,11 @@ module AppArchetype
       #
       def boolean_variable_prompt_for(var)
         puts "• #{var.name} (#{var.description})"
-        @prompt.yes?("Enter value for `#{var.name}` variable:", default: var.default)
+
+        @prompt.yes?(
+          "Enter value for `#{var.name}` variable:",
+          default: var.default
+        )
       end
 
       ##
@@ -146,7 +151,10 @@ module AppArchetype
       #
       def integer_variable_prompt_for(var)
         puts "• #{var.name} (#{var.description})"
-        @prompt.ask("Enter value for `#{var.name}` variable:", convert: :int, default: var.default)
+
+        @prompt.ask("Enter value for `#{var.name}` variable:",
+                    convert: :int,
+                    default: var.default)
       end
 
       ##
@@ -159,7 +167,11 @@ module AppArchetype
       #
       def string_variable_prompt_for(var)
         puts "• #{var.name} (#{var.description})"
-        @prompt.ask("Enter value for `#{var.name}` variable:", default: var.default)
+
+        @prompt.ask(
+          "Enter value for `#{var.name}` variable:",
+          default: var.default
+        )
       end
     end
   end

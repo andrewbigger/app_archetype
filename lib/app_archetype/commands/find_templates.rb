@@ -34,10 +34,10 @@ module AppArchetype
         name = @options.name
         name ||= @prompt.ask('Please enter a template name')
 
-        result = @manager.search_by_name(name)
+        manifests = @manager.search_by_name(name)
 
-        if result.any?
-          puts manifest_list_table(result)
+        if manifests.any?
+          puts manifest_list_table(manifests).render&.strip
         else
           puts "✖ No manifests with name `#{name}` found."
         end

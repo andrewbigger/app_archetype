@@ -35,9 +35,12 @@ module AppArchetype
         name ||= @prompt.select('Please choose manifest', @manager.manifest_names)
 
         manifest = @manager.find_by_name(name)
-        raise "Unable to find manifest #{name}" unless manifest
 
-        puts(variable_table_for(manifest).render)
+        if manifest
+          puts variable_table_for(manifest).render&.strip
+        else
+          puts "✖ No manifests with name `#{name}` found."
+        end
       end
 
       private
