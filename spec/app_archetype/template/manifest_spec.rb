@@ -27,12 +27,21 @@ RSpec.describe AppArchetype::Template::Manifest do
         }
       }
     end
+
+    let(:next_steps) do
+      [
+        'do something',
+        'do something else'
+      ]
+    end
+
     let(:content) do
       {
         'name' => manifest_name,
         'version' => version,
         'metadata' => app_archetype_meta,
-        'variables' => vars
+        'variables' => vars,
+        'next_steps' => next_steps
       }.to_json
     end
 
@@ -66,6 +75,27 @@ RSpec.describe AppArchetype::Template::Manifest do
       it 'has variables' do
         expect(@parsed.variables)
           .to be_a AppArchetype::Template::VariableManager
+      end
+
+      it 'has next steps' do
+        expect(@parsed.next_steps)
+          .to eq next_steps
+      end
+
+      context 'when next steps is not defined' do
+        let(:content) do
+          {
+            'name' => manifest_name,
+            'version' => version,
+            'metadata' => app_archetype_meta,
+            'variables' => vars
+          }.to_json
+        end
+
+        it 'returns empty array for next steps' do
+          expect(@parsed.next_steps)
+            .to eq []
+        end
       end
     end
 

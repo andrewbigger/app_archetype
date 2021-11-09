@@ -25,7 +25,8 @@ module AppArchetype
             'version' => AppArchetype::VERSION
           }
         },
-        'variables' => DEFAULT_VARS
+        'variables' => DEFAULT_VARS,
+        'next_steps' => []
       }
     end
 

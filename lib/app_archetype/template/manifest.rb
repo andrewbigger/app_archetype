@@ -38,6 +38,9 @@ module AppArchetype
           },
           variables: {
             type: 'object'
+          },
+          next_steps: {
+            type: 'array'
           }
         }
       }.freeze
@@ -128,6 +131,19 @@ module AppArchetype
       #
       def metadata
         @data.metadata
+      end
+
+      ##
+      # Next steps getter
+      #
+      # @return [String]
+      #
+      def next_steps
+        steps = @data.next_steps
+
+        return [] unless steps
+
+        steps
       end
 
       ##
