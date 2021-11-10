@@ -76,7 +76,7 @@ A standalone generator can be written using the standalone render method exposed
 ```ruby
 #!/usr/bin/env ruby
 
-require_relative '../lib/app_archetype'
+require 'app_archetype'
 
 puts 'CREATE NEW COMMAND'
 
@@ -85,6 +85,16 @@ manifest = AppArchetype.render_template(
   template_name: 'command',
   destination_path: File.expand_path(File.join(__dir__, '..'))
 )
+
+puts <<~NEXT_STEPS
+  ✔ Command created
+
+  TODO:
+NEXT_STEPS
+
+manifest.next_steps.each do |step|
+  puts step
+end
 ```
 
 ## Usage
@@ -126,7 +136,11 @@ Template manifests describe what should be done with a template at render time. 
       "type": "string",
       "default": "bar"
     }
-  }
+  },
+  "next_steps": [
+    "TODO:",
+    "Restart your machine"
+  ]
 }
 ```
 
@@ -134,6 +148,7 @@ Template manifests describe what should be done with a template at render time. 
 - `version` should be the version of the template
 - `metadata.app_archetype` is information about the manifest for the app archetype gem. `metadata.app_archetype.version` is required, and must be less than the version of the currently installed gem.
 - `variables` is an object of variable descriptions
+- `next_steps` is an array of human readable instructions on what to do after the manifest has been applied
 
 #### Variable Descriptions
 
