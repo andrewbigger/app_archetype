@@ -7,8 +7,9 @@ class String
   #
   # @return [String]
   #
-  def snake_case
-    helper.snake_case(self)
+  def snake_case(str = nil)
+    str ||= self
+    helper.snake_case(str)
   end
 
   ##
@@ -16,8 +17,9 @@ class String
   #
   # @return [String]
   #
-  def dash_case
-    helper.dash_case(self)
+  def dash_case(str = nil)
+    str ||= self
+    helper.dash_case(str)
   end
 
   ##
@@ -25,8 +27,9 @@ class String
   #
   # @return [String]
   #
-  def camel_case
-    helper.camel_case(self)
+  def camel_case(str = nil)
+    str ||= self
+    helper.camel_case(str)
   end
 
   ##
@@ -34,8 +37,9 @@ class String
   #
   # @return [String]
   #
-  def pluralize
-    helper.pluralize(self)
+  def pluralize(str = nil)
+    str ||= self
+    helper.pluralize(str)
   end
 
   ##
@@ -43,8 +47,9 @@ class String
   #
   # @return [String]
   #
-  def singularize
-    helper.singularize(self)
+  def singularize(str = nil)
+    str ||= self
+    helper.singularize(str)
   end
 
   ##
@@ -52,8 +57,9 @@ class String
   #
   # @return [String]
   #
-  def randomize(size = 5)
-    helper.randomize(self, size.to_s)
+  def randomize(size = 5, str = nil)
+    str ||= self
+    helper.randomize(str, size.to_s)
   end
 
   private
