@@ -1,8 +1,8 @@
 require 'hashie'
 
-COMMANDS = File.join(__dir__, 'commands', '*.rb')
+ARCHETYPE_CLI_COMMANDS = File.join(__dir__, 'commands', '*.rb')
 
-Dir[COMMANDS].sort.each do |file|
+Dir[ARCHETYPE_CLI_COMMANDS].sort.each do |file|
   require file
 end
 
