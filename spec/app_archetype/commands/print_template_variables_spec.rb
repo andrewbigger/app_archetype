@@ -102,7 +102,7 @@ RSpec.describe AppArchetype::Commands::PrintTemplateVariables do
 
         it 'prints manifest list table' do
           expected_table = <<~TABLE
-            NAME        DESCRIPTION    DEFAULT   
+            NAME        DESCRIPTION    DEFAULT#{'   '}
             #{variable_name} #{variable_description} #{variable_default}
           TABLE
 
@@ -136,7 +136,7 @@ RSpec.describe AppArchetype::Commands::PrintTemplateVariables do
 
         it 'prints manifest list table' do
           expected_table = <<~TABLE
-            NAME        DESCRIPTION    DEFAULT   
+            NAME        DESCRIPTION    DEFAULT#{'   '}
             #{variable_name} #{variable_description} #{variable_default}
           TABLE
 

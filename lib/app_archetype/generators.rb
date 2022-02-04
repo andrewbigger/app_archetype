@@ -49,7 +49,7 @@ module AppArchetype
       MD
     end
 
-    class <<self
+    class << self
       ##
       # Render empty template renders a manifest and template folder at
       # the given path.

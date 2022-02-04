@@ -1,6 +1,6 @@
 ---
   AllCops:
-    TargetRubyVersion: 2.4
+    TargetRubyVersion: 2.6
   
   Style/FrozenStringLiteralComment:
     Enabled: false
@@ -32,4 +32,10 @@
     Enabled: false
 
   Style/IfUnlessModifier:
+    Enabled: false
+
+  Style/GlobalStdStream:
+    Enabled: false
+
+  Style/OptionalBooleanParameter:
     Enabled: false

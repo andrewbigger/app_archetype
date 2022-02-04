@@ -45,7 +45,7 @@ module AppArchetype
         }
       }.freeze
 
-      class <<self
+      class << self
         ##
         # Creates a [AppArchetype::Template] from a manifest json so long as the
         # manifest is compatible with this version of AppArchetype.

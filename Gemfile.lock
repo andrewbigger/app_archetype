@@ -2,38 +2,38 @@ PATH
   remote: .
   specs:
     app_archetype (1.3.1)
-      cli-format (~> 0.2)
+      cli-format
       hashie
-      highline (~> 2.0)
-      json (~> 2.3)
-      json-schema (~> 2.8)
-      jsonnet (~> 0.4.0)
-      logger (~> 1.4.2)
-      os (~> 1.1)
-      ostruct (~> 0.3)
-      ruby-handlebars (~> 0.4)
-      thor (~> 1.0)
-      tty-prompt (~> 0.23.1)
-      tty-table (~> 0.12.0)
+      highline
+      json
+      json-schema
+      jsonnet
+      logger
+      os
+      ostruct
+      ruby-handlebars
+      thor
+      tty-prompt
+      tty-table
 
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (6.1.4.1)
+    activesupport (6.1.4.4)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
-    addressable (2.7.0)
+    addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
-    ast (2.4.1)
+    ast (2.4.2)
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
-    bump (0.9.0)
-    cli-format (0.2.0)
+    bump (0.10.0)
+    cli-format (0.2.1)
       activesupport
       text-table
       zeitwerk
@@ -43,8 +43,8 @@ GEM
     concurrent-ruby (1.1.9)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
-    diff-lcs (1.4.4)
-    docile (1.3.2)
+    diff-lcs (1.5.0)
+    docile (1.4.0)
     equalizer (0.0.11)
     erubis (2.7.0)
     flay (2.12.1)
@@ -58,7 +58,7 @@ GEM
       sexp_processor (~> 4.8)
     hashie (5.0.0)
     highline (2.0.3)
-    i18n (1.8.11)
+    i18n (1.9.1)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
     json (2.6.1)
@@ -69,14 +69,14 @@ GEM
     kwalify (0.7.2)
     launchy (2.5.0)
       addressable (~> 2.7)
-    logger (1.4.4)
+    logger (1.5.0)
     method_source (1.0.0)
     mini_portile2 (2.7.1)
-    minitest (5.14.4)
+    minitest (5.15.0)
     os (1.1.4)
-    ostruct (0.5.0)
-    parallel (1.19.2)
-    parser (2.7.1.5)
+    ostruct (0.5.3)
+    parallel (1.21.0)
+    parser (3.1.0.0)
       ast (~> 2.4.1)
     parslet (1.8.2)
     pastel (0.8.0)
@@ -85,50 +85,48 @@ GEM
     private_gem (1.1.4)
       bundler (> 1.7, < 3.0)
       thor
-    pry (0.13.1)
+    pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    psych (3.1.0)
     public_suffix (4.0.6)
-    rainbow (3.0.0)
-    rake (13.0.1)
-    reek (6.0.1)
+    rainbow (3.1.1)
+    rake (13.0.6)
+    reek (6.1.0)
       kwalify (~> 0.7.0)
-      parser (>= 2.5.0.0, < 2.8, != 2.5.1.1)
-      psych (~> 3.1.0)
+      parser (~> 3.1.0)
       rainbow (>= 2.0, < 4.0)
-    regexp_parser (1.8.1)
-    rexml (3.2.4)
-    rspec (3.9.0)
-      rspec-core (~> 3.9.0)
-      rspec-expectations (~> 3.9.0)
-      rspec-mocks (~> 3.9.0)
-    rspec-core (3.9.3)
-      rspec-support (~> 3.9.3)
-    rspec-expectations (3.9.2)
+    regexp_parser (2.2.0)
+    rexml (3.2.5)
+    rspec (3.10.0)
+      rspec-core (~> 3.10.0)
+      rspec-expectations (~> 3.10.0)
+      rspec-mocks (~> 3.10.0)
+    rspec-core (3.10.2)
+      rspec-support (~> 3.10.0)
+    rspec-expectations (3.10.2)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.9.0)
-    rspec-mocks (3.9.1)
+      rspec-support (~> 3.10.0)
+    rspec-mocks (3.10.3)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.9.0)
-    rspec-support (3.9.3)
-    rubocop (0.92.0)
+      rspec-support (~> 3.10.0)
+    rspec-support (3.10.3)
+    rubocop (1.25.1)
       parallel (~> 1.10)
-      parser (>= 2.7.1.5)
+      parser (>= 3.1.0.0)
       rainbow (>= 2.2.2, < 4.0)
-      regexp_parser (>= 1.7)
+      regexp_parser (>= 1.8, < 3.0)
       rexml
-      rubocop-ast (>= 0.5.0)
+      rubocop-ast (>= 1.15.1, < 2.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (>= 1.4.0, < 2.0)
-    rubocop-ast (0.7.1)
-      parser (>= 2.7.1.5)
+      unicode-display_width (>= 1.4.0, < 3.0)
+    rubocop-ast (1.15.1)
+      parser (>= 3.0.1.1)
     ruby-handlebars (0.4.0)
       parslet (~> 1.6, >= 1.6.2)
-    ruby-progressbar (1.10.1)
-    ruby_parser (3.15.0)
-      sexp_processor (~> 4.9)
-    rubycritic (4.5.2)
+    ruby-progressbar (1.11.0)
+    ruby_parser (3.18.1)
+      sexp_processor (~> 4.16)
+    rubycritic (4.6.1)
       flay (~> 2.8)
       flog (~> 4.4)
       launchy (>= 2.0.0)
@@ -139,18 +137,20 @@ GEM
       simplecov (>= 0.17.0)
       tty-which (~> 0.4.0)
       virtus (~> 1.0)
-    sexp_processor (4.15.1)
-    simplecov (0.19.0)
+    sexp_processor (4.16.0)
+    simplecov (0.21.2)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
+    simplecov_json_formatter (0.1.3)
     strings (0.2.1)
       strings-ansi (~> 0.2)
       unicode-display_width (>= 1.5, < 3.0)
       unicode_utils (~> 1.4)
     strings-ansi (0.2.0)
     text-table (1.2.4)
-    thor (1.0.1)
+    thor (1.2.1)
     thread_safe (0.3.6)
     tty-color (0.6.0)
     tty-cursor (0.7.1)
@@ -169,31 +169,33 @@ GEM
     tty-which (0.4.2)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
-    unicode-display_width (1.7.0)
+    unicode-display_width (2.1.0)
     unicode_utils (1.4.0)
     virtus (1.0.5)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
       descendants_tracker (~> 0.0, >= 0.0.3)
       equalizer (~> 0.0, >= 0.0.9)
+    webrick (1.7.0)
     wisper (2.0.1)
-    yard (0.9.25)
-    zeitwerk (2.5.1)
+    yard (0.9.27)
+      webrick (~> 1.7.0)
+    zeitwerk (2.5.4)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   app_archetype!
-  bump (~> 0.9)
-  private_gem (~> 1.1)
-  pry (~> 0.13)
-  rake (~> 13.0)
-  rspec (~> 3.9)
-  rubocop (~> 0.92)
-  rubycritic (~> 4.5)
-  simplecov (~> 0.19)
-  yard (~> 0.9)
+  bump
+  private_gem
+  pry
+  rake
+  rspec
+  rubocop
+  rubycritic
+  simplecov
+  yard
 
 BUNDLED WITH
    2.2.15

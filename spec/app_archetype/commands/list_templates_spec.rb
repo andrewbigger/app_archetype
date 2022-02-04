@@ -6,7 +6,7 @@ RSpec.describe AppArchetype::Commands::ListTemplates do
   let(:manifest_list_table) do
     <<~TABLE
       NAME          VERSION
-      some-manifest 1.0.0  
+      some-manifest 1.0.0#{'  '}
     TABLE
   end
 

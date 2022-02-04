@@ -27,12 +27,10 @@ module AppArchetype
       Dir.glob(
         File.join(@template_dir, '**', 'manifest.json*')
       ).each do |manifest|
-        begin
-          @manifests << AppArchetype::Template::Manifest.new_from_file(manifest)
-        rescue StandardError
-          puts "WARN: `#{manifest}` is invalid, skipping"
-          next
-        end
+        @manifests << AppArchetype::Template::Manifest.new_from_file(manifest)
+      rescue StandardError
+        puts "WARN: `#{manifest}` is invalid, skipping"
+        next
       end
     end
 
