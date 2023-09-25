@@ -167,6 +167,31 @@ RSpec.describe AppArchetype::Template::OutputFile do
     end
   end
 
+  describe '#source_template?' do
+    let(:ext) { '.template' }
+
+    before do
+      allow(File).to receive(:extname).and_return(ext)
+      @result = subject.source_template?
+    end
+
+    it 'delegates source file template check to File' do
+      expect(File).to have_received(:extname).with(source_file)
+    end
+
+    it 'returns true if file is template' do
+      expect(@result).to be true
+    end
+
+    context 'when not template' do
+      let(:ext) { 'doc' }
+
+      it 'returns false' do
+        expect(@result).to be false
+      end
+    end
+  end
+
   describe '#source_file?' do
     before do
       allow(File).to receive(:file?)

@@ -44,6 +44,8 @@ module AppArchetype
           render_erb_file(file)
         elsif file.source_hbs?
           render_hbs_file(file)
+        elsif file.source_template?
+          render_template_file(file)
         elsif file.source_file?
           copy_file(file)
         end
@@ -100,7 +102,27 @@ module AppArchetype
     end
 
     ##
-    # Copies source file to planned path only ovewriting if permitted by the
+    # Copies source file only overwriting if permitted by the
+    # renderer.
+    #
+    # The output file name removes the `.template` suffix. This
+    # is for circumstances where the template includes a hbs or erb
+    # file that we want to render untouched.
+    #
+    # @param [AppArchetype::OutputFile] file
+    #
+    def render_template_file(file)
+      raise 'cannot overwrite file' if file.exist? && !@overwrite
+
+      path = file.path.gsub('.template', '')
+
+      print_message("RENDER template ->: #{path}")
+
+      FileUtils.cp(file.source_file_path, path)
+    end
+
+    ##
+    # Copies source file to planned path only overwriting if permitted by the
     # renderer.
     #
     # @param [AppArchetype::Template::OutputFile] file

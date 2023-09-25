@@ -150,6 +150,18 @@ module AppArchetype
       end
 
       ##
+      # Evaluates whether the source file is a template.
+      #
+      # This is for cases where one wants to render a hbs or
+      # erb file without processing as a template file.
+      #
+      # @return [Boolean]
+      #
+      def source_template?
+        File.extname(@source_file_path) == '.template'
+      end
+
+      ##
       # Evaluates whether the source file is a file as opposed to
       # being a directory.
       #

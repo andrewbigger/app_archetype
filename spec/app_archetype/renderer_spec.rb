@@ -47,6 +47,13 @@ RSpec.describe AppArchetype::Renderer do
       )
     end
 
+    let(:template) do
+      AppArchetype::Template::OutputFile.new(
+        'path/to/template.hbs.template',
+        'path/to/destination/template'
+      )
+    end
+
     let(:directory) do
       AppArchetype::Template::OutputFile.new(
         'path/to/source/dir',
@@ -60,6 +67,7 @@ RSpec.describe AppArchetype::Renderer do
       allow(subject).to receive(:write_dir)
       allow(subject).to receive(:render_erb_file)
       allow(subject).to receive(:render_hbs_file)
+      allow(subject).to receive(:render_template_file)
       allow(subject).to receive(:copy_file)
 
       allow(File).to receive(:new).and_return(file_double)
@@ -67,11 +75,12 @@ RSpec.describe AppArchetype::Renderer do
       allow(file).to receive(:source_file?).and_return(true)
       allow(erb_template).to receive(:source_erb?).and_return(true)
       allow(hbs_template).to receive(:source_hbs?).and_return(true)
+      allow(template).to receive(:source_template?).and_return(true)
       allow(directory).to receive(:source_directory?).and_return(true)
 
       plan.instance_variable_set(
         :@files,
-        [file, erb_template, hbs_template, directory]
+        [file, erb_template, hbs_template, template, directory]
       )
 
       subject.render
@@ -91,6 +100,10 @@ RSpec.describe AppArchetype::Renderer do
 
     it 'renders hbs template' do
       expect(subject).to have_received(:render_hbs_file).with(hbs_template)
+    end
+
+    it 'renders template' do
+      expect(subject).to have_received(:render_template_file).with(template)
     end
 
     it 'copies file' do
@@ -243,6 +256,48 @@ RSpec.describe AppArchetype::Renderer do
 
       it 'renders template with blank' do
         expect(write_double).to have_received(:write).with(expected_output)
+      end
+    end
+  end
+
+  describe '#render_template_file' do
+    let(:source_path) { 'path/to/template/file.hbs.template' }
+    let(:dest_path) { 'path/to/destination/file' }
+
+    let(:file) do
+      AppArchetype::Template::OutputFile.new(source_path, dest_path)
+    end
+
+    let(:exists) { false }
+
+    before do
+      allow(FileUtils).to receive(:cp)
+      allow(file).to receive(:exist?).and_return(exists)
+    end
+
+    it 'copies file' do
+      subject.render_template_file(file)
+      expect(FileUtils).to have_received(:cp).with(source_path, dest_path)
+    end
+
+    context 'when file already exists and overwrite not allowed' do
+      let(:exists) { true }
+
+      it 'raises error' do
+        expect do
+          subject.render_template_file(file)
+        end.to raise_error('cannot overwrite file')
+      end
+    end
+
+    context 'when file already exists and overwrite is allowed' do
+      let(:exists) { true }
+      let(:overwrite) { true }
+
+      it 'raises error' do
+        expect do
+          subject.render_template_file(file)
+        end.not_to raise_error
       end
     end
   end

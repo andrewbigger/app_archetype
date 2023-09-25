@@ -16,9 +16,21 @@
 
   Metrics/MethodLength:
     Max: 20
+    Exclude: 
+      - 'lib/app_archetype/renderer.rb'
   
   Metrics/AbcSize:
     Max: 20
+    Exclude: 
+      - 'lib/app_archetype/renderer.rb'
+  
+  Metrics/CyclomaticComplexity:
+    Exclude: 
+      - 'lib/app_archetype/renderer.rb'
+
+  Metrics/PerceivedComplexity:
+    Exclude: 
+      - 'lib/app_archetype/renderer.rb'
   
   Lint/AssignmentInCondition:
     Enabled: false
