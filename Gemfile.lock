@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    app_archetype (1.5.1)
+    app_archetype (1.5.2)
       cli-format
       hashie
       highline
@@ -33,7 +33,7 @@ GEM
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
     bump (0.10.0)
-    cli-format (0.2.2)
+    cli-format (0.5.0)
       activesupport
       text-table
       zeitwerk
@@ -61,7 +61,7 @@ GEM
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
-    json (2.6.3)
+    json (2.7.1)
     json-schema (4.1.1)
       addressable (>= 2.8)
     jsonnet (0.5.3)
@@ -69,12 +69,12 @@ GEM
     kwalify (0.7.2)
     launchy (2.5.0)
       addressable (~> 2.7)
-    logger (1.5.3)
+    logger (1.6.0)
     method_source (1.0.0)
-    mini_portile2 (2.8.4)
+    mini_portile2 (2.8.5)
     minitest (5.20.0)
     os (1.1.4)
-    ostruct (0.5.5)
+    ostruct (0.6.0)
     parallel (1.21.0)
     parser (3.1.0.0)
       ast (~> 2.4.1)
@@ -161,7 +161,7 @@ GEM
       tty-cursor (~> 0.7)
       tty-screen (~> 0.8)
       wisper (~> 2.0)
-    tty-screen (0.8.1)
+    tty-screen (0.8.2)
     tty-table (0.12.0)
       pastel (~> 0.8)
       strings (~> 0.2.0)
@@ -180,7 +180,7 @@ GEM
     wisper (2.0.1)
     yard (0.9.27)
       webrick (~> 1.7.0)
-    zeitwerk (2.6.11)
+    zeitwerk (2.6.12)
 
 PLATFORMS
   ruby
