@@ -204,6 +204,24 @@ module AppArchetype
       def valid?
         validate.empty?
       end
+
+      ##
+      # Setter for variables
+      #
+      # @param [Hash] value
+      def variables=(value)
+        var_values = {}
+        
+        value.each do |name, value|
+          var_values[name] = {
+            name: name,
+            description: name,
+            value: value
+          }
+        end
+
+        @variables = AppArchetype::Template::VariableManager.new(var_values)
+      end
     end
   end
 end

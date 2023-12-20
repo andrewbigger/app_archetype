@@ -272,4 +272,30 @@ RSpec.describe AppArchetype::Template::Manifest do
       end
     end
   end
+
+  describe '#variables=' do
+    let(:path) { 'path/to/manifest.json' }
+
+    let(:data) do
+      {
+        'name' => 'test_manifest',
+        'version' => '0.1.0',
+        'variables' => {}
+      }
+    end
+
+    let(:vars) do
+      {
+        'foo' => 'bar'
+      }
+    end
+
+    before do
+      subject.variables = vars
+    end
+
+    it 'sets variables from given hash' do
+      expect(subject.variables.get('foo').value).to eq 'bar'
+    end
+  end
 end

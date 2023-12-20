@@ -38,12 +38,14 @@ module AppArchetype
     collection_dir: ENV.fetch('ARCHETYPE_TEMPLATE_DIR'),
     template_name: '',
     destination_path: '',
-    overwrite: false
+    overwrite: false,
+    variables: nil
   )
     manager = AppArchetype::TemplateManager.new(collection_dir)
     manager.load
 
     manifest = manager.find_by_name(template_name)
+    manifest.variables = variables unless variables.nil?
 
     template = manifest.template
     template.load
