@@ -208,11 +208,11 @@ module AppArchetype
       ##
       # Setter for variables
       #
-      # @param [Hash] value
-      def variables=(value)
+      # @param [Hash] values
+      def variables=(values)
         var_values = {}
-        
-        value.each do |name, value|
+
+        values.each do |name, value|
           var_values[name] = {
             name: name,
             description: name,

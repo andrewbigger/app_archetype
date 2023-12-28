@@ -48,6 +48,18 @@ RSpec.describe AppArchetype::Template::Helpers do
     end
   end
 
+  describe '#uuid' do
+    let(:uuid) { 'some-uuid' }
+
+    before do
+      allow(SecureRandom).to receive(:hex).and_return(uuid)
+    end
+
+    it 'returns uuid' do
+      expect(subject.uuid).to eq uuid
+    end
+  end
+
   describe '#random_string' do
     let(:length) { '10' }
 

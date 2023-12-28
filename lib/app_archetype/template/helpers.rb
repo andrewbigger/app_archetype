@@ -38,6 +38,13 @@ module AppArchetype
       end
 
       ##
+      # Generates a UUID
+      #
+      def uuid
+        SecureRandom.hex
+      end
+
+      ##
       # Generates a random string at specified length
       #
       # @param [String] length
