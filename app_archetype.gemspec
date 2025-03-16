@@ -16,6 +16,8 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
+  spec.add_dependency 'base64'
+  spec.add_dependency 'bigdecimal'
   spec.add_dependency 'cli-format'
   spec.add_dependency 'hashie'
   spec.add_dependency 'highline'
@@ -33,7 +35,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bump'
   spec.add_development_dependency 'private_gem'
   spec.add_development_dependency 'pry'
+  spec.add_development_dependency 'racc'
   spec.add_development_dependency 'rake'
+  spec.add_development_dependency 'rdoc'
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'rubocop'
   spec.add_development_dependency 'rubycritic'

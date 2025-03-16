@@ -5,6 +5,9 @@ require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 require 'rubycritic/rake_task'
 require 'yard'
+require 'simplecov'
+
+SimpleCov.start
 
 RSpec::Core::RakeTask.new(:spec)
 RuboCop::RakeTask.new

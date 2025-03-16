@@ -4,8 +4,6 @@ require 'simplecov'
 require 'pry'
 require 'bundler/setup'
 
-SimpleCov.start
-
 SimpleCov.configure do
   add_filter 'config'
   add_filter 'spec'
